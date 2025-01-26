@@ -39,6 +39,29 @@ async function init() {
   await renderer.init();
   // Create a triangle geometry
   var vertices = new Float32Array([
+    0,0, //Top
+    0,0.5,
+    0.117,0.151,
+
+    0,0,
+    0,0.5,
+    -0.117,0.151,
+
+    0,0, //Left
+    -0.4755,0.1545,
+    -0.10745,0.15794,
+
+    0,0,
+    -0.4755, 0.1545,
+    -0.17976, -0.06461,
+
+    0,0, //Right
+    -0.2939,-0.4045,
+    -0.1834,-0.05339,
+
+    0,0,
+    -0.2939,-0.4045,
+    0.0059,-0.19093,
   ]);
   await renderer.appendSceneObject(new Standard2DVertexObject(renderer._device, renderer._canvasFormat, vertices));
   renderer.render();
