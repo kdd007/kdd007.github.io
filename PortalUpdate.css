@@ -8,10 +8,9 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    text-align: center; /* Center text */
+    text-align: center;
     background-color: #7ecbff 
   }
-   
   /* canvas tag style by id */
   #renderCanvas {
     image-rendering: pixelated;
