@@ -1,3 +1,6 @@
-[submodule "Quest 1/Quest 1/quest-1-initiation-into-the-arcane-arts-kdd007"]
-	path = Quest 1/Quest 1/quest-1-initiation-into-the-arcane-arts-kdd007
+[submodule "quest-1-initiation-into-the-arcane-arts-kdd007"]
+    path = quest-1-initiation-into-the-arcane-arts-kdd007
+    url = https://github.com/kdd007/quest-1-initiation-into-the-arcane-arts-kdd007
+[submodule "Quest 1/quest-1-initiation-into-the-arcane-arts-kdd007"]
+	path = Quest 1/quest-1-initiation-into-the-arcane-arts-kdd007
 	url = https://github.com/kdd007/quest-1-initiation-into-the-arcane-arts-kdd007
