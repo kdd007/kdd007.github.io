@@ -9,9 +9,8 @@
     margin: 0;
     padding: 0;
     text-align: center;
-    background-color: #7ecbff 
+    background-color: #7ecbfe 
   }
-  /* canvas tag style by id */
   #renderCanvas {
     image-rendering: pixelated;
     display: block;
