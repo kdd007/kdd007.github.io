@@ -26,13 +26,13 @@
 // Chrome & Edge 113+ : Enable Vulkan, Default ANGLE Vulkan, Vulkan from ANGLE, Unsafe WebGPU Support, and WebGPU Developer Features (if exsits)
 // Firefox Nightly: sudo snap install firefox --channel=latext/edge or download from https://www.mozilla.org/en-US/firefox/channel/desktop/
 
-import FilteredRenderer from './Quest 2/lib/Viz/2DFilteredRenderer.js'
-import Standard2DFullScreenObject from './Quest 2/lib/DSViz/Standard2DFullScreenObject.js'
-import Standard2DPGAPosedVertexColorObject from './Quest 2/lib/DSViz/Standard2DPGAPosedVertexColorObject.js'
-// import LineStrip2DVertexObject from '/Quest 2/lib/DSViz/LineStrip2DVertexObject.js'
-// import DemoTreeObject from '/Quest 2/lib/DSViz/DemoTreeObject.js'
-import PGA2D from './Quest 2/lib/Math/PGA2D.js'
-import circleMaker from './Quest 2/circleMaker.js'
+import FilteredRenderer from '/lib/Viz/2DFilteredRenderer.js'
+import Standard2DFullScreenObject from '/lib/DSViz/Standard2DFullScreenObject.js'
+import Standard2DPGAPosedVertexColorObject from '/lib/DSViz/Standard2DPGAPosedVertexColorObject.js'
+import LineStrip2DVertexObject from '/lib/DSViz/LineStrip2DVertexObject.js'
+import DemoTreeObject from '/lib/DSViz/DemoTreeObject.js'
+import PGA2D from '/lib/Math/PGA2D.js'
+import circleMaker from './circleMaker.js'
 
 import rocketShip from './Quest 2/lib/DSViz/rocketShip.js'
 import mercury from './Quest 2/lib/DSViz/mercury.js'
