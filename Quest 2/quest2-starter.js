@@ -65,10 +65,12 @@ async function init() {
   // ])
   let vertices1= circleMaker(255, 223, 0, 0.2);
   let vertices2= sunEffect(255, 140, 0, 0.21);
+  let vertices3= sunEffect(255, 70, 0, 0.075);
   var pose = [1, 0, 0, 0, 1, 1];
   pose = new Float32Array(pose); // need to covert to Float32Array for uploading to GPU with fixed known size
   await renderer.appendSceneObject(new Standard2DPGAPosedVertexColorObject(renderer._device, renderer._canvasFormat, vertices1, pose));
   await renderer.appendSceneObject(new Standard2DPGAPosedVertexColorObject(renderer._device, renderer._canvasFormat, vertices2, pose));
+  await renderer.appendSceneObject(new Standard2DPGAPosedVertexColorObject(renderer._device, renderer._canvasFormat, vertices3, pose));
   // Create another triangle geometry for line-strips drawing
   // var vertices2 = new Float32Array([
   //    // x, y
