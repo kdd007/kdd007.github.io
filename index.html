@@ -7,17 +7,27 @@
        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
        <link rel="stylesheet" type="text/css" href="portalFormat.css">
        <link rel="icon" href="11681b40c7ae84daef0477dda290da9b-2502509233.gif" type="image/x-icon">
-       <!-- <script type="module" src="worldOfPokemon.js"></script> -->
        <style>
            body {
-               background-color: lightblue;
-               font-family: Arial, sans-serif;
+               background: linear-gradient(to bottom, lightblue, #f0f8ff);
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+               color: #333;
+               margin: 0;
+               padding: 0;
+               height: 100vh;
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
                text-align: center;
            }
 
            h1 {
-               font-size: 2em;
-               margin-top: 50px;
+               font-size: 2.5em;
+               margin-bottom: 40px;
+               color: #2e3a59;
+               text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+               max-width: 80%;
            }
 
            button {
@@ -44,12 +54,40 @@
                background-color: #388e3c;
                transform: scale(1);
            }
+
+           .container {
+               padding: 20px;
+               text-align: center;
+               max-width: 900px;
+               margin: 0 auto;
+           }
+
+           .button-container {
+               display: flex;
+               justify-content: center;
+               gap: 20px;
+           }
+
+           @media (min-width: 768px) {
+               h1 {
+                   font-size: 3em;
+                   max-width: 60%;
+               }
+
+               .container {
+                   margin-top: 50px;
+               }
+           }
        </style>
    </head>
    <body>
-       <h1>Welcome! Take a look at the gallery of pictures I have taken across my Academia!</h1>
+       <div class="container">
+           <h1>Welcome! Take a look at the gallery of pictures I have taken across my Academia!</h1>
 
-       <button onclick="window.location.href='./Quest 1/worldOfPokemon.html';">View the World of Pokemon!</button>
-       <button onclick="window.location.href='./solarSystem.html';">View Space from Another world!</button>
+           <div class="button-container">
+               <button onclick="window.location.href='./Quest 1/worldOfPokemon.html';">View the World of Pokemon!</button>
+               <button onclick="window.location.href='./solarSystem.html';">View Space from Another World!</button>
+           </div>
+       </div>
    </body>
 </html>
