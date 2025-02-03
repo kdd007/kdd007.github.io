@@ -21,7 +21,7 @@
  *                                anything the license permits.
  */
 
-import SceneObject from "/lib/DSViz/SceneObject.js"
+import SceneObject from "/Quest 2/libst 2/lib/DSViz/SceneObject.js"
 
 export default class ImageFilterObject extends SceneObject {
   async createGeometry() {}
