@@ -29,8 +29,8 @@
 import FilteredRenderer from './lib/Viz/2DFilteredRenderer.js'
 import Standard2DFullScreenObject from './lib/DSViz/Standard2DFullScreenObject.js'
 import Standard2DPGAPosedVertexColorObject from './lib/DSViz/Standard2DPGAPosedVertexColorObject.js'
-// import LineStrip2DVertexObject from '/lib/DSViz/LineStrip2DVertexObject.js'
-// import DemoTreeObject from '/lib/DSViz/DemoTreeObject.js'
+// import LineStrip2DVertexObject from './lib/DSViz/LineStrip2DVertexObject.js'
+// import DemoTreeObject from './lib/DSViz/DemoTreeObject.js'
 import PGA2D from './lib/Math/PGA2D.js'
 import circleMaker from './circleMaker.js'
 
