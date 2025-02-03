@@ -1,5 +1,10 @@
-import FilteredRenderer from 'C:\Users\Kevin\OneDrive\Desktop\Skool\CSCI379\kdd007.github.io\Scrolls\Scroll 3\lib\Viz\FilteredRenderer.js'
-import Standard2DVertexColorObject from 'C:\Users\Kevin\OneDrive\Desktop\Skool\CSCI379\kdd007.github.io\Scrolls\Scroll 3\lib\DSViz\Standard2DVertexColorObject.js'
+import FilteredRenderer from '/lib/Viz/FilteredRenderer.js'
+import Standard2DVertexColorObject from '/lib/DSViz/Standard2DVertexColorObject.js'
+import Standard2DFullScreenObject from '/lib/DSViz/SceneObjectFullScreenObject.js'
+import ImageFilterObject from './lib/DSViz/ImageFilterObject.js';
+import Image8BitsFilterObject from './lib/DSViz/Image8bitFilterObject.js';
+import ImageNosifyFilterObject from './lib/DSViz/ImageNosifyFilterObject.js';
+
 
 async function init() {
   // Create a canvas tag
@@ -16,7 +21,11 @@ async function init() {
     -0.5, 0, 0, 1, 0, 1,
     0.5,  0, 0, 0, 1, 1,
   ]);
+  await renderer.appendSceneObject(new Standard2DFullScreenObject(renderer._device, renderer._canvasFormat, "/assets/bucknell.jpg"));
   await renderer.appendSceneObject(new Standard2DVertexColorObject(renderer._device, renderer._canvasFormat, vertices));
+  // await renderer.appendFilterObject(new ImageFilterObject(renderer._device, renderer._canvasFormat, canvasTag));
+  // await renderer.appendFilterObject(new Image8BitsFilterObject(renderer._device, renderer._canvasFormat, canvasTag));
+  await renderer.appendFilterObject(new ImageNosifyFilterObject(renderer._device, renderer._canvasFormat, canvasTag));
   renderer.render();
   return renderer;
 }
