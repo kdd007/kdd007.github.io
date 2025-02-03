@@ -2,25 +2,54 @@
 <html>
    <head>
        <title>[SP 25 Apprentice Kevin Duong's Arcane Portal]</title>
-       <!-- Note that some header tags don't need a close tag. They don't have content, called "void" tags. meta is one of them. -->
        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
        <meta charset="utf-8">
        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-       <!-- Import CSS using the link tag -->
        <link rel="stylesheet" type="text/css" href="portalFormat.css">
-       <!-- Webpage icon -->
        <link rel="icon" href="11681b40c7ae84daef0477dda290da9b-2502509233.gif" type="image/x-icon">
-       <!-- Include the web app script -->
-       <!-- <canvas id="myCanvas" width="800" height="600"></canvas> -->
-       <script type="module" src="worldOfPokemon.js"></script>
+       <!-- <script type="module" src="worldOfPokemon.js"></script> -->
+       <style>
+           body {
+               background-color: lightblue;
+               font-family: Arial, sans-serif;
+               text-align: center;
+           }
+
+           h1 {
+               font-size: 2em;
+               margin-top: 50px;
+           }
+
+           button {
+               background-color: #4CAF50;
+               border: none;
+               color: white;
+               padding: 15px 32px;
+               text-align: center;
+               text-decoration: none;
+               display: inline-block;
+               font-size: 16px;
+               margin: 20px;
+               cursor: pointer;
+               border-radius: 8px;
+               transition: background-color 0.3s ease, transform 0.2s ease;
+           }
+
+           button:hover {
+               background-color: #45a049;
+               transform: scale(1.1);
+           }
+
+           button:active {
+               background-color: #388e3c;
+               transform: scale(1);
+           }
+       </style>
    </head>
-   <body style="background-color: lightblue;">
+   <body>
        <h1>Welcome! Take a look at the gallery of pictures I have taken across my Academia!</h1>
 
-       <!-- Button 1 to open the first HTML -->
        <button onclick="window.location.href='./Quest 1/worldOfPokemon.html';">View the World of Pokemon!</button>
-
-       <!-- Button 2 to open the second HTML -->
-       <button onclick="window.location.href='./solarSystem.html';">View Space from another world!</button>
+       <button onclick="window.location.href='./solarSystem.html';">View Space from Another world!</button>
    </body>
 </html>
