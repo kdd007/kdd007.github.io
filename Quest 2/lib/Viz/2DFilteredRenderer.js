@@ -21,7 +21,7 @@
  *                                anything the license permits.
  */
 
-import Renderer from "/Quest 2/lib/Viz/2DFilteredRenderer.js"
+import Renderer from "/lib/Viz/2DRenderer.js"
 
 export default class FilteredRenderer extends Renderer{
   constructor(canvas) {
