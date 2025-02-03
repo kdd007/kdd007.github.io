@@ -21,7 +21,7 @@
  *                                anything the license permits.
  */
 
-import SceneObject from "/Quest 2/libst 2/lib/DSViz/SceneObject.js"
+import SceneObject from "/libst 2/lib/DSViz/SceneObject.js"
 
 export default class Standard2DFullScreenObject extends SceneObject {
   constructor(device, canvasFormat, img) {
