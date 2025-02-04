@@ -8,84 +8,88 @@
        <link rel="stylesheet" type="text/css" href="/style/portalFormat.css">
        <link rel="icon" href="/assets/Ducky.gif" type="image/x-icon">
        <style>
-           body {
-               background: linear-gradient(to bottom, lightblue, #f0f8ff);
-               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-               color: #333;
-               margin: 0;
-               padding: 0;
-               height: 100vh;
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-               justify-content: center;
-               text-align: center;
-           }
-
-           h1 {
-               font-size: 2.5em;
-               margin-bottom: 40px;
-               color: #2e3a59;
-               text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-               max-width: 80%;
-           }
-
-           button {
-               background-color: #4CAF50;
-               border: none;
-               color: white;
-               padding: 15px 32px;
-               text-align: center;
-               text-decoration: none;
-               display: inline-block;
-               font-size: 16px;
-               margin: 20px;
-               cursor: pointer;
-               border-radius: 8px;
-               transition: background-color 0.3s ease, transform 0.2s ease;
-           }
-
-           button:hover {
-               background-color: #45a049;
-               transform: scale(1.1);
-           }
-
-           button:active {
-               background-color: #388e3c;
-               transform: scale(1);
-           }
-
-           /* Container for the whole page content */
-           .container {
-               padding: 20px;
-               text-align: center;
-               max-width: 900px;
-               margin: 0 auto;
-           }
-
-           /* Add some spacing between the buttons */
-           .button-container {
-               display: flex;
-               justify-content: center;
-               gap: 20px;
-           }
-
-
-           @media (min-width: 768px) {
-               h1 {
-                   font-size: 3em;
-                   max-width: 60%;
-               }
-
-               .container {
-                   margin-top: 50px;
-               }
-           }
-       </style>
+        body {
+            background: #fff; /* White background for the rest of the body */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        } 
+     
+        .container {
+            padding: 20px;
+            text-align: center;
+            max-width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #ff9a8b, #ffc3a0, #ffb3c1);
+            width: 80%; /* You can adjust the width as needed */
+            border-radius: 12px; /* Optional: Adds rounded corners */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
+        }
+     
+        h1 {
+            font-size: 3em;
+            margin-bottom: 40px;
+            color: #2e3a59;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2), 0px 0px 15px rgba(88, 88, 88, 0.7);
+            max-width: 80%;
+            font-weight: bold;
+        }
+     
+        button {
+            background-color: #2ac584;
+            border: 2px solid #1f7a47;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 20px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+     
+        button:hover {
+            background-color: #2ddd94;
+            transform: scale(1.1);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+        }
+     
+        button:active {
+            background-color: #34f9a7;
+            transform: scale(1);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+     
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+     
+        @media (min-width: 1080px) {
+            h1 {
+                font-size: 3.5em;
+                max-width: 100%;
+            }
+     
+            .container {
+                margin-top: 50px;
+            } 
+        }
+     </style>     
    </head>
    <body>
        <div class="container">
-           <h1>Welcome! Take a look at the gallery of pictures I have taken!</h1>
+           <h1>Welcome! Take a look at the Gallery</h1>
 
            <div class="button-container">
                <button onclick="window.location.href='./Quest 1/worldOfPokemon.html';">View the World of Pokemon!</button>
