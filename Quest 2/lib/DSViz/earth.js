@@ -21,14 +21,34 @@
  *                                anything the license permits.
  */
 
-import ImageFilterObject from "/lib/DSViz/ImageFilterObject.js"
+import circleMaker from "../../circleMaker.js";
+import Standard2DPGAPosedVertexColorObject from "/Quest 2/lib/DSViz/Standard2DPGAPosedVertexColorObject.js"
 
-export default class Image8BitsFilterObject extends ImageFilterObject {
-  async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/computequantize8bits.wgsl");
-    this._shaderModule = this._device.createShaderModule({
-      label: " Shader " + this.getName(),
-      code: shaderCode,
-    }); 
+export default class earth extends Standard2DPGAPosedVertexColorObject {
+  constructor(device, canvasFormat, pose) {
+    let _vertices= circleMaker(0, 230, 0, 0.05);
+    super(device, canvasFormat, _vertices, pose);
+    this._interval = 360;
+    this._t = 0;
+    this._step = 2.978;
+    this._pose0 = [1.5, 0, 0.5, 0.5, 0.5, 0.5];
+    this._pose1 = [0, 1, -0.5, 0.5, 0.5, 0.5];
+  }
+
+  updateGeometry() {
+    //Rotation Angle
+    let angle = 2 * Math.PI * (this._t / this._interval);
+    
+    // Change X and Y position by a rotation
+    this._pose[0] = this._pose0[0] * Math.cos(angle) - this._pose0[1] * Math.sin(angle); 
+    this._pose[1] = this._pose0[0] * Math.sin(angle) + this._pose0[1] * Math.cos(angle); 
+    // Keep same?
+    this._pose[2] = this._pose0[2];
+    this._pose[3] = this._pose0[3];
+
+    // Move time
+    this._t += this._step;
+    //Update Points
+    super.updateGeometry();
   }
 }

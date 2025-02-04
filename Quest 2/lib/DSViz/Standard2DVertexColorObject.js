@@ -21,38 +21,44 @@
  *                                anything the license permits.
  */
 
-import SceneObject from "/lib/DSViz/SceneObject.js"
+import SceneObject from "/Quest 2/lib/DSViz/SceneObject.js"
 
-export default class Standard2DFullScreenObject extends SceneObject {
-  constructor(device, canvasFormat, img) {
+export default class Standard2DVertexColorObject extends SceneObject {
+  constructor(device, canvasFormat, vertices) {
     super(device, canvasFormat);
-    // This assume each vertex has (x, y)
-    this._img = new Image();
-    this._img.src = img;
+    // This assume each vertex has (x, y, r, g, b, a)
+    this._vertices = vertices;
   }
   
   async createGeometry() {
-    // Load img and create image bitmap
-    await this._img.decode();
-    this._bitmap = await createImageBitmap(this._img);
-    // Create texture buffer to store the texture in GPU
-    this._texture = this._device.createTexture({
-      label: "Texture " + this.getName(),
-      size: [this._bitmap.width, this._bitmap.height, 1],
-      format: "rgba8unorm",
-      usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
+    // Create vertex buffer to store the vertices in GPU
+    this._vertexBuffer = this._device.createBuffer({
+      label: "Vertices " + this.getName(),
+      size: this._vertices.byteLength,
+      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
     });
     // Copy from CPU to GPU
-    this._device.queue.copyExternalImageToTexture({ source: this._bitmap }, { texture: this._texture }, [ this._bitmap.width, this._bitmap.height]);
-    // Create the texture sampler
-    this._sampler = this._device.createSampler({
-      magFilter: "linear",
-      minFilter: "linear"
-    });
+    this._device.queue.writeBuffer(this._vertexBuffer, 0, this._vertices);
+    // Defne vertex buffer layout - how the GPU should read the buffer
+    this._vertexBufferLayout = {
+      arrayStride: 6 * Float32Array.BYTES_PER_ELEMENT,
+      attributes: [{ 
+        // position 0 has two floats
+        shaderLocation: 0,   // position in the vertex shader
+        format: "float32x2", // two coordiantes
+        offset: 0,           // no offset in the vertex buffer
+      },
+      {
+        // position 1 has four floats
+        shaderLocation: 1,   // position in the vertex shader
+        format: "float32x4", // four color values
+        offset: 2 * Float32Array.BYTES_PER_ELEMENT, // always after (x, y)
+      }],
+    };
   }
   
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/fullscreen.wgsl");
+    let shaderCode = await this.loadShader("/shaders/standard2dcolored.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,
@@ -66,6 +72,7 @@ export default class Standard2DFullScreenObject extends SceneObject {
       vertex: {
         module: this._shaderModule,         // the shader code
         entryPoint: "vertexMain",           // the shader function
+        buffers: [this._vertexBufferLayout] // the binded buffer layout
       },
       fragment: {
         module: this._shaderModule,    // the shader code
@@ -74,28 +81,14 @@ export default class Standard2DFullScreenObject extends SceneObject {
           format: this._canvasFormat   // the target canvas format
         }]
       }
-    });
-    // Create bind group to bind the texture
-    this._bindGroup = this._device.createBindGroup({
-      layout: this._renderPipeline.getBindGroupLayout(0),
-      entries: [
-        {
-          binding: 0,
-          resource: this._texture.createView(),
-        },
-        {
-          binding: 1,
-          resource: this._sampler,
-        }
-      ],
-    });
+    }); 
   }
   
   render(pass) {
     // add to render pass to draw the object
-    pass.setPipeline(this._renderPipeline);   // which render pipeline to use
-    pass.setBindGroup(0, this._bindGroup);    // bind group to bind texture to shader
-    pass.draw(6, 1, 0, 0);                    // 6 vertices to draw a quad
+    pass.setPipeline(this._renderPipeline);      // which render pipeline to use
+    pass.setVertexBuffer(0, this._vertexBuffer); // how the buffer are binded
+    pass.draw(this._vertices.length / 6);        // number of vertices to draw
   }
   
   async createComputePipeline() {}

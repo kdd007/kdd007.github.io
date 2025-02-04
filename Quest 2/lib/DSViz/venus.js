@@ -22,16 +22,16 @@
  */
 
 import circleMaker from "../../circleMaker.js";
-import Standard2DPGAPosedVertexColorObject from "/lib/DSViz/Standard2DPGAPosedVertexColorObject.js"
+import Standard2DPGAPosedVertexColorObject from "/Quest 2/lib/DSViz/Standard2DPGAPosedVertexColorObject.js"
 
-export default class saturn extends Standard2DPGAPosedVertexColorObject {
+export default class venus extends Standard2DPGAPosedVertexColorObject {
   constructor(device, canvasFormat, pose) {
-    let _vertices= circleMaker(187, 72, 255, 0.06);
+    let _vertices= circleMaker(148, 73, 15, 0.05);
     super(device, canvasFormat, _vertices, pose);
     this._interval = 360;
     this._t = 0;
-    this._step = 0.969;
-    this._pose0 = [0.8, 0, 0.5, 0.5, 0.5, 0.5];
+    this._step = 3.502;
+    this._pose0 = [1.7, 0, 0.5, 0.5, 0.5, 0.5];
     this._pose1 = [0, 1, -0.5, 0.5, 0.5, 0.5];
   }
 

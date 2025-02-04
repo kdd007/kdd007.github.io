@@ -21,35 +21,38 @@
  *                                anything the license permits.
  */
 
-import SceneObject from "/libst 2/lib/DSViz/SceneObject.js"
+import ImageFilterObject from "/Quest 2/lib/DSViz/ImageFilterObject.js"
 
-export default class ImageFilterObject extends SceneObject {
-  async createGeometry() {}
+export default class ImageNosifyFilterObject extends ImageFilterObject {
+  async createGeometry() {
+    this.updateGeometry(); 
+  }
   
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/computenothing.wgsl");
+    let shaderCode = await this.loadShader("/Quest 2/shaders/computenosify.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,
     }); 
   }
   
-  updateGeometry() {}
-  
-  async createRenderPipeline() {}
-  
-  render(pass) {}
-  
-  async createComputePipeline() {
-    // Create a compute pipeline that updates the image.
-    this._computePipeline = this._device.createComputePipeline({
-      label: "Image Filter Pipeline " + this.getName(),
-      layout: "auto",
-      compute: {
-        module: this._shaderModule,
-        entryPoint: "computeMain",
+  updateGeometry() {
+    if (this._imgWidth && this._imgHeight) {
+      // update the random number
+      this._randomArray = new Float32Array(this._imgWidth * this._imgHeight);
+      // create a buffer for the random number
+      this._randomBuffer = this._device.createBuffer({
+        label: "Random Buffer " + this.getName(),
+        size: this._randomArray.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+      });
+      // fill in the random values
+      for (let i = 0; i < this._imgWidth * this._imgHeight; ++i) {
+        this._randomArray[i] = Math.random() * 2 - 1; // range from [-1, 1]
       }
-    });
+      // Copy from CPU to GPU
+      this._device.queue.writeBuffer(this._randomBuffer, 0, this._randomArray);
+    }
   }
   
   createBindGroup(inTexture, outTexture) {
@@ -64,16 +67,13 @@ export default class ImageFilterObject extends SceneObject {
       {
         binding: 1,
         resource: outTexture.createView()
+      },
+      {
+        binding: 2,
+        resource: { buffer: this._randomBuffer }
       }],
     });
     this._wgWidth = Math.ceil(inTexture.width);
     this._wgHeight = Math.ceil(inTexture.height);
-  }
-  
-  compute(pass) {
-    // add to compute pass
-    pass.setPipeline(this._computePipeline);                // set the compute pipeline
-    pass.setBindGroup(0, this._bindGroup);                  // bind the buffer
-    pass.dispatchWorkgroups(this._wgWidth, this._wgHeight); // dispatch
   }
 }

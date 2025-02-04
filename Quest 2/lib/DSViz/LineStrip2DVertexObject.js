@@ -21,9 +21,9 @@
  *                                anything the license permits.
  */
 
-import SceneObject from "/lib/DSViz/SceneObject.js"
+import SceneObject from "/Quest 2/lib/DSViz/SceneObject.js"
 
-export default class Standard2DVertexObject extends SceneObject {
+export default class LineStrip2DVertexObject extends SceneObject {
   constructor(device, canvasFormat, vertices) {
     super(device, canvasFormat);
     // This assume each vertex has (x, y)
@@ -52,7 +52,7 @@ export default class Standard2DVertexObject extends SceneObject {
   }
   
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/standard2d.wgsl");
+    let shaderCode = await this.loadShader("/Quest 2/shaders/standard2d.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,
@@ -74,6 +74,9 @@ export default class Standard2DVertexObject extends SceneObject {
         targets: [{
           format: this._canvasFormat   // the target canvas format
         }]
+      },
+      primitive: {                     // instead of drawing triangles
+        topology: 'line-strip'         // draw line strip
       }
     }); 
   }

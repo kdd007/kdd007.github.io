@@ -26,24 +26,24 @@
 // Chrome & Edge 113+ : Enable Vulkan, Default ANGLE Vulkan, Vulkan from ANGLE, Unsafe WebGPU Support, and WebGPU Developer Features (if exsits)
 // Firefox Nightly: sudo snap install firefox --channel=latext/edge or download from https://www.mozilla.org/en-US/firefox/channel/desktop/
 
-import FilteredRenderer from '/lib/Viz/2DFilteredRenderer.js'
-import Standard2DFullScreenObject from '/lib/DSViz/Standard2DFullScreenObject.js'
-import Standard2DPGAPosedVertexColorObject from '/lib/DSViz/Standard2DPGAPosedVertexColorObject.js'
+import FilteredRenderer from '/Quest 2/lib/Viz/2DFilteredRenderer.js'
+import Standard2DFullScreenObject from '/Quest 2/lib/DSViz/Standard2DFullScreenObject.js'
+import Standard2DPGAPosedVertexColorObject from '/Quest 2/lib/DSViz/Standard2DPGAPosedVertexColorObject.js'
 // import LineStrip2DVertexObject from '/lib/DSViz/LineStrip2DVertexObject.js'
 // import DemoTreeObject from '/lib/DSViz/DemoTreeObject.js'
-import PGA2D from '/lib/Math/PGA2D.js'
-import circleMaker from './circleMaker.js'
+import PGA2D from '/Quest 2/lib/Math/PGA2D.js'
+import circleMaker from '/Quest 2/circleMaker.js'
 
-import rocketShip from '/lib/DSViz/rocketShip.js'
-import mercury from '/lib/DSViz/mercury.js'
-import venus from '/lib/DSViz/venus.js'
-import earth from '/lib/DSViz/earth.js'
-import mars from '/lib/DSViz/mars.js'
-import jupiter from '/lib/DSViz/jupiter.js'
-import saturn from '/lib/DSViz/saturn.js'
-import uranus from '/lib/DSViz/uranus.js'
-import neptune from '/lib/DSViz/neptune.js'
-import sunEffect from './sunEffect.js'
+import rocketShip from '/Quest 2/lib/DSViz/rocketShip.js'
+import mercury from '/Quest 2/lib/DSViz/mercury.js'
+import venus from '/Quest 2/lib/DSViz/venus.js'
+import earth from '/Quest 2/lib/DSViz/earth.js'
+import mars from '/Quest 2/lib/DSViz/mars.js'
+import jupiter from '/Quest 2/lib/DSViz/jupiter.js'
+import saturn from '/Quest 2/lib/DSViz/saturn.js'
+import uranus from '/Quest 2/lib/DSViz/uranus.js'
+import neptune from '/Quest 2/lib/DSViz/neptune.js'
+import sunEffect from '/Quest 2/sunEffect.js'
 
 async function init() {
   // Create a canvas tag
@@ -55,7 +55,7 @@ async function init() {
   const renderer = new FilteredRenderer(canvasTag);
   await renderer.init();
   // Create a background
-  await renderer.appendSceneObject(new Standard2DFullScreenObject(renderer._device, renderer._canvasFormat, "/assets/Space.jpg"));
+  await renderer.appendSceneObject(new Standard2DFullScreenObject(renderer._device, renderer._canvasFormat, "/Quest 2/assets/Space.jpg"));
   // Create a triangle geometry with color information at each vertex
   // var vertices1 = new Float32Array([
   //    // x, y, r, g, b, a
