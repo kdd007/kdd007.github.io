@@ -73,7 +73,7 @@ export default class Standard2DPGAPosedVertexColorObject extends SceneObject {
 
   
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/standard2dpgacolored.wgsl");
+    let shaderCode = await this.loadShader("/Quest 2/shaders/standard2dpgacolored.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,

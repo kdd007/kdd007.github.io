@@ -58,7 +58,7 @@ export default class Standard2DVertexColorObject extends SceneObject {
   }
   
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/standard2dcolored.wgsl");
+    let shaderCode = await this.loadShader("/Quest 2/shaders/standard2dcolored.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,
