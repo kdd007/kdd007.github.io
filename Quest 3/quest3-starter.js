@@ -26,12 +26,12 @@
 // Chrome & Edge 113+ : Enable Vulkan, Default ANGLE Vulkan, Vulkan from ANGLE, Unsafe WebGPU Support, and WebGPU Developer Features (if exsits)
 // Firefox Nightly: sudo snap install firefox --channel=latext/edge or download from https://www.mozilla.org/en-US/firefox/channel/desktop/
 
-import Renderer from '/lib/Viz/2DRenderer.js'
-import Camera from '/lib/Viz/2DCamera.js'
-import CameraLineStrip2DAliveDeadObject from '/lib/DSViz/CameraLineStrip2DAliveDeadObject.js'
-import StandardTextObject from '/lib/DSViz/StandardTextObject.js'
-import PGA2D from '/lib/Math/PGA2D.js'
-import Standard2DPGACameraSceneObject from '/lib/DSViz/Standard2DPGACameraSceneObject.js'
+import Renderer from './lib/Viz/2DRenderer.js'
+import Camera from './lib/Viz/2DCamera.js'
+import CameraLineStrip2DAliveDeadObject from '/Quest 3/lib/DSViz/CameraLineStrip2DAliveDeadObject.js'
+import StandardTextObject from './lib/DSViz/StandardTextObject.js'
+import PGA2D from '/Quest 3/lib/Math/PGA2D.js'
+import Standard2DPGACameraSceneObject from './lib/DSViz/Standard2DPGACameraSceneObject.js'
 
 async function init() {
   // Create a canvas tag
@@ -41,14 +41,24 @@ async function init() {
   // Create a 2d animated renderer
   const renderer = new Renderer(canvasTag);
   await renderer.init();
+  // var vertices = new Float32Array([
+  //   // x, y
+  //   -0.5, -0.5,
+  //   0.5, -0.5,
+  //   0.5,  0.5,
+  //   -0.5, 0.5, 
+  //   -0.5, -0.5 // loop back to the first vertex
+  // ]);
   var vertices = new Float32Array([
-     // x, y
-     -0.5, -0.5,
-     0.5, -0.5,
-     0.5,  0.5,
-     -0.5, 0.5, 
-     -0.5, -0.5 // loop back to the first vertex
-  ]);
+      -1, -1,  
+      1, -1,  
+      -1,  1,  
+
+      1, -1,  
+      -1,  1,  
+      1,  1, 
+    ]);
+  var vertices = new Float32Array(vertices)
   const camera = new Camera();
   const grid = new CameraLineStrip2DAliveDeadObject(renderer._device, renderer._canvasFormat, camera._pose, vertices);
   await renderer.appendSceneObject(grid);
@@ -66,7 +76,9 @@ async function init() {
   const quad = new Standard2DPGACameraSceneObject(renderer._device, renderer._canvasFormat, camera._pose, quadVertices, pose);
   await renderer.appendSceneObject(quad);
   let fps = '??';
-  var fpsText = new StandardTextObject('fps: ' + fps);
+  var fpsText = new StandardTextObject('fps: ' + fps + "\n");
+  var instructionText=new StandardTextObject("w/W: Move Up\na/A: Move Left\nd/D: Move Right\ns/S: Move Down\nq/Q: Zoom In\ne/E: Zoom Out\np/P: Pause Simulation\nr/R: Reset Simulation");
+  fpsText._textCanvas.style.left="1460px"
   // keyboard interaction
   var movespeed = 0.05;
   window.addEventListener("keydown", (e) => {
@@ -101,60 +113,16 @@ async function init() {
         grid.updateCameraPose();  
         quad.updateCameraPose();
         break;
-      case 'f': case 'F': fpsText.toggleVisibility(); break;
+      case 'f': case 'F': fpsText.toggleVisibility();instructionText.toggleVisibility(); break;
+      case 'p': case 'P': grid.togglePause(); break;
+      case 'r': case 'R': grid.refreshSimulation(); break;
     }
   });
   // mouse interactions
   let isDragging = false;
   let oldP = [0, 0];
-  canvasTag.addEventListener('mousedown', (e) => {
-    var mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-    var mouseY = (-e.clientY / window.innerHeight) * 2 + 1;
-    mouseX /= camera._pose[4];
-    mouseY /= camera._pose[5];
-    let p = PGA2D.applyMotorToPoint([mouseX, mouseY], [camera._pose[0], camera._pose[1], camera._pose[2], camera._pose[3]]);
-    oldP = [...p];
-    p[0] /= pose[4];
-    p[1] /= pose[5];
-    let sp = PGA2D.applyMotorToPoint(p, PGA2D.reverse([pose[0], pose[1], pose[2], pose[3]]));
-    if (-1 <= sp[0] && sp[0] <= 1 && -1 <= sp[1] && sp[1] <= 1) {
-      isDragging = true;
-    }
-  });
-  canvasTag.addEventListener('mousemove', (e) => {
-    var mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-    var mouseY = (-e.clientY / window.innerHeight) * 2 + 1;
-    mouseX /= camera._pose[4];
-    mouseY /= camera._pose[5];
-    let p = PGA2D.applyMotorToPoint([mouseX, mouseY], [camera._pose[0], camera._pose[1], camera._pose[2], camera._pose[3]]);
-    let halfLength = 1; // half cell length
-    let cellLength = halfLength * 2; // full cell length
-    let u = Math.floor((p[0] + halfLength) / cellLength * 10);
-    let v = Math.floor((p[1] + halfLength) / cellLength * 10);
-    if (u >= 0 && u < 10 && v >= 0 && v < 10) {
-      let offsetX = - halfLength + u / 10 * cellLength + cellLength / 10 * 0.5;
-      let offsetY = - halfLength + v / 10 * cellLength + cellLength / 10 * 0.5;
-      if (-0.5 / 10 + offsetX <= p[0] && p[0] <= 0.5 / 10 + offsetX && -0.5 / 10 + offsetY <= p[1] && p[1] <= 0.5 / 10 + offsetY) {
-        console.log(`in cell (${u}, ${v})`);
-      }
-    }
-    if (isDragging) {
-      let diff = Math.sqrt(Math.pow(p[0] - oldP[0], 2) + Math.pow(p[1] - oldP[1], 2));
-      if (diff > 0.001) { // a dirty flag spell
-        let dt = PGA2D.createTranslator((p[0] - oldP[0]) / pose[4], (p[1] - oldP[1]) / pose[5]); // compute changes in the model space
-        let newmotor = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [pose[0], pose[1], pose[2], pose[3]]));
-        pose[0] = newmotor[0];
-        pose[1] = newmotor[1];
-        pose[2] = newmotor[2];
-        pose[3] = newmotor[3];
-        quad.updateGeometry();
-        oldP = p;
-      }
-    }
-  });
-  canvasTag.addEventListener('mouseup', (e) => {
-    isDragging = false;
-  });
+  // 
+
   // run animation at 60 fps
   var frameCnt = 0;
   var tgtFPS = 60;

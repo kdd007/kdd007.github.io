@@ -1,37 +1,40 @@
-/*!
- * Copyright (c) 2025 SingChun LEE @ Bucknell University. CC BY-NC 4.0.
- * 
- * This code is provided mainly for educational purposes at Bucknell University.
- *
- * This code is licensed under the Creative Commons Attribution-NonCommerical 4.0
- * International License. To view a copy of the license, visit 
- *   https://creativecommons.org/licenses/by-nc/4.0/
- * or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
- *
- * You are free to:
- *  - Share: copy and redistribute the material in any medium or format.
- *  - Adapt: remix, transform, and build upon the material.
- *
- * Under the following terms:
- *  - Attribution: You must give appropriate credit, provide a link to the license,
- *                 and indicate if changes where made.
- *  - NonCommerical: You may not use the material for commerical purposes.
- *  - No additional restrictions: You may not apply legal terms or technological 
- *                                measures that legally restrict others from doing
- *                                anything the license permits.
- */
+  /*!
+  * Copyright (c) 2025 SingChun LEE @ Bucknell University. CC BY-NC 4.0.
+  * 
+  * This code is provided mainly for educational purposes at Bucknell University.
+  *
+  * This code is licensed under the Creative Commons Attribution-NonCommerical 4.0
+  * International License. To view a copy of the license, visit 
+  *   https://creativecommons.org/licenses/by-nc/4.0/
+  * or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+  *
+  * You are free to:
+  *  - Share: copy and redistribute the material in any medium or format.
+  *  - Adapt: remix, transform, and build upon the material.
+  *
+  * Under the following terms:
+  *  - Attribution: You must give appropriate credit, provide a link to the license,
+  *                 and indicate if changes where made.
+  *  - NonCommerical: You may not use the material for commerical purposes.
+  *  - No additional restrictions: You may not apply legal terms or technological 
+  *                                measures that legally restrict others from doing
+  *                                anything the license permits.
+  */
 
-import SceneObject from "/lib/DSViz/SceneObject.js"
-
+import SceneObject from "/Quest 3/lib/DSViz/SceneObject.js"
 export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
   constructor(device, canvasFormat, cameraPose, vertices) {
     super(device, canvasFormat);
     // This assume each vertex has (x, y)
+
+    this.cellSize = 2048;
+    this.isPaused=false;
+
     this._cameraPose = cameraPose;
-    if (typeof this._vertices === Float32Array) this._vertices = vertices; 
+    if (typeof this._vertices === Float32Array) this._vertices = vertices;
     else this._vertices = new Float32Array(vertices);
   }
-  
+
   async createGeometry() {
     // Create vertex buffer to store the vertices in GPU
     this._vertexBuffer = this._device.createBuffer({
@@ -44,7 +47,7 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
     // Defne vertex buffer layout - how the GPU should read the buffer
     this._vertexBufferLayout = {
       arrayStride: 2 * Float32Array.BYTES_PER_ELEMENT,
-      attributes: [{ 
+      attributes: [{
         // position 0 has two floats
         shaderLocation: 0,   // position in the vertex shader
         format: "float32x2", // two coordiantes
@@ -56,11 +59,30 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
       label: "Camera Pose " + this.getName(),
       size: this._cameraPose.byteLength,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-    }); 
+    });
     // Copy from CPU to GPU
     this._device.queue.writeBuffer(this._cameraPoseBuffer, 0, this._cameraPose);
     // an array of cell statuses in CPU
-    this._cellStatus = new Uint32Array(10 * 10); 
+    this._cellStatus = new Uint32Array(this.cellSize * this.cellSize);
+
+    //randomize cells
+    for (let i = 0; i < this._cellStatus.length; i++) {
+      let randomNum = Math.random()
+      if (randomNum < 0.02) {
+        this._cellStatus[i] = 2;
+      }
+      else if (randomNum < 0.04) {
+        this._cellStatus[i] = 3;
+      }
+      else if (randomNum < 0.52) {
+        this._cellStatus[i] = 1;
+      }
+      else {
+        this._cellStatus[i] = 0;
+      }
+    }
+
+    //this is the number of cells that updates
 
     // Create a storage ping-pong-buffer to hold the cell status.
     this._cellStateBuffers = [
@@ -80,13 +102,13 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
     // Set a step counter
     this._step = 0;
   }
-  
+
   updateCameraPose() {
     this._device.queue.writeBuffer(this._cameraPoseBuffer, 0, this._cameraPose);
   }
-  
+
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/camera2dalivedead.wgsl");
+    let shaderCode = await this.loadShader("./shaders/camera2dalivedead.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,
@@ -96,24 +118,24 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
       label: "Grid Bind Group Layout " + this.getName(),
       entries: [{
         binding: 0,
-        visibility: GPUShaderStage.VERTEX ,
+        visibility: GPUShaderStage.VERTEX,
         buffer: {} // Camera uniform buffer
       }, {
         binding: 1,
         visibility: GPUShaderStage.VERTEX | GPUShaderStage.COMPUTE,
-        buffer: { type: "read-only-storage"} // Cell status input buffer
+        buffer: { type: "read-only-storage" } // Cell status input buffer
       }, {
         binding: 2,
         visibility: GPUShaderStage.COMPUTE,
-        buffer: { type: "storage"} // Cell status output buffer
+        buffer: { type: "storage" } // Cell status output buffer
       }]
     });
     this._pipelineLayout = this._device.createPipelineLayout({
       label: "Grid Pipeline Layout",
-      bindGroupLayouts: [ this._bindGroupLayout ],
+      bindGroupLayouts: [this._bindGroupLayout],
     });
   }
-  
+
   async createRenderPipeline() {
     this._renderPipeline = this._device.createRenderPipeline({
       label: "Render Pipeline " + this.getName(),
@@ -131,9 +153,9 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
         }]
       },
       primitive: {                     // instead of drawing triangles
-        topology: 'line-strip'         // draw line strip
+        topology: 'triangle-list'         // draw line strip
       }
-    }); 
+    });
     // create bind group to bind the uniform buffer
     this._bindGroups = [
       this._device.createBindGroup({
@@ -168,15 +190,15 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
       })
     ];
   }
-  
+
   render(pass) {
     // add to render pass to draw the object
     pass.setPipeline(this._renderPipeline);      // which render pipeline to use
     pass.setVertexBuffer(0, this._vertexBuffer); // how the buffer are binded
     pass.setBindGroup(0, this._bindGroups[this._step % 2]);       // bind the uniform buffer
-    pass.draw(this._vertices.length / 2, 10 * 10);  // number of vertices to draw and number of instances to draw (100 here)
+    pass.draw(this._vertices.length / 2, this.cellSize * this.cellSize);  // number of vertices to draw and number of instances to draw (100 here)
   }
-  
+
   async createComputePipeline() {
     // Create a compute pipeline that updates the game state.
     this._computePipeline = this._device.createComputePipeline({
@@ -188,12 +210,34 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
       }
     });
   }
-  
-  compute(pass) { 
+
+  compute(pass) {
+    if (this.paused) {
+      return; //Skips computation of the next value
+    }
     // add to compute pass
     pass.setPipeline(this._computePipeline);
     pass.setBindGroup(0, this._bindGroups[this._step % 2]);     // bind the uniform buffer
-    pass.dispatchWorkgroups(Math.ceil(10 / 4), Math.ceil(10 / 4)); // sending how many instances to compute for each work group
+    pass.dispatchWorkgroups(Math.ceil(this.cellSize / 4), Math.ceil(this.cellSize / 4)); // sending how many instances to compute for each work group
     ++this._step;
+  }
+
+  togglePause() {
+    this.paused = !this.paused;
+  }
+  refreshSimulation() {
+    this._step = 0;
+  
+    this.createGeometry();
+
+    this.createShaders();
+    this.createRenderPipeline();
+  
+    this.createComputePipeline();
+  
+    this.paused = false;
+  
+    this._device.queue.writeBuffer(this._cellStateBuffers[0], 0, this._cellStatus);
+
   }
 }

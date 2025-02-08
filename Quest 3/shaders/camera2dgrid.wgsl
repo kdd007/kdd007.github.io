@@ -40,7 +40,7 @@ fn geometricProduct(a: MultiVector, b: MultiVector) -> MultiVector {
   // eoo = 0, e00 = 1 e11 = 1
   // s + e01 + eo0 + eo1
   // ss   = s   , se01   = e01  , seo0            = eo0  , seo1          = eo1
-  // e01s = e01 , e01e01 = -s   , e01eo0 = e10e0o = -eo1 , e01eo1 = -e0o = eo0
+  // e01s = e01 , e01e01 = -s   , e01eo0 = e256e0o = -eo1 , e01eo1 = -e0o = eo0
   // eo0s = eo0 , eo0e01 = eo1  , eo0eo0          = 0    , eo0eo1        = 0
   // e01s = e01 , eo1e01 = -eo0 , eo1eo0          = 0    , eo1eo1        = 0
   return MultiVector(
@@ -72,13 +72,13 @@ fn applyMotorToPoint(p: vec2f, m: MultiVector) -> vec2f {
 
 @vertex // this compute the scene coordinate of each input vertex
 fn vertexMain(@location(0) pos: vec2f, @builtin(instance_index) idx: u32) -> @builtin(position) vec4f {
-  let u = idx % 10; // we are expecting 10x10, so modulo 10 to get the x index
-  let v = idx / 10; // divide by 10 to get the y index
-  let uv = vec2f(f32(u), f32(v)) / 10; // normalize the coordinates to [0, 1]
+  let u = idx % 256; // we are expecting 256x256, so modulo 256 to get the x index
+  let v = idx / 256; // divide by 256 to get the y index
+  let uv = vec2f(f32(u), f32(v)) / 256; // normalize the coordinates to [0, 1]
   let halfLength = 1.f; // half cell length
   let cellLength = halfLength * 2.f; // full cell length
-  let cell = pos / 10; // divide the input quad into 10x10 pieces
-  let offset = - halfLength + uv * cellLength + cellLength / 10 * 0.5; // compute the offset for the instance
+  let cell = pos / 256; // divide the input quad into 256x256 pieces
+  let offset = - halfLength + uv * cellLength + cellLength / 256 * 0.5; // compute the offset for the instance
   // Apply motor
   let transformed = applyMotorToPoint(cell + offset, reverse(camerapose.motor));
   // Apply scale

@@ -44,29 +44,29 @@ export default class Camera {
     this._pose[3] = newpose[3];
   }
   
-  // moveLeft(d) {
-  //   let dt = PGA2D.createTranslator(-d, 0);
-  //   let newpose = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [this._pose[0], this._pose[1], this._pose[2], this._pose[3]]));
-  //   this.updatePose(newpose);
-  // }
+  moveLeft(d) {
+    let dt = PGA2D.createTranslator(-d, 0);
+    let newpose = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [this._pose[0], this._pose[1], this._pose[2], this._pose[3]]));
+    this.updatePose(newpose);
+  }
   
-  // moveRight(d) {
-  //   let dt = PGA2D.createTranslator(d, 0);
-  //   let newpose = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [this._pose[0], this._pose[1], this._pose[2], this._pose[3]]));
-  //   this.updatePose(newpose);
-  // }
+  moveRight(d) {
+    let dt = PGA2D.createTranslator(d, 0);
+    let newpose = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [this._pose[0], this._pose[1], this._pose[2], this._pose[3]]));
+    this.updatePose(newpose);
+  }
   
-  // moveUp(d) {
-  //   let dt = PGA2D.createTranslator(0, d);
-  //   let newpose = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [this._pose[0], this._pose[1], this._pose[2], this._pose[3]]));
-  //   this.updatePose(newpose);
-  // }
+  moveUp(d) {
+    let dt = PGA2D.createTranslator(0, d);
+    let newpose = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [this._pose[0], this._pose[1], this._pose[2], this._pose[3]]));
+    this.updatePose(newpose);
+  }
   
-  // moveDown(d) {
-  //   let dt = PGA2D.createTranslator(0, -d);
-  //   let newpose = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [this._pose[0], this._pose[1], this._pose[2], this._pose[3]]));
-  //   this.updatePose(newpose);
-  // }
+  moveDown(d) {
+    let dt = PGA2D.createTranslator(0, -d);
+    let newpose = PGA2D.normaliozeMotor(PGA2D.geometricProduct(dt, [this._pose[0], this._pose[1], this._pose[2], this._pose[3]]));
+    this.updatePose(newpose);
+  }
   
   zoomIn() {
     this._pose[4] *= 1.1;
