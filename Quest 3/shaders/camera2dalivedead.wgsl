@@ -167,5 +167,59 @@ fn fragmentMain(@location(0) cellStatus: f32) -> @location(0) vec4f {
       else if ((neighborsAlive) > 3) {cellStatusOut[i] = 0;} // Overpopulation
       else if ((neighborsAlive) == 3) {cellStatusOut[i] = 1;} // Live or Ded, Become Alive
       else if ((neighborsAlive) == 2) {cellStatusOut[i] = cellStatusIn[i];}// Remain ded or alive
+      
+  }
+  
+}
+
+@compute
+  @workgroup_size(4, 4)
+  fn computeRule(@builtin(global_invocation_id) cell: vec3u) {
+    // First count how many neighbors are alive
+    let x = cell.x;
+    let y = cell.y;
+    //let neighborsAlive = cellStatusIn[(y) * cellSize + (x + 1)] + cellStatusIn[(y) * cellSize + (x - 1)] +
+    //                    cellStatusIn[(y + 1) * cellSize + (x)] + cellStatusIn[(y - 1) * cellSize + (x)];
+
+    let neighborsAlive = 
+      cellStatusIn[(y - 1) * cellSize + (x)] +  
+      cellStatusIn[(y + 1) * cellSize + (x)] +  
+      cellStatusIn[(y) * cellSize + (x + 1)] +  
+      cellStatusIn[(y) * cellSize + (x - 1)] +  
+      cellStatusIn[(y - 1) * cellSize + (x + 1)] +  
+      cellStatusIn[(y - 1) * cellSize + (x - 1)] + 
+      cellStatusIn[(y + 1) * cellSize + (x + 1)] +  
+      cellStatusIn[(y + 1) * cellSize + (x - 1)];
+
+// N
+// S
+// E
+// W
+// NE
+// NW
+// SE
+// SW
+
+
+
+    let i = y * cellSize + x;
+    
+    // Compute new status  
+    //if ((i + neighborsAlive) % 2 == 1) {
+    //  cellStatusOut[i] = 0;
+    //}
+    //else {
+    //  cellStatusOut[i] = 1;
+    //}
+
+  if (cellStatusOut[i] >= 2){// Next Gen
+    cellStatusOut[i] = cellStatusIn[i];}
+  else if ((neighborsAlive) == 8) {cellStatusOut[i] = 2;}// Remain ded or alive
+  else {
+      if ((neighborsAlive) < 2) {cellStatusOut[i] = 0;} // Underpopulation
+      else if ((neighborsAlive) > 3) {cellStatusOut[i] = 0;} // Overpopulation
+      else if ((neighborsAlive) == 3) {cellStatusOut[i] = 1;} // Live or Ded, Become Alive
+      else if ((neighborsAlive) == 2) {cellStatusOut[i] = cellStatusIn[i];}// Remain ded or alive
+      
   }
 }

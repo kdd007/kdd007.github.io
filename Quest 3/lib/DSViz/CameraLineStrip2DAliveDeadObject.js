@@ -29,7 +29,7 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
 
     this.cellSize = 2048;
     this.isPaused=false;
-
+    this.name=true
     this._cameraPose = cameraPose;
     if (typeof this._vertices === Float32Array) this._vertices = vertices;
     else this._vertices = new Float32Array(vertices);
@@ -199,14 +199,14 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
     pass.draw(this._vertices.length / 2, this.cellSize * this.cellSize);  // number of vertices to draw and number of instances to draw (100 here)
   }
 
-  async createComputePipeline() {
+  async createComputePipeline(shaderName="computeMain") {
     // Create a compute pipeline that updates the game state.
     this._computePipeline = this._device.createComputePipeline({
       label: "Grid update pipeline " + this.getName(),
       layout: this._pipelineLayout,
       compute: {
         module: this._shaderModule,
-        entryPoint: "computeMain",
+        entryPoint: shaderName, 
       }
     });
   }
@@ -238,6 +238,37 @@ export default class CameraLineStrip2DAliveDeadObject extends SceneObject {
     this.paused = false;
   
     this._device.queue.writeBuffer(this._cellStateBuffers[0], 0, this._cellStatus);
-
   }
+
+  toggleRule() {
+    if (this.name) {
+        this._step = 0;
+    
+        this.createGeometry();
+    
+        this.createShaders();
+        this.createRenderPipeline("computeMain");
+      
+        this.createComputePipeline();
+      
+        this.paused = false;
+      
+        this._device.queue.writeBuffer(this._cellStateBuffers[0], 0, this._cellStatus);
+        this.name = false;
+    } else {
+        this._step = 0;
+    
+        this.createGeometry();
+    
+        this.createShaders();
+        this.createRenderPipeline("computeRule");
+      
+        this.createComputePipeline();
+      
+        this.paused = false;
+      
+        this._device.queue.writeBuffer(this._cellStateBuffers[0], 0, this._cellStatus);
+        this.name = true;
+    }
+}
 }

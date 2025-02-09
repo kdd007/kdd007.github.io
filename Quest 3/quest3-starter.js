@@ -41,6 +41,7 @@ async function init() {
   // Create a 2d animated renderer
   const renderer = new Renderer(canvasTag);
   await renderer.init();
+  const rule=0
   // var vertices = new Float32Array([
   //   // x, y
   //   -0.5, -0.5,
@@ -63,21 +64,23 @@ async function init() {
   const grid = new CameraLineStrip2DAliveDeadObject(renderer._device, renderer._canvasFormat, camera._pose, vertices);
   await renderer.appendSceneObject(grid);
   // Add a movable colored quad
-  var pose = new Float32Array([1, 0, 0, 0, 0.025, 0.025]);
-  var quadVertices = new Float32Array([
-     // x, y, r, g, b, a
-     -1, -1, 1, 0, 0, 1,
-     1, -1, 0, 1, 0, 1,
-     -1, 1, 0, 0, 1, 1,
-     1, 1, 1, 0, 1, 1,
-     -1, 1, 0, 0, 1, 1,
-     1, -1, 0, 1, 0, 1
-  ]);
-  const quad = new Standard2DPGACameraSceneObject(renderer._device, renderer._canvasFormat, camera._pose, quadVertices, pose);
-  await renderer.appendSceneObject(quad);
+  // var pose = new Float32Array([1, 0, 0, 0, 0.025, 0.025]);
+  // var quadVertices = new Float32Array([
+  //    // x, y, r, g, b, a
+  //    -1, -1, 1, 0, 0, 1,
+  //    1, -1, 0, 1, 0, 1,
+  //    -1, 1, 0, 0, 1, 1,
+  //    1, 1, 1, 0, 1, 1,
+  //    -1, 1, 0, 0, 1, 1,
+  //    1, -1, 0, 1, 0, 1
+  // ]);
+  // const quad = new Standard2DPGACameraSceneObject(renderer._device, renderer._canvasFormat, camera._pose, quadVertices, pose);
+  // await renderer.appendSceneObject(quad);
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps + "\n");
-  var instructionText=new StandardTextObject("w/W: Move Up\na/A: Move Left\nd/D: Move Right\ns/S: Move Down\nq/Q: Zoom In\ne/E: Zoom Out\np/P: Pause Simulation\nr/R: Reset Simulation");
+  var instructionText=new StandardTextObject("w/W: Move Up\na/A: Move Left\nd/D: Move Right\ns/S: Move Down\nq/Q: Zoom In\ne/E: Zoom Out\np/P: Pause Simulation\nr/R: Reset Simulation\nz/Z: Toggle Xbox Controls");
+  var controllerText=new StandardTextObject("Left Stick: Movement\nX: Zoom In\nY: Zoom Out\nA: Pause Simulation\nB: Reset Simulation\nz/Z: Toggle Keyboard via Keyboard");
+  controllerText.toggleVisibility()
   fpsText._textCanvas.style.left="1460px"
   // keyboard interaction
   var movespeed = 0.05;
@@ -113,15 +116,70 @@ async function init() {
         grid.updateCameraPose();  
         quad.updateCameraPose();
         break;
-      case 'f': case 'F': fpsText.toggleVisibility();instructionText.toggleVisibility(); break;
+      case 'f': case 'F': fpsText.toggleVisibility(); break;
       case 'p': case 'P': grid.togglePause(); break;
       case 'r': case 'R': grid.refreshSimulation(); break;
+      case 'z': case 'Z': controllerText.toggleVisibility();instructionText.toggleVisibility(); break;
+      case 't': case 'T': grid.toggleRule(); break;
     }
   });
+  
   // mouse interactions
   let isDragging = false;
   let oldP = [0, 0];
   // 
+  const xboxGamepadMapping = () => {
+    const gamepads = navigator.getGamepads();
+    if (gamepads[0]) {
+      const gp = gamepads[0];
+
+      if (Math.abs(gp.axes[1]) > 0.1) {
+        if (gp.axes[1] < 0) {
+          camera.moveUp(movespeed/8);
+        } else if (gp.axes[1] > 0) {
+          camera.moveDown(movespeed/8); 
+        }
+        grid.updateCameraPose();
+        // quad.updateCameraPose();
+      }
+
+      if (Math.abs(gp.axes[0]) > 0.1) {
+        if (gp.axes[0] < 0) {
+          camera.moveLeft(movespeed/8); 
+        } else if (gp.axes[0] > 0) {
+          camera.moveRight(movespeed/8);
+        }
+        grid.updateCameraPose();
+        // quad.updateCameraPose();
+      }
+
+      if (gp.buttons[0].pressed) { 
+        grid.togglePause();
+      }
+
+      if (gp.buttons[1].pressed) { 
+        grid.refreshSimulation();
+      }
+      if (gp.buttons[2].pressed) { 
+        camera.zoomIn(); 
+        grid.updateCameraPose();
+        // quad.updateCameraPose();
+      }
+
+      if (gp.buttons[3].pressed) {
+        camera.zoomOut(); 
+        grid.updateCameraPose();
+        // quad.updateCameraPose();
+      }
+    }
+  };
+
+  const gamepadLoop = () => {
+    xboxGamepadMapping();
+    requestAnimationFrame(gamepadLoop);
+  };
+
+  gamepadLoop();
 
   // run animation at 60 fps
   var frameCnt = 0;
@@ -146,6 +204,7 @@ async function init() {
   }, 1000); // call every 1000 ms
   return renderer;
 }
+
 
 init().then( ret => {
   console.log(ret);
