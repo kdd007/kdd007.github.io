@@ -22,7 +22,7 @@
  */
 
 import SceneObject from '/Quest 4/lib/DSViz/SceneObject.js'
-
+const varNum=10;
 export default class ParticleSystemObject extends SceneObject {
   constructor(device, canvasFormat, numParticles = 4096) {
     super(device, canvasFormat);
@@ -36,7 +36,7 @@ export default class ParticleSystemObject extends SceneObject {
   
   async createParticleGeometry() {
     // Create particles
-    this._particles = new Float32Array(this._numParticles * 6); // [x, y, ix, iy, vx, vy]
+    this._particles = new Float32Array(this._numParticles * varNum); // [x, y, ix, iy, vx, vy]
     // TODO 1 - create ping-pong buffers to store and update the particles in GPU
     // name the ping-pong buffers _particleBuffers
     this._particleBuffers= [
@@ -59,16 +59,20 @@ export default class ParticleSystemObject extends SceneObject {
   resetParticles() {
     for (let i = 0; i < this._numParticles; ++i) {
       // random position between [-1, 1] x [-1, 1]
-      this._particles[6 * i + 0] = (Math.random() * 2 - 1); // [-1, 1] 
-      this._particles[6 * i + 1] = (Math.random() * 2 - 1);
+      this._particles[varNum * i + 0] = (Math.random() * 2 - 1); // [-1, 1] 
+      this._particles[varNum * i + 1] = (Math.random() * 2 - 1);
       // store the initial positions
-      this._particles[6 * i + 2] = this._particles[6 * i + 0];
-      this._particles[6 * i + 3] = this._particles[6 * i + 1];
+      this._particles[varNum * i + 2] = this._particles[varNum * i + 0];
+      this._particles[varNum * i + 3] = this._particles[varNum * i + 1];
       // TODO 6: update the velocity
       // this._particles[6 * i + 4] = (Math.random() * 2 - 1);
       // this._particles[6 * i + 5] = (Math.random() * 2 - 1);
-      this._particles[6 * i + 4] = (Math.random() * 2 - 1); 
-      this._particles[6 * i + 5] = (Math.random() * 2 - 1);
+      this._particles[varNum * i + 4] = 0.001; 
+      this._particles[varNum * i + 5] = 0.001;
+      this._particles[varNum * i + 6] = this._particles[varNum * i + 4]; 
+      this._particles[varNum * i + 7] = this._particles[varNum * i + 5];
+      this._particles[varNum * i + 8] = (Math.random()*180)+180; 
+      this._particles[varNum * i + 9] = this._particles[varNum * i + 8];
     }
     // Copy from CPU to GPU
     this._step = 0;

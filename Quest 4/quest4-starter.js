@@ -38,7 +38,7 @@ async function init() {
   // Create a 2d animated renderer
   const renderer = new Renderer(canvasTag);
   await renderer.init();
-  const particles = new ParticleSystemObject(renderer._device, renderer._canvasFormat);
+  const particles = new ParticleSystemObject(renderer._device, renderer._canvasFormat,10000);
   await renderer.appendSceneObject(particles);
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);

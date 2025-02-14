@@ -25,10 +25,10 @@
 struct Particle {
   p: vec2f,  // Use vec2f for position instead of f32
   ip: vec2f,
-  vx: vec2f,
-  vy: vec2f,
-  xi: vec2f,
-  yi: vec2f
+  v: vec2f,
+  iv: vec2f,
+  l: f32,
+  il: f32
 };
 
 // TODO 4: Write the bind group spells here using array<Particle>
@@ -63,22 +63,22 @@ fn computeMain(@builtin(global_invocation_id) global_id: vec3u) {
   if (idx < arrayLength(&particlesIn)) {
   //  particlesOut[idx] = particlesIn[idx];
   var particle = particlesIn[idx];
-    
+    particle.v=particle.v + generateWind(particle.p.y, 1.5,0.0000);
     // Update the position using the velocity: newPos = oldPos + velocity
-    particle.p.x = particle.p.x + particle.vx.x;
-    particle.p.y = particle.p.y + particle.vy.y;
+    particle.p = particle.p + particle.v;
+    particle.l -=1; 
     
     // TOOD 7: Add boundary checking and respawn the particle when it is offscreen
-    if (particle.p.x < -1.0 || particle.p.x > 1.0 || particle.p.y < -1.0 || particle.p.y > 1.0) {
-      particle.p.x = particle.xi.x;
-      particle.p.y = particle.yi.y;
+    if (particle.p.x < -1.0 || particle.p.x > 1.0 || particle.p.y < -1.0 || particle.p.y > 1.0|| particle.l<=0) {
+      particle.p = particle.ip;
+      particle.v= particle.iv;
+      particle.l= particle.il;
     }
-    
     // Store the updated particle
     particlesOut[idx] = particle;
   };
 }
-  //fn generateWind(time: f32, frequency: f32, strength: f32) -> vec2f {
-  //    let angle = sin(time * frequency) * 3.14159265;
-  //    return vec2f(cos(angle), sin(angle)) * strength;
-//} 
+  fn generateWind(time: f32, frequency: f32, strength: f32) -> vec2f {
+      let angle = sin(time * frequency) * 3.14159265;
+      return vec2f(cos(angle), sin(angle)) * strength;
+} 
