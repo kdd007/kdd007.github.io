@@ -67,8 +67,8 @@ export default class ParticleSystemObject extends SceneObject {
       // TODO 6: update the velocity
       // this._particles[6 * i + 4] = (Math.random() * 2 - 1);
       // this._particles[6 * i + 5] = (Math.random() * 2 - 1);
-      this._particles[varNum * i + 4] = 0.001; 
-      this._particles[varNum * i + 5] = 0.001;
+      this._particles[varNum * i + 4] = (Math.random() * 0.01)-0.005;
+      this._particles[varNum * i + 5] = (Math.random() * 0.01)-0.005;
       this._particles[varNum * i + 6] = this._particles[varNum * i + 4]; 
       this._particles[varNum * i + 7] = this._particles[varNum * i + 5];
       this._particles[varNum * i + 8] = (Math.random()*180)+180; 
@@ -132,6 +132,25 @@ export default class ParticleSystemObject extends SceneObject {
           format: this._canvasFormat
         }]
       },
+      // fragment: {
+      //   module: this._shaderModule,
+      //   entryPoint: "fragmentParticleMain",
+      //   targets: [{
+      //     format: this._canvasFormat,
+      //     blend: {
+      //       color: {
+      //         srcFactor: 'one',
+      //         dstFactor: 'one-minus-src-alpha',
+      //         operator: 'add',
+      //       },
+      //       alpha: {
+      //         srcFactor: 'one',
+      //         dstFactor: 'one-minus-src-alpha',
+      //         operator: 'add',
+      //       },
+      //     },
+      //   }]
+      // },
       primitives: {
         typology: 'line-strip'
       }

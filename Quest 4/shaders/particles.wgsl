@@ -31,28 +31,65 @@ struct Particle {
   il: f32
 };
 
+struct VertexOutput {
+  @builtin(position) pos: vec4f,
+  @location(0) texCoords: vec2f
+};
 // TODO 4: Write the bind group spells here using array<Particle>
 // name the binded variables particlesIn and particlesOut
 
 @group(0) @binding(0) var<storage> particlesIn: array<Particle>;
 @group(0) @binding(1) var<storage, read_write> particlesOut: array<Particle>; // a uniform buffer describing the object pose
 
+@group(0) @binding(2) var inTexture: texture_2d<f32>;
+@group(0) @binding(3) var inSampler: sampler;
+
 
 @vertex
 fn vertexMain(@builtin(instance_index) idx: u32, @builtin(vertex_index) vIdx: u32) -> @builtin(position) vec4f {
   // TODO 5: Revise the vertex shader to draw circle to visualize the particles
   let particle = particlesIn[idx].p;
-  let size = 0.0125;
+  let size = 0.0125/3;
   let pi = 3.14159265;
   let theta = 2. * pi / 8 * f32(vIdx);
   let x = cos(theta) * size;
   let y = sin(theta) * size;
-  return vec4f(vec2f(x + particle[0], y + particle[1]), 0, 1);
+
+  var pos = array<vec2f, 6>(
+  vec2f(-1, -1), vec2f(1, -1), vec2f(-1, 1),
+  vec2f(1, -1), vec2f(1, 1), vec2f(-1, 1)
+  );
+  var texCoords = array<vec2f, 6>(
+    vec2f(0, 1), vec2f(1, 1), vec2f(0, 0),
+    vec2f(1, 1), vec2f(1, 0), vec2f(0, 0)
+  );
+  var out: VertexOutput;
+  out.pos = vec4f(pos[vIdx], 0, 1);
+  out.texCoords = texCoords[vIdx];
+  return out;
+
+  // return vec4f(vec2f(x + particle[0], y + particle[1]), 0, 1);
+
+
+  // var dist = length(particle - <YOUR BASE POSITION>) * 1024; // address this for your flame height
+  // if (dist > 255) {
+  //     dist = 255;
+  // }
+  // let size = 0.0125 * (255 - dist) / 255;
+  
+  // var out: VertexOutput;
+  // out.pos = vec4f(vec2f(x + particle[0], y + particle[1]), 0, 1);
+  // out.dist = dist;
+  // return out;
 }
 
 @fragment
-fn fragmentMain() -> @location(0) vec4f {
-  return vec4f(238.f/255, 118.f/255, 35.f/255, 1); // (R, G, B, A)
+// fn fragmentMain() -> @location(0) vec4f {
+//   // return vec4f(238.f/255, 118.f/255, 35.f/255, 1); // (R, G, B, A)
+//   return vec4f(255.f/255, 255.f/255, 255.f/255, 1); // (R, G, B, A)
+// }
+fn fragmentMain(@location(0) texCoords: vec2f) -> @location(0) vec4f {
+  return textureSample(inTexture, inSampler, texCoords);
 }
 
 @compute @workgroup_size(256)
@@ -66,10 +103,26 @@ fn computeMain(@builtin(global_invocation_id) global_id: vec3u) {
     particle.v=particle.v + generateWind(particle.p.y, 1.5,0.0000);
     // Update the position using the velocity: newPos = oldPos + velocity
     particle.p = particle.p + particle.v;
+    particle.p.y=particle.p.y + (-9.8/1000);
     particle.l -=1; 
     
     // TOOD 7: Add boundary checking and respawn the particle when it is offscreen
-    if (particle.p.x < -1.0 || particle.p.x > 1.0 || particle.p.y < -1.0 || particle.p.y > 1.0|| particle.l<=0) {
+    // if (particle.p.x < -1.0 || particle.p.x > 1.0 || particle.p.y < -1.0 || particle.p.y > 1.0|| particle.l<=0) {
+    //   particle.p = particle.ip;
+    //   particle.v= particle.iv;
+    //   particle.l= particle.il;
+    // }
+    if (particle.p.x < -1.0 || particle.p.x > 1.0) {
+      particle.p.x = -1*particle.p.x;
+      particle.v= particle.iv;
+      particle.l= particle.il;
+    }
+    else if (particle.p.y < -1.0 || particle.p.y > 1.0) {
+      particle.p.y = -1*particle.p.y;
+      particle.v= particle.iv;
+      particle.l= particle.il;
+    }
+    else if (particle.l<=0){
       particle.p = particle.ip;
       particle.v= particle.iv;
       particle.l= particle.il;
