@@ -43,9 +43,10 @@ async function init() {
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
 
-  canvasTag.addEventListener('mousemove', (e) => {
-    // var mouseX = 2*(e.offsetX/window.innerWidth)-1;
-    // var mouseY = 2*(e.offsetY/window.innerHeight)-1;
+  canvasTag.addEventListener('mousemove', async (e) => {
+    var mouseX = 2*(e.offsetX/window.innerWidth)-1;
+    var mouseY = 2*(e.offsetY/window.innerHeight)-1;
+    await polygon.updateMousePos(mouseX,mouseY);
     // for (let i=0; i < (polygon._vertices.length-2); i+=2) {
     //   if (!polygon.printIsInside(polygon._vertices.slice(i,i+2),polygon._vertices.slice(i+2,i+4),[mouseX,mouseY])){
     //     console.log("outside")

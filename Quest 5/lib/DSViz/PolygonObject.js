@@ -44,13 +44,14 @@ export default class PolygonObject extends SceneObject {
     this._device.queue.writeBuffer( this._mousePosBuffer, 0, this._mousePos);
 
     if (this._stageBuffer.mapState != "unmapped") return this._outside; // use the last result while waiting for the stage buffer to be ready
-    this.device.encoder.copyBufferToBuffer(this._windingNumberBuffer, 0, this._stageBuffer, 0, 8); // this line use the command encoder to copy from the GPU storage buffer named this._windingNumberBuffer to the stage buffer this._stageBuffer with offset 0 and total 8 bytes
-    this._device.queue.submit([this.device.encoder.finish()]); // submit all GPU commands, now it will include the command to copy the results back to CPU
+    let encoder = this._device.createCommandEncoder();
+      encoder.copyBufferToBuffer(this._windingNumberBuffer, 0, this._stageBuffer, 0, 4); // this line use the command encoder to copy from the GPU storage buffer named this._windingNumberBuffer to the stage buffer this._stageBuffer with offset 0 and total 8 bytes
+    this._device.queue.submit([ encoder.finish()]); // submit all GPU commands, now it will include the command to copy the results back to CPU
     await this._stageBuffer.mapAsync(GPUMapMode.READ); // this line map the buffer to read the result
-    const windingNumber = new Int32Array(this._stageBuffer.getMappedRange()); // this line cast the result back to javascritp array
-    this._isOutside = windingNumber[0] == 0 || windingNumber[1] == 0; // this is how we use the winding number to check if it is outside
+    const windingNumber = new Int32Array(this._stageBuffer.getMappedRange())[0]; // this line cast the result back to javascritp array
+    this._isOutside = windingNumber == 0; // this is how we use the winding number to check if it is outside
     this._stageBuffer.unmap(); // this asks the GPU to unmap it for later use
-    
+    console.log(windingNumber)
     if (this._isOutside){
       console.log("outside")
     }
@@ -81,7 +82,10 @@ export default class PolygonObject extends SceneObject {
       })
     ];
     // Copy from CPU to GPU
-    new Float32Array(this._vertexBuffer[this.step%2].getMappedRange()).set(this._vertices);
+    // new Float32Array(this._vertexBuffer[this.step%2].getMappedRange()).set(this._vertices);
+    new Float32Array(this._vertexBuffer[0].getMappedRange()).set(this._vertices);
+    new Float32Array(this._vertexBuffer[1].getMappedRange()).set(this._vertices);
+
     this._vertexBuffer[0].unmap();
     this._vertexBuffer[1].unmap();
     // Defne vertex buffer layout - how the GPU should read the buffer
@@ -103,13 +107,13 @@ export default class PolygonObject extends SceneObject {
 
     // create a stage buffer to read from the GPU to CPU
     this._stageBuffer = this._device.createBuffer({
-      size: 8,
+      size: 4,
       usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
     });
 
     this._windingNumberBuffer= this._device.createBuffer({
-      size: 8,
-      usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+      size: 4,
+      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
     });
   }
   
@@ -126,18 +130,23 @@ export default class PolygonObject extends SceneObject {
       entries: [
         {
           binding: 0,
-          visibility: GPUShaderStage.VERTEX | GPUShaderStage.COMPUTE, // VERTEX IS LIKE READING
+          visibility: GPUShaderStage.VERTEX | GPUShaderStage.COMPUTE, 
           buffer: {type:'read-only-storage'}
         },
         {
           binding: 1,
-          visibility: GPUShaderStage.COMPUTE, // VERTEX IS LIKE READING
+          visibility: GPUShaderStage.COMPUTE, 
           buffer: {type:'storage'}
         },
         {
           binding: 2,
-          visibility: GPUShaderStage.COMPUTE, // COMPUTE IS LIKE WRITING
+          visibility: GPUShaderStage.COMPUTE,
           buffer: {}
+        },
+        {
+          binding: 3,
+          visibility: GPUShaderStage.COMPUTE, 
+          buffer: {type:'storage'}
         }
       ]
     }); 
@@ -184,26 +193,34 @@ export default class PolygonObject extends SceneObject {
         {
           binding: 2,
           resource: { buffer:this._mousePosBuffer }
+        },
+        {
+          binding: 3,
+          resource: { buffer:this._windingNumberBuffer }
         }
       ],
     }),
       this._device.createBindGroup({
         label: "Render Bind Group 1" + this.getName(),
         layout: this._renderPipeline.getBindGroupLayout(0),
-      entries: [
-        {
-          binding: 0,
-          resource: { buffer: this._vertexBuffer[1] }
-        },
-        {
-          binding: 1,
-          resource: { buffer:this._vertexBuffer[0] }
-        },
-        {
-          binding: 2,
-          resource: { buffer:this._mousePosBuffer }
-        }
-      ],
+        entries: [
+          {
+            binding: 0,
+            resource: { buffer: this._vertexBuffer[1] }
+          },
+          {
+            binding: 1,
+            resource: { buffer:this._vertexBuffer[0] }
+          },
+          {
+            binding: 2,
+            resource: { buffer:this._mousePosBuffer }
+          },
+          {
+            binding: 3,
+            resource: { buffer:this._windingNumberBuffer}
+          }
+        ],
       })
     ];
   }
@@ -213,7 +230,7 @@ export default class PolygonObject extends SceneObject {
     pass.setPipeline(this._renderPipeline);
     pass.setBindGroup(0,this._bindGroup[this.step%2]);
     // pass.setVertexBuffer(0, this._vertexBuffer); // bind the vertex buffer
-    pass.draw(2, this._numV-1); 
+    pass.draw(this._numV); 
             // draw all vertices
   }
   
@@ -231,7 +248,9 @@ export default class PolygonObject extends SceneObject {
   compute(pass) { 
     pass.setPipeline(this._computePipeline);
     pass.setBindGroup(0, this._bindGroup[this.step%2]);
-    pass.dispatchWorkgroups(Math.ceil(this._vertices.length/2));
+    pass.dispatchWorkgroups(65535,1);
+    this._device.queue.writeBuffer(this._windingNumberBuffer, 0, new Int32Array([0]));
+    // Buffer, Binding Group it is a part of, new Value
     this.step++;
   }
 }
