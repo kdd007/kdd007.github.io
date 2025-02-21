@@ -104,8 +104,6 @@ export default class ParticleSystemObject extends SceneObject {
     });
     
     
-    
-    
     // create the pipeline layout using the bind group layout
     this._pipelineLayout = this._device.createPipelineLayout({
       label: "Particles Pipeline Layout",
