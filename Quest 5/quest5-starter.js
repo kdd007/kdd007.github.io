@@ -38,15 +38,16 @@ async function init() {
   // Create a 2d animated renderer
   const renderer = new Renderer(canvasTag);
   await renderer.init();
-  const polygon = new PolygonObject(renderer._device, renderer._canvasFormat, '/assets/human.polygon');
+  const polygon = new PolygonObject(renderer._device, renderer._canvasFormat, '/assets/dense.polygon');
   await renderer.appendSceneObject(polygon);
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
 
   canvasTag.addEventListener('mousemove', async (e) => {
     var mouseX = 2*(e.offsetX/window.innerWidth)-1;
-    var mouseY = 2*(e.offsetY/window.innerHeight)-1;
-    await polygon.updateMousePos(mouseX,mouseY);
+    var mouseY = 2*(-e.offsetY/window.innerHeight)+1;
+    // await polygon.updateMousePos(mouseX,mouseY);
+    await polygon.updateMousePos(0.3613445378151261,0.10787878787878791);
     // for (let i=0; i < (polygon._vertices.length-2); i+=2) {
     //   if (!polygon.printIsInside(polygon._vertices.slice(i,i+2),polygon._vertices.slice(i+2,i+4),[mouseX,mouseY])){
     //     console.log("outside")

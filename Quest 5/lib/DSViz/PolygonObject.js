@@ -51,7 +51,7 @@ export default class PolygonObject extends SceneObject {
     const windingNumber = new Int32Array(this._stageBuffer.getMappedRange())[0]; // this line cast the result back to javascritp array
     this._isOutside = windingNumber == 0; // this is how we use the winding number to check if it is outside
     this._stageBuffer.unmap(); // this asks the GPU to unmap it for later use
-    console.log(windingNumber)
+    // console.log(windingNumber)
     if (this._isOutside){
       console.log("outside")
     }
@@ -248,7 +248,8 @@ export default class PolygonObject extends SceneObject {
   compute(pass) { 
     pass.setPipeline(this._computePipeline);
     pass.setBindGroup(0, this._bindGroup[this.step%2]);
-    pass.dispatchWorkgroups(65535,1);
+    // pass.dispatchWorkgroups(65535,1);
+    pass.dispatchWorkgroups(Math.ceil((this._numV-1))/256);
     this._device.queue.writeBuffer(this._windingNumberBuffer, 0, new Int32Array([0]));
     // Buffer, Binding Group it is a part of, new Value
     this.step++;
