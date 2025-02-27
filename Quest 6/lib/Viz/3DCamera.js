@@ -48,50 +48,48 @@ export default class Camera {
   }
 
   moveX(d) {
-    // TODO: write code to move the camera in the x-direction
-    // Suggest to use PGA3D
-    
-    
+    let rot_d = [...PGA3D.applyMotorToPoint([d, 0, 0], PGA3D.extractRotor(this._pose))]
+    let dt = PGA3D.createTranslator(rot_d[0], rot_d[1], rot_d[2]);
+    let newpose = PGA3D.geometricProduct(dt, this._pose)
     this.updatePose(newpose);
   }
-  
+
   moveY(d) {
-    // TODO: write code to move the camera in the y-direction
-    // Suggest to use PGA3D
-    
-    
+    let rot_d = [...PGA3D.applyMotorToPoint([0, d, 0], PGA3D.extractRotor(this._pose))]
+    let dt = PGA3D.createTranslator(rot_d[0], rot_d[1], rot_d[2]);
+    let newpose = PGA3D.geometricProduct(dt, this._pose);
     this.updatePose(newpose);
   }
-  
+
   moveZ(d) {
-    // TODO: write code to move the camera in the z-direction
-    // Suggest to use PGA3D
-    
-    
+    let rot_d = [...PGA3D.applyMotorToPoint([0, 0, d], PGA3D.extractRotor(this._pose))]
+    let dt = PGA3D.createTranslator(rot_d[0], rot_d[1], rot_d[2]);
+    let newpose = PGA3D.geometricProduct(dt, this._pose);
     this.updatePose(newpose);
   }
+
   
   rotateX(d) {
     // TODO: write code to rotate the camera along its x-axis
     // Suggest to use PGA3D
-    
-    
-    this.updatePose(newpose);
+    let dr = PGA3D.createRotor(d * Math.PI / 90, 1, 0, 0, 0, 0, 0);
+    let newpose = PGA3D.geometricProduct(this._pose, dr);
+    this.updatePose(newpose);    
   }
   
   rotateY(d) {
     // TODO: write code to rotate the camera along its y-axis
     // Suggest to use PGA3D
-    
-    
-    this.updatePose(newpose);
+    let dr = PGA3D.createRotor(d * Math.PI / 90, 0, 1, 0, 0, 0, 0);
+    let newpose = PGA3D.geometricProduct(this._pose, dr);
+    this.updatePose(newpose);    
   }
   
   rotateZ(d) {
     // TODO: write code to rotate the camera along its z-axis
     // Suggest to use PGA3D
-    
-    
-    this.updatePose(newpose);
+    let dr = PGA3D.createRotor(d * Math.PI / 90, 0, 0, 1, 0, 0, 0);
+    let newpose = PGA3D.geometricProduct(this._pose, dr);
+    this.updatePose(newpose);   
   }
 }

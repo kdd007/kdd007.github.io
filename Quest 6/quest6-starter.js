@@ -47,7 +47,62 @@ async function init() {
   
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
-  
+  var movespeed = 0.05;
+  var rotateSpeed=0.5;
+  window.addEventListener("keydown", (e) => {
+    switch (e.key) {
+      case 'w': case 'W':
+        camera.moveZ(movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 's': case 'S':   
+        camera.moveZ(-movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'a': case 'A':  
+        camera.moveX(-movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'd': case 'D': 
+        camera.moveX(movespeed);       
+        tracerObj.updateCameraPose();
+        break;
+      case ' ':  
+        camera.moveY(-movespeed);       
+        tracerObj.updateCameraPose();
+        break;
+      case 'Shift':
+        camera.moveY(movespeed);       
+        tracerObj.updateCameraPose();
+        break;
+
+      case 'e': case 'E':
+        camera.rotateZ(rotateSpeed);       
+        tracerObj.updateCameraPose();
+        break;
+      case 'q': case 'Q':
+        camera.rotateZ(-rotateSpeed);       
+        tracerObj.updateCameraPose();
+        break;
+
+      case 'ArrowRight':
+        camera.rotateY(rotateSpeed);       
+        tracerObj.updateCameraPose();
+        break;
+      case 'ArrowLeft':
+        camera.rotateY(-rotateSpeed);       
+        tracerObj.updateCameraPose();
+        break;
+      case 'ArrowUp':
+        camera.rotateX(rotateSpeed);       
+        tracerObj.updateCameraPose();
+        break;
+      case 'ArrowDown':
+        camera.rotateX(-rotateSpeed);       
+        tracerObj.updateCameraPose();
+        break;
+    }
+  });
   // run animation at 60 fps
   var frameCnt = 0;
   var tgtFPS = 60;
