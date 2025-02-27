@@ -45,11 +45,11 @@ export default class PolygonObject extends SceneObject {
 
     if (this._stageBuffer.mapState != "unmapped") return this._outside; // use the last result while waiting for the stage buffer to be ready
     let encoder = this._device.createCommandEncoder();
-      encoder.copyBufferToBuffer(this._windingNumberBuffer, 0, this._stageBuffer, 0, 4); // this line use the command encoder to copy from the GPU storage buffer named this._windingNumberBuffer to the stage buffer this._stageBuffer with offset 0 and total 8 bytes
+      encoder.copyBufferToBuffer(this._windingNumberBuffer, 0, this._stageBuffer, 0, 8); // this line use the command encoder to copy from the GPU storage buffer named this._windingNumberBuffer to the stage buffer this._stageBuffer with offset 0 and total 8 bytes
     this._device.queue.submit([ encoder.finish()]); // submit all GPU commands, now it will include the command to copy the results back to CPU
     await this._stageBuffer.mapAsync(GPUMapMode.READ); // this line map the buffer to read the result
-    const windingNumber = new Int32Array(this._stageBuffer.getMappedRange())[0]; // this line cast the result back to javascritp array
-    this._isOutside = windingNumber == 0; // this is how we use the winding number to check if it is outside
+    const windingNumber = new Int32Array(this._stageBuffer.getMappedRange()); // this line cast the result back to javascritp array
+    this._isOutside = windingNumber[0] == 0 || windingNumber[1] == 0; // this is how we use the winding number to check if it is outside
     this._stageBuffer.unmap(); // this asks the GPU to unmap it for later use
     // console.log(windingNumber)
     if (this._isOutside){
@@ -107,12 +107,12 @@ export default class PolygonObject extends SceneObject {
 
     // create a stage buffer to read from the GPU to CPU
     this._stageBuffer = this._device.createBuffer({
-      size: 4,
+      size: 8,
       usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
     });
 
     this._windingNumberBuffer= this._device.createBuffer({
-      size: 4,
+      size: 8,
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
     });
   }

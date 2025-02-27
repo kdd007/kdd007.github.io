@@ -29,7 +29,7 @@ struct Vert{
 @group(0) @binding(1) var<storage, read_write> vertOut: array<Vert>; // Group #, Binding #, var<BufferType>, varName: Type you take in
 @group(0) @binding(2) var<uniform> mousePos: Vert; // varName: Type
 
-@group(0) @binding(3) var<storage, read_write> windingNum: atomic<u32>; // varName: Type
+@group(0) @binding(3) var<storage, read_write> windingNum: array<atomic<u32>,2>; // varName: Type
 
 @vertex // this compute the scene coordinate of each input vertex
 fn vertexMain(@builtin(instance_index) idx: u32, @builtin(vertex_index) vIdx: u32) -> @builtin(position) vec4f {
@@ -52,15 +52,23 @@ fn computeMain(@builtin(global_invocation_id) global_id: vec3u) {
     let rightSide=  max(vertIn[idxA].p.x, vertIn[idxB].p.x);
 
     if (leftSide< mousePos.p.x && rightSide > mousePos.p.x) {
-      if (isInside(vertIn[idxA].p,vertIn[idxB].p,mousePos.p)){
-        atomicAdd(&windingNum,1);
+      if (mousePos.p.y < max(vertIn[idxA].p.y,vertIn[idxB].p.y)){
+        if (isInside(vertIn[idxA].p,vertIn[idxB].p,mousePos.p)){
+          atomicAdd(&windingNum[0],1);
+        }
+        else{
+          atomicSub(&windingNum[0],1);
+        }
       }
       else{
-        atomicSub(&windingNum,1);
+          if (isInside(vertIn[idxA].p,vertIn[idxB].p,mousePos.p)){
+            atomicAdd(&windingNum[1],1);
+          }
+          else{
+            atomicSub(&windingNum[1],1);
+          }
       }
     }
-    // for (var i: u32 = 0; i < arrayLength(&vertIn); i+=1) {
-    // }
     vertOut[idxA]= vertIn[idxA];
   }
 }
