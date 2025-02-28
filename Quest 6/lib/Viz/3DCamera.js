@@ -24,11 +24,12 @@
 import PGA3D from '/lib/Math/PGA3D.js'
  
 export default class Camera {
-  constructor(width, height) {
+  constructor(width, height, _isProjective) {
     this._pose = new Float32Array(Array(16).fill(0));
     this._pose[0] = 1;
     this._focal = new Float32Array(Array(2).fill(1));
     this._resolutions = new Float32Array([width, height]);
+    this._isProjective= _isProjective;
   }
   
   resetPose() {
@@ -91,5 +92,9 @@ export default class Camera {
     let dr = PGA3D.createRotor(d * Math.PI / 90, 0, 0, 1, 0, 0, 0);
     let newpose = PGA3D.geometricProduct(this._pose, dr);
     this.updatePose(newpose);   
+  }
+
+  toggleProjective(){
+    this._isProjective= !this._isProjective;
   }
 }

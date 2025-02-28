@@ -40,7 +40,7 @@ async function init() {
   const tracer = new RayTracer(canvasTag);
   await tracer.init();
   // Create a 3D Camera
-  var camera = new Camera();
+  var camera = new Camera(0, 0, false);
   // Create an object to trace
   var tracerObj = new RayTracingBoxObject(tracer._device, tracer._canvasFormat, camera);
   await tracer.setTracerObject(tracerObj);
@@ -100,6 +100,10 @@ async function init() {
       case 'ArrowDown':
         camera.rotateX(-rotateSpeed);       
         tracerObj.updateCameraPose();
+        break;
+      case 'T': case 't':
+        console.log('xd')
+        camera.toggleProjective();
         break;
     }
   });
