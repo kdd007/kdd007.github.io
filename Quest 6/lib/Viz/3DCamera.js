@@ -24,10 +24,10 @@
 import PGA3D from '/lib/Math/PGA3D.js'
  
 export default class Camera {
-  constructor(width, height, _isProjective) {
+  constructor(width, height, _isProjective, focal) {
     this._pose = new Float32Array(Array(16).fill(0));
     this._pose[0] = 1;
-    this._focal = new Float32Array(Array(2).fill(1));
+    this._focal = new Float32Array(Array(2).fill(focal));
     this._resolutions = new Float32Array([width, height]);
     this._isProjective= _isProjective;
   }
@@ -69,11 +69,11 @@ export default class Camera {
     this.updatePose(newpose);
   }
 
-  
   rotateX(d) {
     // TODO: write code to rotate the camera along its x-axis
     // Suggest to use PGA3D
-    let dr = PGA3D.createRotor(d * Math.PI / 90, 1, 0, 0, 0, 0, 0);
+    let rot_d = [...PGA3D.applyMotorToDir([1, 0, 0], PGA3D.extractRotor(this._pose))]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
     let newpose = PGA3D.geometricProduct(this._pose, dr);
     this.updatePose(newpose);    
   }
@@ -81,7 +81,8 @@ export default class Camera {
   rotateY(d) {
     // TODO: write code to rotate the camera along its y-axis
     // Suggest to use PGA3D
-    let dr = PGA3D.createRotor(d * Math.PI / 90, 0, 1, 0, 0, 0, 0);
+    let rot_d = [...PGA3D.applyMotorToDir([0, 1, 0], PGA3D.extractRotor(this._pose))]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
     let newpose = PGA3D.geometricProduct(this._pose, dr);
     this.updatePose(newpose);    
   }
@@ -89,7 +90,8 @@ export default class Camera {
   rotateZ(d) {
     // TODO: write code to rotate the camera along its z-axis
     // Suggest to use PGA3D
-    let dr = PGA3D.createRotor(d * Math.PI / 90, 0, 0, 1, 0, 0, 0);
+    let rot_d = [...PGA3D.applyMotorToDir([0, 0, 1], PGA3D.extractRotor(this._pose))]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
     let newpose = PGA3D.geometricProduct(this._pose, dr);
     this.updatePose(newpose);   
   }
