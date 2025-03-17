@@ -41,8 +41,8 @@ struct VertexOutput {
 @group(0) @binding(0) var<storage> particlesIn: array<Particle>;
 @group(0) @binding(1) var<storage, read_write> particlesOut: array<Particle>; // a uniform buffer describing the object pose
 
-@group(0) @binding(2) var inTexture: texture_2d<f32>;
-@group(0) @binding(3) var inSampler: sampler;
+// @group(0) @binding(2) var inTexture: texture_2d<f32>;
+// @group(0) @binding(3) var inSampler: sampler;
 
 
 @vertex
@@ -55,20 +55,20 @@ fn vertexMain(@builtin(instance_index) idx: u32, @builtin(vertex_index) vIdx: u3
   let x = cos(theta) * size;
   let y = sin(theta) * size;
 
-  var pos = array<vec2f, 6>(
-  vec2f(-1, -1), vec2f(1, -1), vec2f(-1, 1),
-  vec2f(1, -1), vec2f(1, 1), vec2f(-1, 1)
-  );
-  var texCoords = array<vec2f, 6>(
-    vec2f(0, 1), vec2f(1, 1), vec2f(0, 0),
-    vec2f(1, 1), vec2f(1, 0), vec2f(0, 0)
-  );
-  var out: VertexOutput;
-  out.pos = vec4f(pos[vIdx], 0, 1);
-  out.texCoords = texCoords[vIdx];
-  return out;
+  // var pos = array<vec2f, 6>(
+  // vec2f(-1, -1), vec2f(1, -1), vec2f(-1, 1),
+  // vec2f(1, -1), vec2f(1, 1), vec2f(-1, 1)
+  // );
+  // var texCoords = array<vec2f, 6>(
+  //   vec2f(0, 1), vec2f(1, 1), vec2f(0, 0),
+  //   vec2f(1, 1), vec2f(1, 0), vec2f(0, 0)
+  // );
+  // var out: VertexOutput;
+  // out.pos = vec4f(pos[vIdx], 0, 1);
+  // out.texCoords = texCoords[vIdx];
+  // return out;
 
-  // return vec4f(vec2f(x + particle[0], y + particle[1]), 0, 1);
+  return vec4f(vec2f(x + particle[0], y + particle[1]), 0, 1);
 
 
   // var dist = length(particle - <YOUR BASE POSITION>) * 1024; // address this for your flame height
@@ -84,13 +84,13 @@ fn vertexMain(@builtin(instance_index) idx: u32, @builtin(vertex_index) vIdx: u3
 }
 
 @fragment
-// fn fragmentMain() -> @location(0) vec4f {
-//   // return vec4f(238.f/255, 118.f/255, 35.f/255, 1); // (R, G, B, A)
-//   return vec4f(255.f/255, 255.f/255, 255.f/255, 1); // (R, G, B, A)
-// }
-fn fragmentMain(@location(0) texCoords: vec2f) -> @location(0) vec4f {
-  return textureSample(inTexture, inSampler, texCoords);
+fn fragmentMain() -> @location(0) vec4f {
+  // return vec4f(238.f/255, 118.f/255, 35.f/255, 1); // (R, G, B, A)
+  return vec4f(255.f/255, 255.f/255, 255.f/255, 1); // (R, G, B, A)
 }
+// fn fragmentMain(@location(0) texCoords: vec2f) -> @location(0) vec4f {
+//   return textureSample(inTexture, inSampler, texCoords);
+// }
 
 @compute @workgroup_size(256)
 fn computeMain(@builtin(global_invocation_id) global_id: vec3u) {
