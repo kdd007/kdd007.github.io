@@ -28,6 +28,9 @@ export default class ParticleSystemObject extends SceneObject {
     super(device, canvasFormat);
     this._numParticles = numParticles;
     this._step = 0;
+    this.toggleWind=false;
+    this.isSnowing=false;
+    this.toggleGrav=false;
   }
   
   async createGeometry() { 
@@ -53,7 +56,12 @@ export default class ParticleSystemObject extends SceneObject {
     ];
     
     // calling the resetParticles function to reset the particle buffers
-    this.resetParticles();
+    // if (this.isSnowing){
+      this.resetParticles();
+    // }
+    // else{
+    //   this.resetParticlesRain();
+    // }
   }
     
   resetParticles() {
@@ -67,6 +75,7 @@ export default class ParticleSystemObject extends SceneObject {
       // TODO 6: update the velocity
       // this._particles[6 * i + 4] = (Math.random() * 2 - 1);
       // this._particles[6 * i + 5] = (Math.random() * 2 - 1);
+      // this._particles[varNum * i + 4] = (Math.random() * 0.01)-0.005;
       this._particles[varNum * i + 4] = (Math.random() * 0.01)-0.005;
       this._particles[varNum * i + 5] = (Math.random() * 0.01)-0.005;
       this._particles[varNum * i + 6] = this._particles[varNum * i + 4]; 
@@ -78,6 +87,27 @@ export default class ParticleSystemObject extends SceneObject {
     this._step = 0;
     this._device.queue.writeBuffer(this._particleBuffers[this._step % 2], 0, this._particles);
   }
+
+  // resetParticlesRain() {
+  //   for (let i = 0; i < this._numParticles; ++i) {
+  //     // random position between [-1, 1] x [-1, 1]
+  //     this._particles[varNum * i + 0] = (Math.random() * 2 - 1); // [-1, 1] 
+  //     this._particles[varNum * i + 1] = (Math.random() * 2 - 1);
+  //     // store the initial positions
+  //     this._particles[varNum * i + 2] = this._particles[varNum * i + 0];
+  //     this._particles[varNum * i + 3] = this._particles[varNum * i + 1];
+  //     // TODO 6: update the velocity
+  //     this._particles[varNum * i + 4] = 0;
+  //     this._particles[varNum * i + 5] = 0;
+  //     this._particles[varNum * i + 6] = this._particles[varNum * i + 4]; 
+  //     this._particles[varNum * i + 7] = this._particles[varNum * i + 5];
+  //     this._particles[varNum * i + 8] = (Math.random()*180)+180; 
+  //     this._particles[varNum * i + 9] = this._particles[varNum * i + 8];
+  //   }
+  //     // Copy from CPU to GPU
+  //     this._step = 0;
+  //     this._device.queue.writeBuffer(this._particleBuffers[this._step % 2], 0, this._particles);
+  // }
   
   updateGeometry() { }
   
@@ -153,6 +183,7 @@ export default class ParticleSystemObject extends SceneObject {
         typology: 'line-strip'
       }
     }); 
+
     // Create bind group to bind the particle buffers
     this._bindGroups = [
       this._device.createBindGroup({
@@ -183,6 +214,57 @@ export default class ParticleSystemObject extends SceneObject {
       })
     ];
   }
+
+  // async createParticlePipeline2() {
+  //   this._particlePipeline = this._device.createRenderPipeline({
+  //     label: "Particles Render Pipeline " + this.getName(),
+  //     layout: this._pipelineLayout,
+  //     vertex: {
+  //       module: this._shaderModule, 
+  //       entryPoint: "vertexMain",
+  //     },
+  //     fragment: {
+  //       module: this._shaderModule,
+  //       entryPoint: "fragmentRain",
+  //       targets: [{
+  //         format: this._canvasFormat
+  //       }]
+  //     },
+  //     primitives: {
+  //       typology: 'line-strip'
+  //     }
+  //   }); 
+
+  //   // Create bind group to bind the particle buffers
+  //   this._bindGroups = [
+  //     this._device.createBindGroup({
+  //       layout: this._particlePipeline.getBindGroupLayout(0),
+  //       entries: [
+  //         {
+  //           binding: 0,
+  //           resource: { buffer: this._particleBuffers[0] }
+  //         },
+  //         {
+  //           binding: 1,
+  //           resource: { buffer: this._particleBuffers[1] }
+  //         }
+  //       ],
+  //     }),
+  //     this._device.createBindGroup({
+  //       layout: this._particlePipeline.getBindGroupLayout(0),
+  //       entries: [
+  //         {
+  //           binding: 0,
+  //           resource: { buffer: this._particleBuffers[1] }
+  //         },
+  //         {
+  //           binding: 1,
+  //           resource: { buffer: this._particleBuffers[0] }
+  //         }
+  //       ],
+  //     })
+  //   ];
+  // }
   
   render(pass) { 
     pass.setPipeline(this._particlePipeline); 
@@ -191,7 +273,7 @@ export default class ParticleSystemObject extends SceneObject {
   }
   
   async createComputePipeline() { 
-    this._computePipeline = this._device.createComputePipeline({
+    this._computePipeline1 = this._device.createComputePipeline({
       label: "Particles Compute Pipeline " + this.getName(),
       layout: this._pipelineLayout,
       compute: {
@@ -199,12 +281,71 @@ export default class ParticleSystemObject extends SceneObject {
         entryPoint: "computeMain",
       }
     });
+    this._computePipeline2 = this._device.createComputePipeline({
+      label: "Particles Compute Pipeline " + this.getName(),
+      layout: this._pipelineLayout,
+      compute: {
+        module: this._shaderModule,
+        entryPoint: "addWind",
+      }
+    });
+    this._computePipeline3 = this._device.createComputePipeline({
+      label: "Particles Compute Pipeline " + this.getName(),
+      layout: this._pipelineLayout,
+      compute: {
+        module: this._shaderModule,
+        entryPoint: "reverseGravity",
+      }
+    });
   }
   
   compute(pass) { 
-    pass.setPipeline(this._computePipeline);
+    if (!this.toggleWind){pass.setPipeline(this._computePipeline1);}
+    else {pass.setPipeline(this._computePipeline2);}
+    if (this.toggleGrav){
+      pass.setPipeline(this._computePipeline3);
+      this.toggleWind=false;
+    }
     pass.setBindGroup(0, this._bindGroups[this._step % 2]);
     pass.dispatchWorkgroups(Math.ceil(this._numParticles / 256));
     ++this._step
+  }
+
+  toggleWindVal(){
+    this.toggleWind=!this.toggleWind;
+  }
+
+  toggleGravVal(){
+    this.toggleGrav=!this.toggleGrav;
+  }
+
+  async increaseNumParticles(){
+    if (this._numParticles < 10000){
+      this._numParticles+=1;
+      await this.createParticleGeometry();
+    }
+    else{
+      this._numParticles=1;
+      await this.createParticleGeometry();
+    }
+  }
+  async decreaseNumParticles(){
+    if (this._numParticles > 1){
+      this._numParticles-=1;
+      await this.createParticleGeometry();
+    }
+    else{
+      this._numParticles=10000;
+      await this.createParticleGeometry();  
+    }
+  }
+
+  async setParticleNum(f){
+    this._numParticles=f;
+    await this.createParticleGeometry();
+  }
+
+  toggleSnow(){
+    this.toggleSnow=!this.toggleSnow;
   }
 }

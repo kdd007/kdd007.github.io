@@ -88,6 +88,11 @@ fn fragmentMain() -> @location(0) vec4f {
   // return vec4f(238.f/255, 118.f/255, 35.f/255, 1); // (R, G, B, A)
   return vec4f(255.f/255, 255.f/255, 255.f/255, 1); // (R, G, B, A)
 }
+
+// fn fragmentRain() -> @location(0) vec4f {
+//   // return vec4f(238.f/255, 118.f/255, 35.f/255, 1); // (R, G, B, A)
+//   return vec4f(160.f/255, 210.f/255, 219.f/255, 1); // (R, G, B, A)
+// }
 // fn fragmentMain(@location(0) texCoords: vec2f) -> @location(0) vec4f {
 //   return textureSample(inTexture, inSampler, texCoords);
 // }
@@ -131,6 +136,87 @@ fn computeMain(@builtin(global_invocation_id) global_id: vec3u) {
     particlesOut[idx] = particle;
   };
 }
+
+@compute @workgroup_size(256)
+fn addWind(@builtin(global_invocation_id) global_id: vec3u) {
+  // TODO 6: Revise the compute shader to update the particles using the velocity
+  let idx = global_id.x;
+  
+  if (idx < arrayLength(&particlesIn)) {
+  //  particlesOut[idx] = particlesIn[idx];
+  var particle = particlesIn[idx];
+    particle.v=particle.v + generateWind(particle.p.y, 1,0.00005);
+    // Update the position using the velocity: newPos = oldPos + velocity
+    particle.p = particle.p + particle.v;
+    particle.p.y=particle.p.y + (-9.8/1000);
+    particle.l -=1; 
+    
+    // TOOD 7: Add boundary checking and respawn the particle when it is offscreen
+    // if (particle.p.x < -1.0 || particle.p.x > 1.0 || particle.p.y < -1.0 || particle.p.y > 1.0|| particle.l<=0) {
+    //   particle.p = particle.ip;
+    //   particle.v= particle.iv;
+    //   particle.l= particle.il;
+    // }
+    if (particle.p.x < -1.0 || particle.p.x > 1.0) {
+      particle.p.x = -1*particle.p.x;
+      particle.v= particle.iv;
+      particle.l= particle.il;
+    }
+    else if (particle.p.y < -1.0 || particle.p.y > 1.0) {
+      particle.p.y = -1*particle.p.y;
+      particle.v= particle.iv;
+      particle.l= particle.il;
+    }
+    else if (particle.l<=0){
+      particle.p = particle.ip;
+      particle.v= particle.iv;
+      particle.l= particle.il;
+    }
+    // Store the updated particle
+    particlesOut[idx] = particle;
+  };
+}
+
+@compute @workgroup_size(256)
+fn reverseGravity(@builtin(global_invocation_id) global_id: vec3u) {
+  // TODO 6: Revise the compute shader to update the particles using the velocity
+  let idx = global_id.x;
+  
+  if (idx < arrayLength(&particlesIn)) {
+  //  particlesOut[idx] = particlesIn[idx];
+  var particle = particlesIn[idx];
+    particle.v=particle.v + generateWind(particle.p.y, 1,0.0000);
+    // Update the position using the velocity: newPos = oldPos + velocity
+    particle.p = particle.p + particle.v;
+    particle.p.y=particle.p.y + (9.8/1000);
+    particle.l -=1; 
+    
+    // TOOD 7: Add boundary checking and respawn the particle when it is offscreen
+    // if (particle.p.x < -1.0 || particle.p.x > 1.0 || particle.p.y < -1.0 || particle.p.y > 1.0|| particle.l<=0) {
+    //   particle.p = particle.ip;
+    //   particle.v= particle.iv;
+    //   particle.l= particle.il;
+    // }
+    if (particle.p.x < -1.0 || particle.p.x > 1.0) {
+      particle.p.x = -1*particle.p.x;
+      particle.v= particle.iv;
+      particle.l= particle.il;
+    }
+    else if (particle.p.y < -1.0 || particle.p.y > 1.0) {
+      particle.p.y = -1*particle.p.y;
+      particle.v= particle.iv;
+      particle.l= particle.il;
+    }
+    else if (particle.l<=0){
+      particle.p = particle.ip;
+      particle.v= particle.iv;
+      particle.l= particle.il;
+    }
+    // Store the updated particle
+    particlesOut[idx] = particle;
+  };
+}
+
   fn generateWind(time: f32, frequency: f32, strength: f32) -> vec2f {
       let angle = sin(time * frequency) * 3.14159265;
       return vec2f(cos(angle), sin(angle)) * strength;

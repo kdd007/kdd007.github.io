@@ -40,9 +40,30 @@ async function init() {
   await renderer.init();
   const particles = new ParticleSystemObject(renderer._device, renderer._canvasFormat,10000);
   await renderer.appendSceneObject(particles);
+  await particles.setParticleNum(1);
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
-  
+  var instructionText=new StandardTextObject("Particle Number: " + "(Max:10000)" +"\nt/T: Toggle Wind\ng/G: Reverse Gravity\nn/N:Add a Particle\nm/M:Delete a Particle");
+  fpsText._textCanvas.style.left="1460px"
+  window.addEventListener("keydown", async (e) => {
+    switch (e.key) {
+      case 't': case 'T':
+        particles.toggleWindVal();
+        break;
+      case 's': case 'S':
+        particles.toggleSnow();
+        break;
+      case 'n': case 'N':
+        await particles.increaseNumParticles();
+        break;
+      case 'm': case 'M':
+        await particles.decreaseNumParticles();
+        break;
+      case 'g': case 'G':
+        await particles.toggleGravVal();
+        break;
+      }
+    });
   // run animation at 60 fps
   var frameCnt = 0;
   var tgtFPS = 60;
@@ -62,6 +83,7 @@ async function init() {
   renderFrame();
   setInterval(() => { 
     fpsText.updateText('fps: ' + frameCnt);
+    instructionText.updateText("Particle Number: " + particles._numParticles +"\nt/T: Toggle Wind\ng/G: Reverse Gravity\nn/N:Add a Particle\nm/M:Delete a Particle");
     frameCnt = 0;
   }, 1000); // call every 1000 ms
   return renderer;
@@ -75,3 +97,4 @@ init().then( ret => {
   document.body.appendChild(pTag);
   document.getElementById("renderCanvas").remove();
 });
+
