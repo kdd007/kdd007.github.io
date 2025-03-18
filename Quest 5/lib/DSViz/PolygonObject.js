@@ -21,8 +21,8 @@
  *                                anything the license permits.
  */
 
-import SceneObject from "/lib/DSViz/SceneObject.js"
-import Polygon from "/lib/DS/Polygon.js"
+import SceneObject from "/Quest 5/lib/DSViz/SceneObject.js"
+import Polygon from "/Quest 5/lib/DS/Polygon.js"
 
 export default class PolygonObject extends SceneObject {
   constructor(device, canvasFormat, filename) {
@@ -30,14 +30,22 @@ export default class PolygonObject extends SceneObject {
     this._fileName=filename;
     this.step=0;
     this._isOutside=false;
-    this._polygon = new Polygon(filename);
-    this._mousePos= new Float32Array(2)
+    this.currFileIdx=0;
+    this._polygon = new Polygon(this._fileName[this.currFileIdx]);
+    this._mousePos= new Float32Array(2);
   }
 
   printIsInside(v0,v1,p){
     return this._polygon.isInside(v0,v1,p);
   }
 
+  async cycleFile(){
+    this.currFileIdx=(this.currFileIdx+1)%this._fileName.length;
+    console.log(this._fileName[this.currFileIdx])
+    this._polygon = new Polygon(this._fileName[this.currFileIdx]);
+    await this.createGeometry();
+  }
+  //GPU Non Convex
   async updateMousePos(xPos,yPos){
     this._mousePos[0]=xPos;
     this._mousePos[1]=yPos;
@@ -51,12 +59,14 @@ export default class PolygonObject extends SceneObject {
     const windingNumber = new Int32Array(this._stageBuffer.getMappedRange()); // this line cast the result back to javascritp array
     this._isOutside = windingNumber[0] == 0 || windingNumber[1] == 0; // this is how we use the winding number to check if it is outside
     this._stageBuffer.unmap(); // this asks the GPU to unmap it for later use
-    // console.log(windingNumber)
+
     if (this._isOutside){
-      console.log("outside")
+      // console.log("outside")
+      return "Outside"
     }
     else{
-      console.log("inside")
+      // console.log("inside")
+      return "Inside"
     }
   }
 
@@ -119,7 +129,7 @@ export default class PolygonObject extends SceneObject {
   
   
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/polygon.wgsl");
+    let shaderCode = await this.loadShader("/Quest 5/shaders/polygon.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: "Shader " + this.getName(),
       code: shaderCode,

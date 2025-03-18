@@ -26,11 +26,12 @@
 // Chrome & Edge 113+ : Enable Vulkan, Default ANGLE Vulkan, Vulkan from ANGLE, Unsafe WebGPU Support, and WebGPU Developer Features (if exsits)
 // Firefox Nightly: sudo snap install firefox --channel=latext/edge or download from https://www.mozilla.org/en-US/firefox/channel/desktop/
 
-import Renderer from '/lib/Viz/2DRenderer.js'
-import PolygonObject from '/lib/DSViz/PolygonObject.js'
-import StandardTextObject from '/lib/DSViz/StandardTextObject.js'
+import Renderer from '/Quest 5/lib/Viz/2DRenderer.js'
+import PolygonObject from '/Quest 5/lib/DSViz/PolygonObject.js'
+import StandardTextObject from '/Quest 5/lib/DSViz/StandardTextObject.js'
 
 async function init() {
+  var filesList= ["/Quest 5/assets/dense.polygon","/Quest 5/assets/circle.polygon","/Quest 5/assets/box.polygon","/Quest 5/assets/human.polygon","/Quest 5/assets/star.polygon"];
   // Create a canvas tag
   const canvasTag = document.createElement('canvas');
   canvasTag.id = "renderCanvas";
@@ -38,48 +39,45 @@ async function init() {
   // Create a 2d animated renderer
   const renderer = new Renderer(canvasTag);
   await renderer.init();
-  const polygon = new PolygonObject(renderer._device, renderer._canvasFormat, '/assets/dense.polygon');
+  const polygon = new PolygonObject(renderer._device, renderer._canvasFormat, filesList);
   await renderer.appendSceneObject(polygon);
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
+  var instructionText=new StandardTextObject("Outside\nq/Q: Swap Polygon\nc/C: Change Collision Mode");
+  fpsText._textCanvas.style.left="1460px"
+
+  var currMethod=2;
 
   canvasTag.addEventListener('mousemove', async (e) => {
     var mouseX = 2*(e.offsetX/window.innerWidth)-1;
     var mouseY = 2*(-e.offsetY/window.innerHeight)+1;
-    await polygon.updateMousePos(mouseX,mouseY);
-    // await polygon.updateMousePos(0.3613445378151261,0.10787878787878791);
-    // for (let i=0; i < (polygon._vertices.length-2); i+=2) {
-    //   if (!polygon.printIsInside(polygon._vertices.slice(i,i+2),polygon._vertices.slice(i+2,i+4),[mouseX,mouseY])){
-    //     console.log("outside")
-    //     return
-    //   }
-    // }
-    // console.log("inside")
-
-    // let windingNum=0
-    // for (let i=0; i < (polygon._vertices.length-2); i+=2) {
-    //   let leftSide= Math.min(polygon._vertices[i], polygon._vertices[i+2])
-    //   let rightSide= Math.max(polygon._vertices[i], polygon._vertices[i+2])
-    //   if (leftSide< mouseX && rightSide > mouseX){
-    //     if (polygon.printIsInside(polygon._vertices.slice(i,i+2),polygon._vertices.slice(i+2,i+4),[mouseX,mouseY])){
-    //       windingNum++;
-    //       // console.log("outside")
-    //       // return
-    //     }
-    //     else{
-    //       windingNum--;
-    //     }
-    //   }
-    // }
-    // if (windingNum!=0){
-    //   console.log("inside")
-    // }
-    // else{
-    //   console.log("outside")
-    // }
     
+    if (currMethod==0) {
+      // where=calcGPUNonCon(mouseX,mouseY);
+      instructionText.updateText(await calcGPUNonCon(polygon, mouseX,mouseY)+"\nq/Q: Swap Polygon\nc/C: Change Collision Mode");
+    }
+    else if (currMethod==1){
+      // where=calcConvex(mouseX,mouseY);
+      instructionText.updateText(calcConvex(polygon,mouseX,mouseY)+"\nq/Q: Swap Polygon\nc/C: Change Collision Mode");
+      // console.log(calcConvex(polygon, mouseX,mouseY))
+    }
+    else {
+      instructionText.updateText(calcNonConvex(polygon,mouseX,mouseY)+"\nq/Q: Swap Polygon\nc/C: Change Collision Mode");
+      // console.log(calcNonConvex(polygon, mouseX,mouseY))
+    }
   });
-  
+  window.addEventListener("keydown", async (e) => {
+    switch (e.key) {
+      case 'q': case 'Q':
+        await renderer.removeSceneObject(polygon);
+        await polygon.cycleFile();
+        await renderer.appendSceneObject(polygon);
+        break;
+      case 'c': case "C":
+        currMethod=(currMethod+1)%3;
+        break;
+      }
+    });
   // run animation at 60 fps
   var frameCnt = 0;
   var tgtFPS = 60;
@@ -101,7 +99,55 @@ async function init() {
     fpsText.updateText('fps: ' + frameCnt);
     frameCnt = 0;
   }, 1000); // call every 1000 ms
+
+  // setInterval(() => {
+  //   instructionText.updateText(where);
+  // }, 100);
   return renderer;
+}
+
+function calcConvex(polygon, mouseX,mouseY){
+  //Convex
+  for (let i=0; i < (polygon._vertices.length-2); i+=2) {
+    if (!polygon.printIsInside(polygon._vertices.slice(i,i+2),polygon._vertices.slice(i+2,i+4),[mouseX,mouseY])){
+      return "Outside"
+    }
+  }
+  return "Inside"
+}
+
+function calcNonConvex(polygon, mouseX,mouseY){
+//Non Convex
+  var mouse=[mouseX,mouseY];
+  var pos_winding = 0;
+  var neg_winding = 0;
+
+
+  for (let i = 0; i < polygon._vertices.length / 2 - 1; ++i) {
+    if (Math.min(polygon._vertices[2 * i], polygon._vertices[2 * i + 2]) < mouseX && mouseX < Math.max(polygon._vertices[2 * i], polygon._vertices[2 * i + 2])) {
+      if (Math.min(polygon._vertices[2 * i + 1], polygon._vertices[2 * i + 3]) < mouseY) {
+        if (polygon._polygon.isInside(polygon._vertices.slice(2 * i, 2 * i + 2), polygon._vertices.slice(2 * i + 2, 2 * i + 4), mouse)) {
+          pos_winding++;
+        }
+        else {
+          pos_winding--;
+        }
+      }
+      else if (Math.max(polygon._vertices[2 * i + 1], polygon._vertices[2 * i + 3]) > mouseY) {
+        if (polygon._polygon.isInside(polygon._vertices.slice(2 * i, 2 * i + 2), polygon._vertices.slice(2 * i + 2, 2 * i + 4), mouse)) {
+          neg_winding++;
+        }
+        else {
+          neg_winding--;
+        }
+      }
+    }
+  }
+  return pos_winding == 0 || neg_winding == 0 ? "Outside" : "Inside"
+}
+
+async function calcGPUNonCon(polygon, mouseX,mouseY){
+  return await polygon.updateMousePos(mouseX,mouseY);
 }
 
 init().then( ret => {
