@@ -26,12 +26,12 @@
 // Chrome & Edge 113+ : Enable Vulkan, Default ANGLE Vulkan, Vulkan from ANGLE, Unsafe WebGPU Support, and WebGPU Developer Features (if exsits)
 // Firefox Nightly: sudo snap install firefox --channel=latext/edge or download from https://www.mozilla.org/en-US/firefox/channel/desktop/
 
-import Renderer from '/Quest 5/lib/Viz/2DRenderer.js'
-import PolygonObject from '/Quest 5/lib/DSViz/PolygonObject.js'
-import StandardTextObject from '/Quest 5/lib/DSViz/StandardTextObject.js'
+import Renderer from './lib/Viz/2DRenderer.js'
+import PolygonObject from './lib/DSViz/PolygonObject.js'
+import StandardTextObject from './lib/DSViz/StandardTextObject.js'
 
 async function init() {
-  var filesList= ["/Quest 5/assets/dense.polygon","/Quest 5/assets/circle.polygon","/Quest 5/assets/box.polygon","/Quest 5/assets/human.polygon","/Quest 5/assets/star.polygon"];
+  var filesList= ["./assets/dense.polygon","./assets/circle.polygon","./assets/box.polygon","./assets/human.polygon","./assets/star.polygon"];
   // Create a canvas tag
   const canvasTag = document.createElement('canvas');
   canvasTag.id = "renderCanvas";

@@ -1,0 +1,57 @@
+; SPIR-V
+; Version: 1.3
+; Generator: Google Tint Compiler; 0
+; Bound: 33
+; Schema: 0
+               OpCapability Shader
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint GLCompute %tint_symbol_2 "tint_symbol_2" %tint_symbol_3_1
+               OpExecutionMode %tint_symbol_2 LocalSize 8 8 1
+               OpName %tint_symbol_3_1 "tint_symbol_3_1"
+               OpName %tint_symbol "tint_symbol"
+               OpName %tint_symbol_1 "tint_symbol_1"
+               OpName %tint_symbol_2_inner "tint_symbol_2_inner"
+               OpName %tint_symbol_3 "tint_symbol_3"
+               OpName %tint_symbol_2 "tint_symbol_2"
+               OpDecorate %tint_symbol_3_1 BuiltIn GlobalInvocationId
+               OpDecorate %tint_symbol DescriptorSet 0
+               OpDecorate %tint_symbol Binding 0
+               OpDecorate %tint_symbol_1 NonReadable
+               OpDecorate %tint_symbol_1 DescriptorSet 0
+               OpDecorate %tint_symbol_1 Binding 1
+       %uint = OpTypeInt 32 0
+     %v3uint = OpTypeVector %uint 3
+%_ptr_Input_v3uint = OpTypePointer Input %v3uint
+%tint_symbol_3_1 = OpVariable %_ptr_Input_v3uint Input
+      %float = OpTypeFloat 32
+          %7 = OpTypeImage %float 2D 0 0 0 1 Unknown
+%_ptr_UniformConstant_7 = OpTypePointer UniformConstant %7
+%tint_symbol = OpVariable %_ptr_UniformConstant_7 UniformConstant
+         %11 = OpTypeImage %float 2D 0 0 0 2 Rgba8
+%_ptr_UniformConstant_11 = OpTypePointer UniformConstant %11
+%tint_symbol_1 = OpVariable %_ptr_UniformConstant_11 UniformConstant
+       %void = OpTypeVoid
+         %12 = OpTypeFunction %void %v3uint
+        %int = OpTypeInt 32 1
+      %v2int = OpTypeVector %int 2
+     %v2uint = OpTypeVector %uint 2
+    %v4float = OpTypeVector %float 4
+         %25 = OpConstantNull %int
+         %28 = OpTypeFunction %void
+%tint_symbol_2_inner = OpFunction %void None %12
+%tint_symbol_3 = OpFunctionParameter %v3uint
+         %16 = OpLabel
+         %21 = OpVectorShuffle %v2uint %tint_symbol_3 %tint_symbol_3 0 1
+         %17 = OpBitcast %v2int %21
+         %24 = OpLoad %7 %tint_symbol
+         %22 = OpImageFetch %v4float %24 %17 Lod %25
+         %27 = OpLoad %11 %tint_symbol_1
+               OpImageWrite %27 %17 %22
+               OpReturn
+               OpFunctionEnd
+%tint_symbol_2 = OpFunction %void None %28
+         %30 = OpLabel
+         %32 = OpLoad %v3uint %tint_symbol_3_1
+         %31 = OpFunctionCall %void %tint_symbol_2_inner %32
+               OpReturn
+               OpFunctionEnd
