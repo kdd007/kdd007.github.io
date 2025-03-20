@@ -21,7 +21,7 @@
  *                                anything the license permits.
  */
 
-import SceneObject from '/Quest 4/lib/DSViz/SceneObject.js'
+import SceneObject from './SceneObject.js'
 const varNum=10;
 export default class ParticleSystemObject extends SceneObject {
   constructor(device, canvasFormat, numParticles = 4096) {

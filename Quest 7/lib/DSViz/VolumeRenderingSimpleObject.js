@@ -161,9 +161,11 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
   compute(pass) {
     // add to compute pass
     if (this._camera?._isProjective) {
+      console.log("x")
       pass.setPipeline(this._computeProjectivePipeline);        // set the compute projective pipeline
     }
     else {
+      console.log("y")
       pass.setPipeline(this._computePipeline);                 // set the compute orthogonal pipeline
     }
     pass.setBindGroup(0, this._bindGroup);                  // bind the buffer

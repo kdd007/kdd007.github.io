@@ -1,10 +1,10 @@
-/* 
+/*
  * Copyright (c) 2025 SingChun LEE @ Bucknell University. CC BY-NC 4.0.
- * 
+ *
  * This code is provided mainly for educational purposes at Bucknell University.
  *
  * This code is licensed under the Creative Commons Attribution-NonCommerical 4.0
- * International License. To view a copy of the license, visit 
+ * International License. To view a copy of the license, visit
  *   https://creativecommons.org/licenses/by-nc/4.0/
  * or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
  *
@@ -16,33 +16,35 @@
  *  - Attribution: You must give appropriate credit, provide a link to the license,
  *                 and indicate if changes where made.
  *  - NonCommerical: You may not use the material for commerical purposes.
- *  - No additional restrictions: You may not apply legal terms or technological 
+ *  - No additional restrictions: You may not apply legal terms or technological
  *                                measures that legally restrict others from doing
  *                                anything the license permits.
  */
 
+
 // struct to sture 3D PGA multivector
 struct MultiVector {
-  s: f32, 
-  exey: f32, 
-  exez: f32, 
-  eyez: f32, 
-  eoex: f32, 
-  eoey: f32, 
-  eoez: f32, 
-  exeyez: f32, 
-  eoexey: f32, 
-  eoexez: f32, 
+  s: f32,
+  exey: f32,
+  exez: f32,
+  eyez: f32,
+  eoex: f32,
+  eoey: f32,
+  eoez: f32,
+  exeyez: f32,
+  eoexey: f32,
+  eoexez: f32,
   eoeyez: f32,
-  ex: f32, 
-  ey: f32, 
-  ez: f32, 
+  ex: f32,
+  ey: f32,
+  ez: f32,
   eo: f32,
   eoexeyez: f32
 }
 
-// the geometric product 
-fn geometricProduct(a: MultiVector, b: MultiVector) -> MultiVector { 
+
+// the geometric product
+fn geometricProduct(a: MultiVector, b: MultiVector) -> MultiVector {
   // The geometric product rules are:
   //   1. eoeo = 0, exex = 1 and eyey = 1, ezez = 1
   //   2. eoex + exeo = 0, eoey + eyeo = 0, eoez + ezeo = 0
@@ -68,6 +70,7 @@ fn geometricProduct(a: MultiVector, b: MultiVector) -> MultiVector {
   return r;
 }
 
+
 // the reverse of a Multivector
 fn reverse(a: MultiVector) -> MultiVector {
   // The reverse is the reverse order of the basis elements
@@ -89,12 +92,14 @@ fn reverse(a: MultiVector) -> MultiVector {
   return MultiVector(a.s, -a.exey, -a.exez, -a.eyez, -a.eoex, -a.eoey, -a.eoez, -a.exeyez, -a.eoexey, -a.eoexez, -a.eoeyez, a.ex, a.ey, a.ez, a.eo, a.eoexeyez);
 }
 
+
 fn applyMotor(p: MultiVector, m: MultiVector) -> MultiVector {
   // To apply a motor to a point, we use the sandwich operation
   // The formula is m * p * reverse of m
   // Here * is the geometric product
   return geometricProduct(m, geometricProduct(p, reverse(m)));
 }
+
 
 fn motorNorm(m: MultiVector) -> f32 {
   // The norm of a motor is square root of the sum of square of the terms:
@@ -119,6 +124,7 @@ fn motorNorm(m: MultiVector) -> f32 {
   return sqrt(sum);
 }
 
+
 fn createTranslator(d: vec3f) -> MultiVector {
   // Given dx and dy describing the moveming in the x and y directions,
   // the translator is given by 1 + dx/2 exeo + dy/2 eyeo + dz/2 ezeo
@@ -128,16 +134,19 @@ fn createTranslator(d: vec3f) -> MultiVector {
   return MultiVector(1, 0, 0, 0, -d.x / 2, -d.y / 2, -d.z / 2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
+
 fn extractTranslator(m: MultiVector) -> MultiVector {
   // Given a general motor, we can extract the translator part
   return MultiVector(1, 0, 0, 0, m.eoex, m.eoey, m.eoez, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
+
 
 fn createDir(d: vec3f) -> MultiVector {
   // A direction is given by dx eyez + dy ezex + dz exey
   //    scalar, exey, exez, eyez, eoex, eoey, eoez, exeyez, eoexey, eoexez, eoeyez, ex, ey, ez, eo, eoexeyez
   return MultiVector(0, d.z, -d.y, d.x, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
+
 
 fn createLine(s: vec3f, d: vec3f) -> MultiVector {
   // A line is given by a starting point (sx, sy, sz) and a direction (dx, dy, dz)
@@ -147,6 +156,7 @@ fn createLine(s: vec3f, d: vec3f) -> MultiVector {
   // Note dir.exey = dz, dir.exez = -dy, dir.eyez = dx
   return MultiVector(0, dir.exey, dir.exez, dir.eyez, -(-dir.exez * s.z - dir.exey * s.y), -(dir.exey * s.x - dir.eyez * s.z), -(dir.eyez * s.y + dir.exez * s.x), 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
+
 
 fn createRotor(angle: f32, d: vec3f, spt: vec3f) -> MultiVector {
   // Given an angle and a rotation axis direction (dx, dy, dz) and a start point of the rotation axis,
@@ -158,18 +168,21 @@ fn createRotor(angle: f32, d: vec3f, spt: vec3f) -> MultiVector {
   return MultiVector(c, s * L.exey, s * L.exez, s * L.eyez, s * L.eoex, s * L.eoey, s * L.eoez, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
+
 fn extractRotor(m: MultiVector) -> MultiVector {
   // Given a general motor, we can extract the rotor part
   return MultiVector(m.s, m.exey, m.exez, m.eyez, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
+
 fn createPoint(p: vec3f) -> MultiVector {
   // Given a point in 3D with coordinates (x, y, z)
   // A point in PGA is given by exeyez + x eoezey + y eoexez + z eoeyex
-  // In code, we always store the coefficents of 
+  // In code, we always store the coefficents of
   //    scalar, exey, exez, eyez, eoex, eoey, eoez, exeyez, eoexey, eoexez, eoeyez, ex, ey, ez, eo, eoexeyez
   return MultiVector(0, 0, 0, 0, 0, 0, 0, 1, -p.z, p.y, -p.x, 0, 0, 0, 0, 0);
 }
+
 
 fn extractPoint(p: MultiVector) -> vec3f {
   // to extract the 3d point from a exeyez + b eoezey + c eoexez + d eoeyex
@@ -177,20 +190,22 @@ fn extractPoint(p: MultiVector) -> vec3f {
   return vec3f(-p.eoeyez / p.exeyez, p.eoexez / p.exeyez, -p.eoexey / p.exeyez);
 }
 
+
 fn createPlane(n: vec3f, d: f32) -> MultiVector {
   // Given a plane in 3D with normal (nx, ny, nz) and distance from the origin d
   // A plane in PGA is given by nx ex + ny ey + nz ez - deo
-  // In code, we always store the coefficents of 
+  // In code, we always store the coefficents of
   //    scalar, exey, exez, eyez, eoex, eoey, eoez, exeyez, eoexey, eoexez, eoeyez, ex, ey, ez, eo, eoexeyez
   return MultiVector(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, n.x, n.y, n.z, -d, 0);
 }
 
+
 fn createPlaneFromPoints(p1: vec3f, p2: vec3f, p3: vec3f) -> MultiVector {
   // Given three poitns (x1, y1, z1), (x2, y2, z2), (x3, y3, z3)
-  // A plane in PGA is given by 
-  //        ((y2 * z3 - y3 * z2) -      (y1 * z3 - y3 * z1) +      (y1 * z2 - y2 * z1)) ex 
-  // -      ((x2 * z3 - x3 * z2) -      (x1 * z3 - x3 * z1) +      (x1 * z2 - x2 * z1)) ey 
-  // +      ((x2 * y3 - x3 * y2) -      (x1 * y3 - x3 * y1) +      (x1 * y2 - x2 * y1)) ez 
+  // A plane in PGA is given by
+  //        ((y2 * z3 - y3 * z2) -      (y1 * z3 - y3 * z1) +      (y1 * z2 - y2 * z1)) ex
+  // -      ((x2 * z3 - x3 * z2) -      (x1 * z3 - x3 * z1) +      (x1 * z2 - x2 * z1)) ey
+  // +      ((x2 * y3 - x3 * y2) -      (x1 * y3 - x3 * y1) +      (x1 * y2 - x2 * y1)) ez
   // + (x1 * (y2 * z3 - y3 * z2) - x2 * (y1 * z3 - y3 * z1) + x3 * (y1 * z2 - y2 * z1)) eo
   let nx =          (p2[1] * p3[2] - p3[1] * p2[2]) -         (p1[1] * p3[2] - p3[1] * p1[2]) +         (p1[1] * p2[2] - p2[1] * p1[2]);
   let ny =          (p2[0] * p3[2] - p3[0] * p2[2]) -         (p1[0] * p3[2] - p3[0] * p1[2]) +         (p1[0] * p2[2] - p2[0] * p1[2]);
@@ -199,8 +214,10 @@ fn createPlaneFromPoints(p1: vec3f, p2: vec3f, p3: vec3f) -> MultiVector {
   return createPlane(vec3f(nx, -ny, nz), d);
 }
 
+
 // define a constant
 const EPSILON : f32 = 0.00000001;
+
 
 // a structure to store the hit information
 struct HitInfo {
@@ -208,6 +225,7 @@ struct HitInfo {
   hit: bool,     // if it hits
   inPlane: bool, // if it does not hit, is it in the plane?
 }
+
 
 fn linePlaneIntersection(L: MultiVector, P: MultiVector) -> HitInfo {
   // In PGA, the intersection point is simply embedded in the geometric product betwen them
@@ -219,6 +237,7 @@ fn linePlaneIntersection(L: MultiVector, P: MultiVector) -> HitInfo {
   return hitInfo;
 }
 
+
 fn normalizeMotor(m: MultiVector) -> MultiVector {
   // To normalize a motor, we divide each coefficient by its norm
   let mnorm = motorNorm(m);
@@ -228,6 +247,7 @@ fn normalizeMotor(m: MultiVector) -> MultiVector {
   return MultiVector(m.s / mnorm, m.exey / mnorm, m.exez / mnorm, m.eyez / mnorm, m.eoex / mnorm, m.eoey / mnorm, m.eoez / mnorm, m.exeyez / mnorm, m.eoexey / mnorm, m.eoexez / mnorm, m.eoeyez / mnorm, m.ex / mnorm, m.ey / mnorm, m.ez / mnorm, m.eo / mnorm, m.eoexeyez / mnorm);
 }
 
+
 fn applyMotorToPoint(p: vec3f, m: MultiVector) -> vec3f {
   // apply the motor m to transform the point p
   // this code covert the 3d point p into PGA and apply the motor to transform it
@@ -235,6 +255,7 @@ fn applyMotorToPoint(p: vec3f, m: MultiVector) -> vec3f {
   let new_p = applyMotor(createPoint(p), m);
   return extractPoint(new_p);
 };
+
 
 fn applyMotorToDir(d: vec3f, m: MultiVector) -> vec3f {
   // apply the motor m to transform the direction d
@@ -246,6 +267,7 @@ fn applyMotorToDir(d: vec3f, m: MultiVector) -> vec3f {
   return extractPoint(new_d);
 }
 
+
 // struct to store 3D PGA pose
 struct Camera {
   motor: MultiVector,
@@ -253,11 +275,13 @@ struct Camera {
   res: vec2f,
 }
 
+
 // struct to store the volume info
 struct VolInfo {
   dims: vec4f, // volume dimension
   sizes: vec4f, // voxel sizes
 }
+
 
 // binding the camera pose
 @group(0) @binding(0) var<uniform> cameraPose: Camera ;
@@ -268,12 +292,14 @@ struct VolInfo {
 // binding the output texture to store the ray tracing results
 @group(0) @binding(3) var outTexture: texture_storage_2d<rgba8unorm, write>;
 
+
 // a function to transform the direction to the model coordiantes
 fn transformDir(d: vec3f) -> vec3f {
   // transform the direction using the camera pose
   var out = applyMotorToDir(d, cameraPose.motor);
   return out;
 }
+
 
 // a function to transform the start pt to the model coordiantes
 fn transformPt(pt: vec3f) -> vec3f {
@@ -282,12 +308,14 @@ fn transformPt(pt: vec3f) -> vec3f {
   return out;
 }
 
+
 // a function to asign the pixel color
 fn assignColor(uv: vec2i) {
   var color: vec4f;
   color = vec4f(0.f/255, 56.f/255, 101.f/255, 1.); // Bucknell Blue
   textureStore(outTexture, uv, color);  
 }
+
 
 // a helper function to keep track of the two ray-volume hit values
 fn compareVolumeHitValues(curValue: vec2f, t: f32) -> vec2f {
@@ -312,6 +340,7 @@ fn compareVolumeHitValues(curValue: vec2f, t: f32) -> vec2f {
   return result;
 }
 
+
 // a helper function to compute the ray-volume hit values
 fn getVolumeHitValues(checkval: f32, halfsize: vec2f, pval: f32, dval: f32, p: vec2f, d: vec2f, curT: vec2f) -> vec2f {
   var cur = curT;
@@ -326,6 +355,7 @@ fn getVolumeHitValues(checkval: f32, halfsize: vec2f, pval: f32, dval: f32, p: v
   }
   return cur;
 }
+
 
 // a function to compute the start and end t values of the ray hitting the volume
 fn rayVolumeIntersection(p: vec3f, d: vec3f) -> vec2f {
@@ -342,6 +372,7 @@ fn rayVolumeIntersection(p: vec3f, d: vec3f) -> vec2f {
   return hitValues;
 }
 
+
 // a helper function to get the next hit value
 fn getNextHitValue(startT: f32, curT: f32, checkval: f32, minCorner: vec2f, maxCorner: vec2f, pval: f32, dval: f32, p: vec2f, d: vec2f) -> f32 {
   var cur = curT;
@@ -357,26 +388,68 @@ fn getNextHitValue(startT: f32, curT: f32, checkval: f32, minCorner: vec2f, maxC
   return cur;
 }
 
+
 // a function to trace the volume - volume rendering
 fn traceScene(uv: vec2i, p: vec3f, d: vec3f) {
   // find the start and end point
   var hits = rayVolumeIntersection(p, d);
-  var color = vec4f(0.f/255, 0.f/255, 0.f/255, 1.); 
+  var color = vec4f(0.f, 0.f, 0.f, 1.);
+
+
   // if there is only one hit point, we trace from the camera center
   if (hits.y < 0 && hits.x > 0) {
     hits.y = hits.x;
     hits.x = 0;
   }
+
+
   // assign colors
-  if (hits.x >= 0) { 
-    let diff = hits.y - hits.x;
-    color = vec4f(diff, 1 - diff, 0, 1.);
+  if (hits.x >= 0) {
+    const maxIntensity: f32 = 4095.;
+
+
+    var curHit: f32 = hits.x + EPSILON;
+    // let halfSize = volInfo.dims.xyz * volInfo.sizes.xyz * 0.5
+    //                / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z);
+    let voxelSize: vec3f = volInfo.sizes.xyz / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z); // normalized voxel size
+    var curIntensity: f32 = 0.;
+
+
+    while (curHit < hits.y) {
+      let curPt: vec3f = p + d * curHit + voxelSize;
+
+
+      let vPos = curPt / voxelSize;
+      // let vPos = (curPt / halfSize + 1) * 0.5 * volInfo.dims.xyz;
+      let vIdx: i32 = i32(vPos.z) * i32(volInfo.dims.x * volInfo.dims.y)
+                      + i32(vPos.y) * i32(volInfo.dims.x)
+                      + i32(vPos.x);
+
+
+      curIntensity = max(curIntensity, volData[vIdx]);
+
+
+      var minCorner = floor(vPos);
+      var maxCorner = ceil(vPos);
+      curHit = getNextHitValue(hits.x, curHit, minCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy); // xy
+      curHit = getNextHitValue(hits.x, curHit, maxCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy);
+      curHit = getNextHitValue(hits.x, curHit, minCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz); // yz
+      curHit = getNextHitValue(hits.x, curHit, maxCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz);
+      curHit = getNextHitValue(hits.x, curHit, minCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz); // xz
+      curHit = getNextHitValue(hits.x, curHit, maxCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz);
+
+
+      curHit += 0.005;
+    }
+    curIntensity /= maxIntensity;
+    color = vec4f(curIntensity, curIntensity, curIntensity, 1.);
   }
   else {
     color = vec4f(0.f/255, 56.f/255, 101.f/255, 1.); // Bucknell Blue
   }
   textureStore(outTexture, uv, color);  
 }
+
 
 @compute
 @workgroup_size(16, 16)
@@ -398,10 +471,27 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
   }
 }
 
+
 @compute
 @workgroup_size(16, 16)
 fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
-  // TODO: copy your code of quest 6 here
-  // This should be very similar to the orthogonal one above
-  
+  // get the pixel coordiantes
+  let uv = vec2i(global_id.xy);
+  let texDim = vec2i(textureDimensions(outTexture));
+  if (uv.x < texDim.x && uv.y < texDim.y) {
+    // compute the pixel size
+    let psize = vec2f(2, 2) / cameraPose.res.xy * cameraPose.focal.xy;
+    // orthogonal camera ray sent from each pixel center at z = 0
+    var spt = vec3f(0, 0, 0);
+    var rdir = vec3f((f32(uv.x) + 0.5) * psize.x - cameraPose.focal.x, (f32(uv.y) + 0.5) * psize.y - cameraPose.focal.y, 1);
+    // apply transformation
+    spt = transformPt(spt);
+    rdir = transformDir(rdir);
+    // trace scene
+    traceScene(uv, spt, rdir);
+  }
 }
+
+
+
+
