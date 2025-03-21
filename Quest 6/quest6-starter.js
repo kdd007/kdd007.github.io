@@ -26,10 +26,10 @@
 // Chrome & Edge 113+ : Enable Vulkan, Default ANGLE Vulkan, Vulkan from ANGLE, Unsafe WebGPU Support, and WebGPU Developer Features (if exsits)
 // Firefox Nightly: sudo snap install firefox --channel=latext/edge or download from https://www.mozilla.org/en-US/firefox/channel/desktop/
 
-import RayTracer from '/lib/Viz/RayTracer.js'
-import StandardTextObject from '/lib/DSViz/StandardTextObject.js'
-import RayTracingBoxObject from '/lib/DSViz/RayTracingBoxObject.js'
-import Camera from '/lib/Viz/3DCamera.js'
+import RayTracer from './lib/Viz/RayTracer.js'
+import StandardTextObject from './lib/DSViz/StandardTextObject.js'
+import RayTracingBoxObject from './lib/DSViz/RayTracingBoxObject.js'
+import Camera from './lib/Viz/3DCamera.js'
 
 async function init() {
   // Create a canvas tag
@@ -45,65 +45,121 @@ async function init() {
   var tracerObj = new RayTracingBoxObject(tracer._device, tracer._canvasFormat, camera);
   await tracer.setTracerObject(tracerObj);
   
+  let toggleMovement=true;
+
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
+  fpsText._textCanvas.style.left="1460px";
+  const infoText = new StandardTextObject('WS: Move in Z\n' +
+                                          'AD: Move in X\n' +
+                                          'Space/Shift: Move in Y\n' +
+                                          'QE: Rotate in Z\n' +
+                                          'Up/Down: Rotate in X\n' +
+                                          'Left/Right: Rotate in Y\n' +
+                                          'T: Change Camera Mode\n' +
+                                          '-=: Change Camera Focal X\n' +
+                                          '[]: Change Camera Focal Y\n'+
+                                          'U: Toggle Camera/Object');
   var movespeed = 0.05;
-  var rotateSpeed=0.5;
-  window.addEventListener("keydown", (e) => {
+  var rotatespeed = 2;
+  var focalXSpeed = 0.1;
+  var focalYSpeed = 0.1;
+  document.addEventListener('keydown', (e) => {
     switch (e.key) {
       case 'w': case 'W':
-        camera.moveZ(movespeed);
+        if (toggleMovement){camera.moveZ(movespeed);}
+        else{tracerObj.moveZ(movespeed);}
         tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
-      case 's': case 'S':   
-        camera.moveZ(-movespeed);
+      case 'a': case 'A':
+        if (toggleMovement){camera.moveX(-movespeed);}
+        else{tracerObj.moveX(-movespeed);}
         tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
-      case 'a': case 'A':  
-        camera.moveX(-movespeed);
+      case 's': case 'S':
+        if (toggleMovement){camera.moveZ(-movespeed);}
+        else{tracerObj.moveZ(-movespeed);}
         tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
-      case 'd': case 'D': 
-        camera.moveX(movespeed);       
+      case 'd': case 'D':
+        if (toggleMovement){camera.moveX(movespeed);}
+        else{tracerObj.moveX(movespeed);}
         tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
-      case ' ':  
-        camera.moveY(-movespeed);       
+      case ' ':
+        if (toggleMovement){camera.moveY(-movespeed);}
+        else{tracerObj.moveY(-movespeed);}
         tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
       case 'Shift':
-        camera.moveY(movespeed);       
+        if (toggleMovement){camera.moveY(movespeed);}
+        else{tracerObj.moveY(movespeed);}
         tracerObj.updateCameraPose();
-        break;
-
-      case 'e': case 'E':
-        camera.rotateZ(rotateSpeed);       
-        tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
       case 'q': case 'Q':
-        camera.rotateZ(-rotateSpeed);       
+        if (toggleMovement){camera.rotateZ(rotatespeed);}
+        else{tracerObj.rotateZ(rotatespeed);}
         tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
-
-      case 'ArrowRight':
-        camera.rotateY(rotateSpeed);       
+      case 'e': case'E':
+        if (toggleMovement){camera.rotateZ(-rotatespeed);}
+        else{tracerObj.rotateZ(-rotatespeed);}
         tracerObj.updateCameraPose();
-        break;
-      case 'ArrowLeft':
-        camera.rotateY(-rotateSpeed);       
-        tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
       case 'ArrowUp':
-        camera.rotateX(rotateSpeed);       
+        if (toggleMovement){camera.rotateX(-rotatespeed);}
+        else{tracerObj.rotateX(-rotatespeed);}
         tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
+        break;
+      case 'ArrowLeft':
+        if (toggleMovement){camera.rotateY(rotatespeed);}
+        else{tracerObj.rotateY(rotatespeed);}
+        tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
       case 'ArrowDown':
-        camera.rotateX(-rotateSpeed);       
+        if (toggleMovement){camera.rotateX(rotatespeed);}
+        else{tracerObj.rotateX(rotatespeed);}
         tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
         break;
-      case 'T': case 't':
+      case 'ArrowRight':
+        if (toggleMovement){camera.rotateY(-rotatespeed);}
+        else{tracerObj.rotateY(-rotatespeed);}
+        tracerObj.updateCameraPose();
+        tracerObj.updateBoxPose();
+        break;
+      case 't': case 'T':
         camera.toggleProjective();
         break;
+      case '-':
+        camera.changeFocalX(focalXSpeed);
+        tracerObj.updateCameraFocal();
+        break;
+      case '=':
+        camera.changeFocalX(-focalXSpeed);
+        tracerObj.updateCameraFocal();
+        break;
+      case '[':
+        camera.changeFocalY(focalYSpeed);
+        tracerObj.updateCameraFocal();
+        break;
+      case ']':
+        camera.changeFocalY(-focalYSpeed);
+        tracerObj.updateCameraFocal();
+        break;
+      case "u": case "U":
+       toggleMovement= !toggleMovement;
+       console.log(toggleMovement)
     }
   });
   // run animation at 60 fps

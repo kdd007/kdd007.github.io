@@ -21,8 +21,9 @@
  *                                anything the license permits.
  */
 
-import RayTracingObject from "/lib/DSViz/RayTracingObject.js"
-import UnitCube from "/lib/DS/UnitCube.js"
+import RayTracingObject from "./RayTracingObject.js"
+import UnitCube from "../DS/UnitCube.js"
+import PGA3D from '../Math/PGA3D.js'
 
 export default class RayTracingBoxObject extends RayTracingObject {
   constructor(device, canvasFormat, camera, showTexture = true) {
@@ -94,7 +95,7 @@ export default class RayTracingBoxObject extends RayTracingObject {
   }
 
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/tracebox.wgsl");
+    let shaderCode = await this.loadShader("./shaders/tracebox.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,
@@ -178,4 +179,51 @@ export default class RayTracingBoxObject extends RayTracingObject {
     pass.setBindGroup(0, this._bindGroup);                  // bind the buffer
     pass.dispatchWorkgroups(Math.ceil(this._wgWidth / 16), Math.ceil(this._wgHeight / 16)); // dispatch
   }
+
+  moveX(d) {
+    let rot_d = [...PGA3D.applyMotorToPoint([d, 0, 0], PGA3D.extractRotor(this._box._pose))]
+    let dt = PGA3D.createTranslator(rot_d[0], rot_d[1], rot_d[2]);
+    let newpose = PGA3D.geometricProduct(dt, this._box._pose)
+    this._box.updatePose(newpose);
+  }
+  
+  moveY(d) {
+    let rot_d = [...PGA3D.applyMotorToPoint([0, d, 0], PGA3D.extractRotor(this._box._pose))]
+    let dt = PGA3D.createTranslator(rot_d[0], rot_d[1], rot_d[2]);
+    let newpose = PGA3D.geometricProduct(dt, this._box._pose);
+    this._box.updatePose(newpose);
+  }
+  
+  moveZ(d) {
+    let rot_d = [...PGA3D.applyMotorToPoint([0, 0, d], PGA3D.extractRotor(this._box._pose))]
+    let dt = PGA3D.createTranslator(rot_d[0], rot_d[1], rot_d[2]);
+    let newpose = PGA3D.geometricProduct(dt, this._box._pose);
+    this._box.updatePose(newpose);
+  }
+
+  rotateX(d) {
+    let rot_d = [...PGA3D.applyMotorToPoint([1, 0, 0], PGA3D.extractRotor(this._box._pose))]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
+    let newpose = PGA3D.geometricProduct(this._box._pose, dr);
+    this._box.updatePose(newpose);    
+  }
+  
+  rotateY(d) {
+    // TODO: write code to rotate the camera along its y-axis
+    // Suggest to use PGA3D
+    let rot_d = [...PGA3D.applyMotorToPoint([0, 1, 0], PGA3D.extractRotor(this._box._pose))]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
+    let newpose = PGA3D.geometricProduct(this._box._pose, dr);
+    this._box.updatePose(newpose);    
+  }
+  
+  rotateZ(d) {
+    // TODO: write code to rotate the camera along its z-axis
+    // Suggest to use PGA3D
+    let rot_d = [...PGA3D.applyMotorToPoint([0, 0, 1], PGA3D.extractRotor(this._box._pose))]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
+    let newpose = PGA3D.geometricProduct(this._box._pose, dr);
+    this._box.updatePose(newpose);   
+  }
+
 }

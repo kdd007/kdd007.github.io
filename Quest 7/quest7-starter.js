@@ -52,29 +52,21 @@ async function init() {
  
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
-  fpsText.setPosition(StandardTextObject.CORNER.BOTTOM_LEFT);
-
-
+  fpsText._textCanvas.style.left="1460px";
   const infoText = new StandardTextObject('WS: Move in Z\n' +
                                           'AD: Move in X\n' +
                                           'Space/Shift: Move in Y\n' +
                                           'QE: Rotate in Z\n' +
                                           'Up/Down: Rotate in X\n' +
                                           'Left/Right: Rotate in Y\n' +
-                                          'C: Change Camera Mode\n' +
+                                          'T: Change Camera Mode\n' +
                                           '-=: Change Camera Focal X\n' +
                                           '[]: Change Camera Focal Y');
-  infoText.setPosition(StandardTextObject.CORNER.TOP_LEFT);
 
-
-  var hintText = new PopupTextObject();
-  hintText.setPosition(PopupTextObject.CORNER.BOTTOM_RIGHT)
-
-
-  const movespeed = 0.05;
-  const rotatespeed = 2;
-  const focalXSpeed = 0.1;
-  const focalYSpeed = 0.1;
+  var movespeed = 0.05;
+  var rotatespeed = 2;
+  var focalXSpeed = 0.1;
+  var focalYSpeed = 0.1;
   document.addEventListener('keydown', (e) => {
     switch (e.key) {
       case 'w': case 'W':
@@ -144,6 +136,8 @@ async function init() {
         camera.changeFocalY(-focalYSpeed);
         tracerObj.updateCameraFocal();
         break;
+      case 'u': case 'U':
+        
     }
   });
 

@@ -21,7 +21,7 @@
  *                                anything the license permits.
  */
  
-import PGA3D from '/lib/Math/PGA3D.js'
+import PGA3D from '../Math/PGA3D.js'
  
 export default class Camera {
   constructor(width, height, _isProjective, focal) {
@@ -72,8 +72,9 @@ export default class Camera {
   rotateX(d) {
     // TODO: write code to rotate the camera along its x-axis
     // Suggest to use PGA3D
-    let rot_d = [...PGA3D.applyMotorToDir([1, 0, 0], PGA3D.extractRotor(this._pose))]
-    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
+    let rot_pos=[...PGA3D.applyMotorToPoint([0, 0, 0], this._pose)]
+    let rot_d = [...PGA3D.applyMotorToDir([1, 0, 0], this._pose)]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], rot_pos[0], rot_pos[1], rot_pos[2]);
     let newpose = PGA3D.geometricProduct(this._pose, dr);
     this.updatePose(newpose);    
   }
@@ -81,8 +82,9 @@ export default class Camera {
   rotateY(d) {
     // TODO: write code to rotate the camera along its y-axis
     // Suggest to use PGA3D
-    let rot_d = [...PGA3D.applyMotorToDir([0, 1, 0], PGA3D.extractRotor(this._pose))]
-    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
+    let rot_pos=[...PGA3D.applyMotorToPoint([0, 0, 0], this._pose)]
+    let rot_d = [...PGA3D.applyMotorToDir([0, 1, 0], this._pose)]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], rot_pos[0], rot_pos[1], rot_pos[2]);
     let newpose = PGA3D.geometricProduct(this._pose, dr);
     this.updatePose(newpose);    
   }
@@ -90,13 +92,20 @@ export default class Camera {
   rotateZ(d) {
     // TODO: write code to rotate the camera along its z-axis
     // Suggest to use PGA3D
-    let rot_d = [...PGA3D.applyMotorToDir([0, 0, 1], PGA3D.extractRotor(this._pose))]
-    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], 0, 0, 0);
+    let rot_pos=[...PGA3D.applyMotorToPoint([0, 0, 0], this._pose)]
+    let rot_d = [...PGA3D.applyMotorToDir([0, 0, 1], this._pose)]
+    let dr = PGA3D.createRotor(d * Math.PI / 90, rot_d[0], rot_d[1], rot_d[2], rot_pos[0], rot_pos[1], rot_pos[2]);
     let newpose = PGA3D.geometricProduct(this._pose, dr);
     this.updatePose(newpose);   
   }
 
   toggleProjective(){
     this._isProjective= !this._isProjective;
+  }
+  changeFocalY(focalYSpeed){
+    this._focal[0] = this._focal[0] + focalYSpeed;
+  }
+  changeFocalX(focalXSpeed){
+    this._focal[1] = this._focal[1] + focalXSpeed;
   }
 }
