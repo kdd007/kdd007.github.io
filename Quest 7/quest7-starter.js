@@ -50,6 +50,8 @@ async function init() {
   var tracerObj = new VolumeRenderingSimpleObject(tracer._device, tracer._canvasFormat, camera);
   await tracer.setTracerObject(tracerObj);
  
+  let toggleMovement=true;
+  
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
   fpsText._textCanvas.style.left="1460px";
@@ -61,8 +63,8 @@ async function init() {
                                           'Left/Right: Rotate in Y\n' +
                                           'T: Change Camera Mode\n' +
                                           '-=: Change Camera Focal X\n' +
-                                          '[]: Change Camera Focal Y');
-
+                                          '[]: Change Camera Focal Y\n'+
+                                          'U: Toggle Camera/Object');
   var movespeed = 0.05;
   var rotatespeed = 2;
   var focalXSpeed = 0.1;
@@ -117,8 +119,9 @@ async function init() {
         camera.rotateY(-rotatespeed);
         tracerObj.updateCameraPose();
         break;
-      case 'c': case 'C':
-        camera.toggleCameraMode();
+      case 't': case 'T':
+        // console.log("Button Press")
+        camera.toggleProjective();
         break;
       case '-':
         camera.changeFocalX(focalXSpeed);
@@ -136,8 +139,8 @@ async function init() {
         camera.changeFocalY(-focalYSpeed);
         tracerObj.updateCameraFocal();
         break;
-      case 'u': case 'U':
-        
+      case "u": case "U":
+       toggleMovement= !toggleMovement;
     }
   });
 
@@ -165,7 +168,6 @@ async function init() {
   }, 1000); // call every 1000 ms
   return tracer;
 }
-
 
 init().then( ret => {
   console.log(ret);
