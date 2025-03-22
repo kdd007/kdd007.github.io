@@ -43,8 +43,8 @@ async function init() {
   // Create a 3D Camera
   var camera = new Camera();
   // set a fixed pose for the starter code demo
-  camera._pose[2] = 0.5;
-  camera._pose[3] = 0.5;
+  // camera._pose[2] = 0.5;
+  // camera._pose[3] = 0.5;
   // Create an object to trace
   var tracerObj = new RayTracingBoxLightObject(tracer._device, tracer._canvasFormat, camera);
   await tracer.setTracerObject(tracerObj);
@@ -52,8 +52,99 @@ async function init() {
   // if you want to change light, you just need to change this object and upload it to the GPU by calling traceObje.updateLight(light)
   var light = new PointLight();
   tracerObj.updateLight(light);
+  let toggleMovement=true;
+  
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
+  fpsText._textCanvas.style.left="1460px";
+  const infoText = new StandardTextObject('WS: Move in Z\n' +
+                                          'AD: Move in X\n' +
+                                          'Space/Shift: Move in Y\n' +
+                                          'QE: Rotate in Z\n' +
+                                          'Up/Down: Rotate in X\n' +
+                                          'Left/Right: Rotate in Y\n' +
+                                          'T: Change Camera Mode\n' +
+                                          '-=: Change Camera Focal X\n' +
+                                          '[]: Change Camera Focal Y\n'+
+                                          'U: Toggle Camera/Object');
+  var movespeed = 0.05;
+  var rotatespeed = 2;
+  var focalXSpeed = 0.1;
+  var focalYSpeed = 0.1;
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'w': case 'W':
+        camera.moveZ(movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'a': case 'A':
+        camera.moveX(-movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 's': case 'S':
+        camera.moveZ(-movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'd': case 'D':
+        camera.moveX(movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case ' ':
+        camera.moveY(-movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'Shift':
+        camera.moveY(movespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'q': case 'Q':
+        camera.rotateZ(rotatespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'e': case'E':
+        camera.rotateZ(-rotatespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'ArrowUp':
+        camera.rotateX(-rotatespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'ArrowLeft':
+        camera.rotateY(rotatespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'ArrowDown':
+        camera.rotateX(rotatespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 'ArrowRight':
+        camera.rotateY(-rotatespeed);
+        tracerObj.updateCameraPose();
+        break;
+      case 't': case 'T':
+        console.log("Button Press")
+        camera.toggleProjective();
+        break;
+      case '-':
+        camera.changeFocalX(focalXSpeed);
+        tracerObj.updateCameraFocal();
+        break;
+      case '=':
+        camera.changeFocalX(-focalXSpeed);
+        tracerObj.updateCameraFocal();
+        break;
+      case '[':
+        camera.changeFocalY(focalYSpeed);
+        tracerObj.updateCameraFocal();
+        break;
+      case ']':
+        camera.changeFocalY(-focalYSpeed);
+        tracerObj.updateCameraFocal();
+        break;
+      case "u": case "U":
+       toggleMovement= !toggleMovement;
+    }
+  });
   
   // run animation at 60 fps
   var frameCnt = 0;

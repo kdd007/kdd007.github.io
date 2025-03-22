@@ -199,9 +199,11 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
   compute(pass) {
     // add to compute pass
     if (this._camera?._isProjective) {
+      console.log("P")
       pass.setPipeline(this._computeProjectivePipeline);        // set the compute projective pipeline
     }
     else {
+      console.log("O")
       pass.setPipeline(this._computePipeline);                 // set the compute orthogonal pipeline
     }
     pass.setBindGroup(0, this._bindGroup);                  // bind the buffer

@@ -401,7 +401,19 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
 @compute
 @workgroup_size(16, 16)
 fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
-  // TODO: copy your code of quest 6 here
-  // This should be very similar to the orthogonal one above
-  
+  // get the pixel coordiantes
+  let uv = vec2i(global_id.xy);
+  let texDim = vec2i(textureDimensions(outTexture));
+  if (uv.x < texDim.x && uv.y < texDim.y) {
+    // compute the pixel size
+    let psize = vec2f(2, 2) / cameraPose.res.xy * cameraPose.focal.xy;
+    // orthogonal camera ray sent from each pixel center at z = 0
+    var spt = vec3f(0, 0, 0);
+    var rdir = vec3f((f32(uv.x) + 0.5) * psize.x - cameraPose.focal.x, (f32(uv.y) + 0.5) * psize.y - cameraPose.focal.y, 1);
+    // apply transformation
+    spt = transformPt(spt);
+    rdir = transformDir(rdir);
+    // trace scene
+    traceScene(uv, spt, rdir);
+  }
 }
