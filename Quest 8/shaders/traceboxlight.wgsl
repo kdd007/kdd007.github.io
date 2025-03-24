@@ -442,10 +442,10 @@ fn boxNormal(idx: i32) -> vec3f {
       return vec3f(0, 0, -1);
     }
     case 1: { //back
-      return vec3f(0, 0, -1);
+      return -vec3f(0, 0, -1);
     }
     case 2: { //left
-      return vec3f(-1, 0, 0);
+      return -vec3f(-1, 0, 0);
     }
     case 3: { //right
       return vec3f(-1, 0, 0);
@@ -454,7 +454,7 @@ fn boxNormal(idx: i32) -> vec3f {
       return vec3f(0, -1, 0);
     }
     case 5: { //down
-      return vec3f(0, -1, 0);
+      return -vec3f(0, -1, 0);
     }
     default: {
       return vec3f(0, 0, 0);
@@ -488,6 +488,13 @@ fn getLightInfo(lightPos: vec3f, lightDir: vec3f, hitPoint: vec3f, objectNormal:
   // the final light diretion is the current view direction
   out.lightdir = viewDirection;
   return out;
+}
+
+
+fn tone(color: vec4f, bands: f32)->vec4f {
+    let step= 1. / bands;
+    let bandNum=round(color/step);
+    return step*bandNum;
 }
 
 @compute
@@ -535,18 +542,19 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       hitPt = transformHitPoint(hitPt);
       //   6. compute the light information
       //   Note: I do the light computation in the world coordiantes because the light intensity depends on the distance and angles in the world coordiantes! If you do it in other coordinate system, make sure you transform them properly back to the world one.
-      let lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
+      var lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
       //   7. finally, modulate the diffuse color by the light
+      lightInfo.intensity = tone(lightInfo.intensity, 5);
       diffuse *= lightInfo.intensity;
       // last, compute the final color. Here Lambertian = emit + diffuse
       //PHONG MODEL
       let R=reflect(lightInfo.lightdir, normal);
-      var specular= vec4f(1, 1, 1, 1)*lightInfo.intensity*pow(dot(rdir, -R),75);
+      var specular= vec4f(1, 1, 1, 1)*lightInfo.intensity*pow(dot(rdir, -R),100);
       specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
       let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
       color = emit + diffuse + specular + ambient;
       // Note: I do not use lightInfo.lightdir here, but you will need it for Phong and tone shading
-      
+      // color = tone(lightInfo.intensity, 5);
     }
     // set the final color to the pixel
     textureStore(outTexture, uv, color); 
@@ -610,18 +618,19 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       hitPt = transformHitPoint(hitPt);
       //   6. compute the light information
       //   Note: I do the light computation in the world coordiantes because the light intensity depends on the distance and angles in the world coordiantes! If you do it in other coordinate system, make sure you transform them properly back to the world one.
-      let lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
+      var lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
       //   7. finally, modulate the diffuse color by the light
+      lightInfo.intensity = tone(lightInfo.intensity, 5);
       diffuse *= lightInfo.intensity;
       // last, compute the final color. Here Lambertian = emit + diffuse
       //PHONG MODEL
       let R=reflect(lightInfo.lightdir, normal);
-      var specular= vec4f(1, 1, 1, 1)*lightInfo.intensity*pow(dot(rdir, -R),75);
+      var specular= vec4f(1, 1, 1, 1)*lightInfo.intensity*pow(dot(rdir, -R),100);
       specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
       let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
       color = emit + diffuse + specular + ambient;
       // Note: I do not use lightInfo.lightdir here, but you will need it for Phong and tone shading
-      
+      // color = tone(color, 5);
     }
     // set the final color to the pixel
     textureStore(outTexture, uv, color); 
