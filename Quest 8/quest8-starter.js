@@ -31,6 +31,8 @@ import StandardTextObject from '/lib/DSViz/StandardTextObject.js'
 import RayTracingBoxLightObject from '/lib/DSViz/RayTracingBoxLightObject.js'
 import Camera from '/lib/Viz/3DCamera.js'
 import PointLight from '/lib/Viz/PointLight.js'
+import DirectionalLight from '/lib/Viz/DirectionalLight.js'
+import SpotlightLight from '/lib/Viz/SpotLight.js'
 
 async function init() {
   // Create a canvas tag
@@ -50,25 +52,34 @@ async function init() {
   await tracer.setTracerObject(tracerObj);
   // Create a light object and set it to our box light object
   // if you want to change light, you just need to change this object and upload it to the GPU by calling traceObje.updateLight(light)
-  var light = new PointLight();
-  tracerObj.updateLight(light);
+  var pointLight = new PointLight();
+  var directionalLight= new DirectionalLight();
+  var spotLight= new SpotlightLight([1, 1, 1], [0, -0.5, 0]);
+  var currLight=0;
+  var lightModels=[pointLight, directionalLight, spotLight]
+  tracerObj.updateLight(lightModels[currLight]);
   let toggleMovement=true;
+  let shadings=["Lambertian", "Phong", "Toon"];
+  let models=["Point", "Directional", "Spot"];
+
   
   let fps = '??';
   var fpsText = new StandardTextObject('fps: ' + fps);
   fpsText._textCanvas.style.left="1460px";
-  const infoText = new StandardTextObject('WS: Move in Z\n' +
-                                          'AD: Move in X\n' +
-                                          'Space/Shift: Move in Y\n' +
-                                          'QE: Rotate in Z\n' +
-                                          'Up/Down: Rotate in X\n' +
-                                          'Left/Right: Rotate in Y\n' +
-                                          'T: Change Camera Mode\n' +
-                                          '-=: Change Camera Focal X\n' +
-                                          '[]: Change Camera Focal Y\n'+
-                                          'U: Toggle Camera/Object');
-  var movespeed = 0.05;
+  var infoText = new StandardTextObject('WS: Move in Z\n' +
+                                        'AD: Move in X\n' +
+                                        'Space/Shift: Move in Y\n' +
+                                        'QE: Rotate in Z\n' +
+                                        'Up/Down: Rotate in X\n' +
+                                        'Left/Right: Rotate in Y\n' +
+                                        'T: Change Camera Mode\n' +
+                                        '-=: Change Camera Focal X\n' +
+                                        '[]: Change Camera Focal Y\n'+
+                                        'U: Toggle Camera/Object\n'+
+                                        'M: Change Light Shading: '+ shadings[tracerObj._currModel[0]]+"\n"+
+                                        'N: Change Light Model: ' + models[tracerObj._currModel[1]]);
   var rotatespeed = 2;
+  var movespeed= 0.05;
   var focalXSpeed = 0.1;
   var focalYSpeed = 0.1;
   document.addEventListener('keydown', (e) => {
@@ -142,8 +153,42 @@ async function init() {
         tracerObj.updateCameraFocal();
         break;
       case "u": case "U":
-       toggleMovement= !toggleMovement;
-    }
+        toggleMovement= !toggleMovement;
+        break;
+      case "m": case "M":
+        tracerObj.changeModel();
+        tracerObj.updateLight(lightModels[currLight]);
+        infoText.updateText('WS: Move in Z\n' +
+          'AD: Move in X\n' +
+          'Space/Shift: Move in Y\n' +
+          'QE: Rotate in Z\n' +
+          'Up/Down: Rotate in X\n' +
+          'Left/Right: Rotate in Y\n' +
+          'T: Change Camera Mode\n' +
+          '-=: Change Camera Focal X\n' +
+          '[]: Change Camera Focal Y\n'+
+          'U: Toggle Camera/Object\n'+
+          'M: Change Light Shading: '+ shadings[tracerObj._currModel[0]]+"\n"+
+          'N: Change Light Model: ' + models[tracerObj._currModel[1]]);
+          break;
+      case "n": case "N":
+        tracerObj.changeLight();
+        currLight=(currLight+1)%3
+        tracerObj.updateLight(lightModels[currLight]);
+        infoText.updateText('WS: Move in Z\n' +
+          'AD: Move in X\n' +
+          'Space/Shift: Move in Y\n' +
+          'QE: Rotate in Z\n' +
+          'Up/Down: Rotate in X\n' +
+          'Left/Right: Rotate in Y\n' +
+          'T: Change Camera Mode\n' +
+          '-=: Change Camera Focal X\n' +
+          '[]: Change Camera Focal Y\n'+
+          'U: Toggle Camera/Object\n'+
+          'M: Change Light Shading: '+ shadings[tracerObj._currModel[0]]+"\n"+
+          'N: Change Light Model: ' + models[tracerObj._currModel[1]]);
+          break;
+      }
   });
   
   // run animation at 60 fps

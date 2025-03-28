@@ -275,6 +275,7 @@ struct Light {
   direction: vec4f,   // the light direction
   attenuation: vec4f, // the attenuation factors
   params: vec4f,      // other parameters such as cut-off, drop off, area width/height, and radius etc.
+  model: vec4u,
 }
 
 // binding the camera pose
@@ -471,27 +472,64 @@ struct LightInfo {
 // a function to compute the light intensity and direction
 fn getLightInfo(lightPos: vec3f, lightDir: vec3f, hitPoint: vec3f, objectNormal: vec3f) -> LightInfo {
   // Note: here I implemented point light - you should modify this function for different light sources
-  // first, get the source intensity
-  var intensity = light.intensity; 
-  // then, compute the distance between the light source and the hit point
-  var dist = length(hitPoint - lightPos);
-  // next, compute the attenuation factor
-  let factor = light.attenuation[0] + dist * light.attenuation[1] + dist * dist * light.attenuation[2];
-  // now reduce the light intenstiy using the factor
-  intensity /= factor;
-  // compute the view direction
-  var viewDirection = normalize(hitPoint - lightPos);
-  // set the final light info
-  var out: LightInfo;
-  // the final light intensity depends on the view direction
-  out.intensity = intensity * max(dot(viewDirection, -objectNormal), 0);
-  // the final light diretion is the current view direction
-  out.lightdir = viewDirection;
-  return out;
+  if (light.model[1]==0){
+    // first, get the source intensity
+    var intensity = light.intensity; 
+    // then, compute the distance between the light source and the hit point
+    var dist = length(hitPoint - lightPos);
+    // next, compute the attenuation factor
+    let factor = light.attenuation[0] + dist * light.attenuation[1] + dist * dist * light.attenuation[2];
+    // now reduce the light intenstiy using the factor
+    intensity /= factor;
+    // compute the view direction
+    var viewDirection = normalize(hitPoint - lightPos);
+    // set the final light info
+    var out: LightInfo;
+    // the final light intensity depends on the view direction
+    out.intensity = intensity * max(dot(viewDirection, -objectNormal), 0);
+    // the final light diretion is the current view direction
+    out.lightdir = viewDirection;
+    return out;
+  }
+  else if (light.model[1]==1){
+    // first, get the source intensity
+    var intensity = light.intensity; 
+    // compute the view direction
+    var viewDirection = normalize(lightDir);
+    // set the final light info
+    var out: LightInfo;
+    // the final light intensity depends on the view direction
+    out.intensity = intensity * max(dot(viewDirection, -objectNormal), 0);
+    // the final light diretion is the current view direction
+    out.lightdir = viewDirection;
+    return out;
+  }
+  else{
+    // first, get the source intensity
+    var intensity = light.intensity; 
+    // then, compute the distance between the light source and the hit point
+    var dist = length(hitPoint - lightPos);
+    // next, compute the attenuation factor
+    let factor = light.attenuation[0] + dist * light.attenuation[1] + dist * dist * light.attenuation[2];
+    // now reduce the light intenstiy using the factor
+    intensity /= factor;
+    // compute the view direction
+    var viewDirection = normalize(hitPoint - lightPos);
+    // set the final light info
+    var out: LightInfo;
+    
+    if dot(light.direction.xyz ,viewDirection) > cos(light.params[0]){
+      // the final light intensity depends on the view direction
+      out.intensity = intensity * max(pow(dot(viewDirection, -objectNormal), light.params[1]), 0);
+      // the final light diretion is the current view direction
+      out.lightdir = viewDirection;
+    }
+    return out;
+  }
 }
 
 
-fn tone(color: vec4f, bands: f32)->vec4f {
+fn toon(color: vec4f, bands: f32)->vec4f {
     let step= 1. / bands;
     let bandNum=round(color/step);
     return step*bandNum;
@@ -535,7 +573,7 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       // let lightPos = applyMotorToPoint(light.position.xyz, reverse(cameraPose.motor));
       // let lightDir = applyMotorToDir(light.direction.xyz, reverse(cameraPose.motor));
       let lightPos = light.position.xyz;
-      let lightDir= light.position.xyz;
+      let lightDir= light.direction.xyz;
       //   5. transform the hit point to the world coordiantes
       //   Note: the hit point is in the model coordiantes, need to transform back to the world
       var hitPt = spt + rdir * hitInfo.x;
@@ -544,23 +582,36 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       //   Note: I do the light computation in the world coordiantes because the light intensity depends on the distance and angles in the world coordiantes! If you do it in other coordinate system, make sure you transform them properly back to the world one.
       var lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
       //   7. finally, modulate the diffuse color by the light
-      lightInfo.intensity = tone(lightInfo.intensity, 5);
+      // lightInfo.intensity = toon(lightInfo.intensity, 5);
       diffuse *= lightInfo.intensity;
       // last, compute the final color. Here Lambertian = emit + diffuse
-      //PHONG MODEL
-      let R=reflect(lightInfo.lightdir, normal);
-      var specular= vec4f(1, 1, 1, 1)*lightInfo.intensity*pow(dot(rdir, -R),100);
-      specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
-      let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
-      color = emit + diffuse + specular + ambient;
-      // Note: I do not use lightInfo.lightdir here, but you will need it for Phong and tone shading
-      // color = tone(lightInfo.intensity, 5);
+      
+      if (light.model[0]==0){
+        // LAMBERTIAN MODEL
+        color = emit + diffuse;
+      }
+      else if (light.model[0]==1){
+        // PHONG MODEL
+        let R=reflect(lightInfo.lightdir, normal);
+        var specular= vec4f(1, 1, 1, 1)*lightInfo.intensity * pow(dot(rdir, -R),100);
+        specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
+        let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
+        color = emit + diffuse + specular + ambient;
+      }
+      else if (light.model[0]==2){ 
+        // TOON MODEL
+        let R=reflect(lightInfo.lightdir, normal);
+        var specular= vec4f(1, 1, 1, 1)*lightInfo.intensity * pow(dot(rdir, -R),100);
+        specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
+        let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
+        color = emit + diffuse + specular + ambient;
+        color = toon(color,5);
+      }
     }
     // set the final color to the pixel
     textureStore(outTexture, uv, color); 
   }
 }
-
 
 // k_e=Box's Emitted Color
 // k_d= Box's Diffused Color
@@ -584,7 +635,7 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
     let psize = vec2f(2, 2) / cameraPose.res.xy * cameraPose.focal.xy;
     // orthogonal camera ray sent from each pixel center at z = 0
     var spt = vec3f(0, 0, 0);
-    var rdir = vec3f((f32(uv.x) + 0.5) * psize.x - cameraPose.focal.x, (f32(uv.y) + 0.5) * psize.y - cameraPose.focal.y, 1);
+    var rdir = normalize(vec3f((f32(uv.x) + 0.5) * psize.x - cameraPose.focal.x, (f32(uv.y) + 0.5) * psize.y - cameraPose.focal.y, 1));
     // apply transformation
     spt = transformPt(spt);
     rdir = transformDir(rdir);
@@ -611,7 +662,7 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       // let lightPos = applyMotorToPoint(light.position.xyz, reverse(cameraPose.motor));
       // let lightDir = applyMotorToDir(light.direction.xyz, reverse(cameraPose.motor));
       let lightPos = light.position.xyz;
-      let lightDir= light.position.xyz;
+      let lightDir= light.direction.xyz;
       //   5. transform the hit point to the world coordiantes
       //   Note: the hit point is in the model coordiantes, need to transform back to the world
       var hitPt = spt + rdir * hitInfo.x;
@@ -620,17 +671,30 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       //   Note: I do the light computation in the world coordiantes because the light intensity depends on the distance and angles in the world coordiantes! If you do it in other coordinate system, make sure you transform them properly back to the world one.
       var lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
       //   7. finally, modulate the diffuse color by the light
-      lightInfo.intensity = tone(lightInfo.intensity, 5);
+      // lightInfo.intensity = toon(lightInfo.intensity, 5);
       diffuse *= lightInfo.intensity;
       // last, compute the final color. Here Lambertian = emit + diffuse
-      //PHONG MODEL
-      let R=reflect(lightInfo.lightdir, normal);
-      var specular= vec4f(1, 1, 1, 1)*lightInfo.intensity*pow(dot(rdir, -R),100);
-      specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
-      let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
-      color = emit + diffuse + specular + ambient;
-      // Note: I do not use lightInfo.lightdir here, but you will need it for Phong and tone shading
-      // color = tone(color, 5);
+      if (light.model[0]==0){
+        // LAMBERTIAN MODEL
+        color = emit + diffuse;
+      }
+      else if (light.model[0]==1){
+        // PHONG MODEL
+        let R=reflect(lightInfo.lightdir, normal);
+        var specular= vec4f(1, 1, 1, 1)* lightInfo.intensity * pow(dot(rdir, -R),100);
+        specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
+        let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
+        color = emit + diffuse + specular + ambient;
+      }
+      else if (light.model[0]==2){ 
+        // TOON MODEL
+        let R=reflect(lightInfo.lightdir, normal);
+        var specular= vec4f(1, 1, 1, 1)* lightInfo.intensity * pow(dot(rdir, -R),100);
+        specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
+        let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
+        color = emit + diffuse + specular + ambient;
+        color = toon(color,5);
+      }
     }
     // set the final color to the pixel
     textureStore(outTexture, uv, color); 

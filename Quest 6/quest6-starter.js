@@ -158,8 +158,8 @@ async function init() {
         tracerObj.updateCameraFocal();
         break;
       case "u": case "U":
-       toggleMovement= !toggleMovement;
-       console.log(toggleMovement)
+        toggleMovement= !toggleMovement;
+        console.log(toggleMovement)
     }
   });
   // run animation at 60 fps

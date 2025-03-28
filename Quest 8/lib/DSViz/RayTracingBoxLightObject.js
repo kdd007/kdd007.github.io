@@ -30,6 +30,7 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     this._box = new UnitCube();
     this._camera = camera;
     this._showTexture = showTexture;
+    this._currModel=new Uint32Array([0,0,0,0]);
   }
   
   async createGeometry() {
@@ -73,7 +74,7 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     // Note: our light has a common memory layout - check the abstract light class
     this._lightBuffer = this._device.createBuffer({
       label: "Light " + this.getName(),
-      size: 20 * Float32Array.BYTES_PER_ELEMENT,
+      size: 24 * Float32Array.BYTES_PER_ELEMENT,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     }); 
   }
@@ -112,6 +113,8 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     this._device.queue.writeBuffer(this._lightBuffer, offset, light._attenuation);
     offset += light._attenuation.byteLength;
     this._device.queue.writeBuffer(this._lightBuffer, offset, light._params);
+    offset += light._params.byteLength;
+    this._device.queue.writeBuffer(this._lightBuffer, offset, this._currModel);
   }
 
   async createShaders() {
@@ -196,14 +199,21 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     this._wgHeight = Math.ceil(outTexture.height);
   }
   
+  changeModel(){
+    this._currModel[0]=(this._currModel[0]+1)%3;
+  }
+  changeLight(){
+    this._currModel[1]=(this._currModel[1]+1)%3;
+  }
+
   compute(pass) {
     // add to compute pass
     if (this._camera?._isProjective) {
-      console.log("P")
+      // console.log("P")
       pass.setPipeline(this._computeProjectivePipeline);        // set the compute projective pipeline
     }
     else {
-      console.log("O")
+      // console.log("O")
       pass.setPipeline(this._computePipeline);                 // set the compute orthogonal pipeline
     }
     pass.setBindGroup(0, this._bindGroup);                  // bind the buffer
