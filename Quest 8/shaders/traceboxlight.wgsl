@@ -287,6 +287,10 @@ struct Light {
 // binding the Light
 @group(0) @binding(3) var<uniform> light: Light;
 
+@group(0) @binding(4) var wallTex: texture_2d<f32>;
+@group(0) @binding(5) var wallTexNorm: texture_2d<f32>;
+@group(0) @binding(6) var wallTexSpec: texture_2d<f32>;
+
 // a helper function to get the hit point of a ray to a quad
 fn quadRayHitCheck(s: vec3f, d: vec3f, q: Quad, ct: f32) -> vec2f {
   // Note, the quad is axis aligned
@@ -397,12 +401,14 @@ fn boxEmitColor() -> vec4f {
 }
 
 // a function to get the box diffuse color
-fn boxDiffuseColor(idx: i32) -> vec4f {
+fn boxDiffuseColor(idx: i32, hitPoint: vec3f) -> vec4f {
   // my box has different colors for each foace
   var color: vec4f;
   switch(idx) {
     case 0: { //front
-      color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+      let textDim=vec2f(textureDimensions(wallTex,0));
+      // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+      color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0);
       break;
     }
     case 1: { //back
@@ -434,13 +440,20 @@ fn boxDiffuseColor(idx: i32) -> vec4f {
 }
 
 // a function to get the box normal
-fn boxNormal(idx: i32) -> vec3f {
+fn boxNormal(idx: i32, hitPoint: vec3f) -> vec3f {
   // my box's normal is facing inward as I want to see the inside instead of the outside
   // Pay attention here: how you arrange your quad vertices will affect which normal is pointing inward and which is pointing outward! The normal is always relative to how you define your model!
   // if you see your surface is black, try to flip your normal
   switch(idx) {
     case 0: { //front
-      return vec3f(0, 0, -1);
+      let textDim=vec2f(textureDimensions(wallTex,0));
+      // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+      let color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0).xyz-0.75;// Subtract 0.5 to get positive and negative directions
+      var normColor=normalize(color);
+      normColor.x*=-1; 
+      // normColor.y*=-1; 
+      // normColor.z*=-1; 
+      return normColor;
     }
     case 1: { //back
       return -vec3f(0, 0, -1);
@@ -561,9 +574,11 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       let emit = boxEmitColor();
       // then, compute the diffuse color, which depends on the light source
       //   1. get the box diffuse color - i.e. the material property of diffusion on the box
-      var diffuse = boxDiffuseColor(i32(hitInfo.y)); // get the box diffuse property
+      var hitPt = spt + rdir * hitInfo.x;
+      hitPt = transformHitPoint(hitPt);
+      var diffuse = boxDiffuseColor(i32(hitInfo.y),hitPt); // get the box diffuse property
       //   2. get the box normal
-      var normal = boxNormal(i32(hitInfo.y));
+      var normal = boxNormal(i32(hitInfo.y),hitPt);
       //   3. transform the normal to the world coordinates
       //   Note: here it is using the box pose/motor and scale. 
       //         you will need to modify this transformation for different objects
@@ -576,8 +591,6 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       let lightDir= light.direction.xyz;
       //   5. transform the hit point to the world coordiantes
       //   Note: the hit point is in the model coordiantes, need to transform back to the world
-      var hitPt = spt + rdir * hitInfo.x;
-      hitPt = transformHitPoint(hitPt);
       //   6. compute the light information
       //   Note: I do the light computation in the world coordiantes because the light intensity depends on the distance and angles in the world coordiantes! If you do it in other coordinate system, make sure you transform them properly back to the world one.
       var lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
@@ -650,9 +663,11 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       let emit = boxEmitColor(); 
       // then, compute the diffuse color, which depends on the light source
       //   1. get the box diffuse color - i.e. the material property of diffusion on the box
-      var diffuse = boxDiffuseColor(i32(hitInfo.y)); // get the box diffuse property
+      var hitPt = spt + rdir * hitInfo.x;
+      hitPt = transformHitPoint(hitPt);
+      var diffuse = boxDiffuseColor(i32(hitInfo.y), hitPt); // get the box diffuse property
       //   2. get the box normal
-      var normal = boxNormal(i32(hitInfo.y));
+      var normal = boxNormal(i32(hitInfo.y),hitPt);
       //   3. transform the normal to the world coordinates
       //   Note: here it is using the box pose/motor and scale. 
       //         you will need to modify this transformation for different objects
@@ -665,8 +680,6 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       let lightDir= light.direction.xyz;
       //   5. transform the hit point to the world coordiantes
       //   Note: the hit point is in the model coordiantes, need to transform back to the world
-      var hitPt = spt + rdir * hitInfo.x;
-      hitPt = transformHitPoint(hitPt);
       //   6. compute the light information
       //   Note: I do the light computation in the world coordiantes because the light intensity depends on the distance and angles in the world coordiantes! If you do it in other coordinate system, make sure you transform them properly back to the world one.
       var lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);

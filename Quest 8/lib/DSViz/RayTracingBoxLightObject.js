@@ -25,14 +25,19 @@ import RayTracingObject from "/lib/DSViz/RayTracingObject.js"
 import UnitCube from "/lib/DS/UnitCube.js"
 
 export default class RayTracingBoxLightObject extends RayTracingObject {
-  constructor(device, canvasFormat, camera, showTexture = true) {
+  constructor(device, canvasFormat, camera, showTexture = true, imgPath) {
     super(device, canvasFormat);
     this._box = new UnitCube();
     this._camera = camera;
     this._showTexture = showTexture;
+    this._textList=[]
+    for (let i=0; i< imgPath.length; i+=1){
+      var someRandomVar=new Image();
+      someRandomVar.src=imgPath[i];
+      this._textList.push(someRandomVar);
+    }
     this._currModel=new Uint32Array([0,0,0,0]);
   }
-  
   async createGeometry() {
     // Create camera buffer to store the camera pose and scale in GPU
     this._cameraBuffer = this._device.createBuffer({
@@ -77,6 +82,24 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
       size: 24 * Float32Array.BYTES_PER_ELEMENT,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     }); 
+    // await this._img.decode();
+    // this._bitmap= await createImageBitmap(this._img)
+    this._bitmapList=[];
+    this._textureBufferList=[];
+    for (let i=0; i< this._textList.length; i+=1){
+      await this._textList[i].decode();
+      var bitmap= await createImageBitmap(this._textList[i]);
+      this._bitmapList.push(bitmap);
+
+      var textureBuffer=this._device.createTexture({
+        label: "Texture " + this.getName(),
+        size: [this._bitmapList[i].width, this._bitmapList[i].height, 1],
+        format: "rgba8unorm",
+        usage: GPUTextureUsage.TEXTURE_BINDING|GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
+      }); 
+      this._textureBufferList.push(textureBuffer);
+      this._device.queue.copyExternalImageToTexture({source: this._bitmapList[i]}, {texture: this._textureBufferList[i]},[this._bitmapList[i].width, this._bitmapList[i].height]);
+    }
   }
   
   updateGeometry() {
@@ -136,12 +159,24 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
         buffer: {} // Box uniform buffer
       }, {
         binding: 2,
-        visibility: GPUShaderStage.COMPUTE,
+        visibility: GPUShaderStage.COMPUTE, 
         storageTexture: { format: this._canvasFormat } // texture
       }, {
         binding: 3,
         visibility: GPUShaderStage.COMPUTE,
         buffer: {} // Light uniform buffer
+      }, {
+        binding: 4,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // xd4
+      }, {
+        binding: 5,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // xd5
+      }, {
+        binding: 6,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // xd6
       }]
     });
     this._pipelineLayout = this._device.createPipelineLayout({
@@ -170,7 +205,6 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
       }
     });
   }
-
   createBindGroup(outTexture) {
     // Create a bind group
     this._bindGroup = this._device.createBindGroup({
@@ -192,6 +226,18 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
       {
         binding: 3,
         resource: { buffer: this._lightBuffer }
+      },
+      {
+        binding: 4,
+        resource: this._textureBufferList[0].createView()
+      },
+      {
+        binding: 5,
+        resource: this._textureBufferList[1].createView()
+      },
+      {
+        binding: 6,
+        resource: this._textureBufferList[2].createView()
       }
       ],
     });
