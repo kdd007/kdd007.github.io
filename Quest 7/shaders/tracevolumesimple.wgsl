@@ -416,7 +416,7 @@ fn traceScene(uv: vec2i, p: vec3f, d: vec3f) {
 
 
     while (curHit < hits.y) {
-      let curPt: vec3f = p + d * curHit + voxelSize;
+      let curPt: vec3f = p + d * curHit + voxelSize/2 *volInfo.dims.xyz;
 
 
       let vPos = curPt / voxelSize;

@@ -20,8 +20,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-        } 
-     
+        }
+
         .container {
             padding: 20px;
             text-align: center;
@@ -32,7 +32,7 @@
             border-radius: 12px; /* Optional: Adds rounded corners */
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
         }
-     
+
         h1 {
             font-size: 3em;
             margin-bottom: 40px;
@@ -41,7 +41,7 @@
             max-width: 80%;
             font-weight: bold;
         }
-     
+
         button {
             background-color: #2ac584;
             border: 2px solid #1f7a47;
@@ -51,41 +51,42 @@
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            margin: 20px;
+            margin: 10px; /* Reduced margin for better two-row layout */
             cursor: pointer;
             border-radius: 12px;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
-     
+
         button:hover {
             background-color: #2ddd94;
             transform: scale(1.1);
             box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
         }
-     
+
         button:active {
             background-color: #34f9a7;
             transform: scale(1);
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
-     
+
         .button-container {
             display: flex;
+            flex-wrap: wrap; /* Allow buttons to wrap to the next line */
             justify-content: center;
-            gap: 20px;
+            gap: 10px; /* Reduced gap for better two-row layout */
         }
-     
+
         @media (min-width: 1080px) {
             h1 {
                 font-size: 3.5em;
                 max-width: 100%;
             }
-     
+
             .container {
                 margin-top: 50px;
-            } 
+            }
         }
-     </style>     
+     </style>
    </head>
    <body>
        <div class="container">
@@ -97,8 +98,8 @@
                <button onclick="window.location.href='./Quest 4/snowySeason.html';">Control the Snow!</button>
                <button onclick="window.location.href='./Quest 5/concavity.html';">Control Convexity!</button>
                <button onclick="window.location.href='./Quest 6/masterProjection.html';">Master Projection!</button>
-               <button onclick="window.location.href='./Quest 7/quest7-starter.html';">Brain Project!</button>
-               <button onclick="window.location.href='./Quest 8/quest8-starter.html';">!</button>
+               <button onclick="window.location.href='./Quest 7/quest7-starter.html';">Brain Projection!</button>
+               <button onclick="window.location.href='./Quest 8/quest8-starter.html';">Conjure Light!</button>
            </div>
        </div>
    </body>
