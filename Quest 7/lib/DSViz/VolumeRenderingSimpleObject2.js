@@ -21,8 +21,8 @@
  *                                anything the license permits.
  */
 
-import RayTracingObject from "/lib/DSViz/RayTracingObject.js"
-import VolumeData from "/lib/DS/VolumeData.js"
+import RayTracingObject from "./RayTracingObject.js"
+import VolumeData from "../DS/VolumeData.js"
 
 export default class VolumeRenderingSimpleObject extends RayTracingObject {
   constructor(device, canvasFormat, camera) {

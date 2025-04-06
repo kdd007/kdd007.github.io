@@ -26,13 +26,13 @@
 // Chrome & Edge 113+ : Enable Vulkan, Default ANGLE Vulkan, Vulkan from ANGLE, Unsafe WebGPU Support, and WebGPU Developer Features (if exsits)
 // Firefox Nightly: sudo snap install firefox --channel=latext/edge or download from https://www.mozilla.org/en-US/firefox/channel/desktop/
 
-import RayTracer from '/lib/Viz/RayTracer.js'
-import StandardTextObject from '/lib/DSViz/StandardTextObject.js'
-import RayTracingBoxLightObject from '/lib/DSViz/RayTracingBoxLightObject.js'
-import Camera from '/lib/Viz/3DCamera.js'
-import PointLight from '/lib/Viz/PointLight.js'
-import DirectionalLight from '/lib/Viz/DirectionalLight.js'
-import SpotlightLight from '/lib/Viz/SpotLight.js'
+import RayTracer from './lib/Viz/RayTracer.js'
+import StandardTextObject from './lib/DSViz/StandardTextObject.js'
+import RayTracingBoxLightObject from './lib/DSViz/RayTracingBoxLightObject.js'
+import Camera from './lib/Viz/3DCamera.js'
+import PointLight from './lib/Viz/PointLight.js'
+import DirectionalLight from './lib/Viz/DirectionalLight.js'
+import SpotlightLight from './lib/Viz/SpotLight.js'
 
 async function init() {
   // Create a canvas tag
@@ -48,7 +48,7 @@ async function init() {
   // camera._pose[2] = 0.5;
   // camera._pose[3] = 0.5;
   // Create an object to trace
-  var list=["/assets/woodfloor_c.jpg","/assets/woodfloor_n.png","/assets/woodfloor_s_z.png"]
+  var list=["./assets/woodfloor_c.jpg","./assets/woodfloor_n.png","./assets/woodfloor_s_z.png"]
   var tracerObj = new RayTracingBoxLightObject(tracer._device, tracer._canvasFormat, camera, true, list);
   await tracer.setTracerObject(tracerObj);
   // Create a light object and set it to our box light object
