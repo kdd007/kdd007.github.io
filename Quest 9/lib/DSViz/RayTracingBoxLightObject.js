@@ -205,7 +205,27 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
       }, {
         binding: 6,
         visibility: GPUShaderStage.COMPUTE,
-        texture: {} // xd6
+        texture: {} // negx
+      }, {
+        binding: 7,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // negy
+      }, {
+        binding: 8,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // negz
+      }, {
+        binding: 9,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // posx
+      }, {
+        binding: 10,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // posy
+      }, {
+        binding: 11,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // posz
       }]
     });
     this._pipelineLayout = this._device.createPipelineLayout({
@@ -266,7 +286,27 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
       },
       {
         binding: 6,
-        resource: this._textureBufferList[2].createView()
+        resource: this._textureBufferList[3].createView()
+      },
+      {
+        binding: 7,
+        resource: this._textureBufferList[4].createView()
+      },
+      {
+        binding: 8,
+        resource: this._textureBufferList[5].createView()
+      },
+      {
+        binding: 9,
+        resource: this._textureBufferList[6].createView()
+      },
+      {
+        binding: 10,
+        resource: this._textureBufferList[7].createView()
+      },
+      {
+        binding: 11,
+        resource: this._textureBufferList[8].createView()
       }
       ],
     });

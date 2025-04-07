@@ -284,12 +284,18 @@ struct Light {
 @group(0) @binding(1) var<uniform> box: array<Box,2>;
 // binding the output texture to store the ray tracing results
 @group(0) @binding(2) var outTexture: texture_storage_2d<rgba8unorm, write>;
+
 // binding the Light
 @group(0) @binding(3) var<uniform> light: Light;
 
 @group(0) @binding(4) var wallTex: texture_2d<f32>;
 @group(0) @binding(5) var wallTexNorm: texture_2d<f32>;
-@group(0) @binding(6) var wallTexSpec: texture_2d<f32>;
+@group(0) @binding(6) var evoNegX: texture_2d<f32>;
+@group(0) @binding(7) var evoNegY: texture_2d<f32>;
+@group(0) @binding(8) var evoNegZ: texture_2d<f32>;
+@group(0) @binding(9) var evoPosX: texture_2d<f32>;
+@group(0) @binding(10) var evoPosY: texture_2d<f32>;
+@group(0) @binding(11) var evoPosZ: texture_2d<f32>;
 
 // a helper function to get the hit point of a ray to a quad
 fn quadRayHitCheck(s: vec3f, d: vec3f, q: Quad, ct: f32) -> vec2f {
@@ -401,86 +407,160 @@ fn boxEmitColor() -> vec4f {
 }
 
 // a function to get the box diffuse color
-fn boxDiffuseColor(idx: i32, hitPoint: vec3f,box: Box) -> vec4f {
+fn boxDiffuseColor(idx: i32, hitPoint: vec3f, boxIdx: i32) -> vec4f {
   // my box has different colors for each foace
   var color: vec4f;
-  switch(idx) {
-    case 0: { //front
-      let textDim=vec2f(textureDimensions(wallTex,0));
-      // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5*box.scale.xy))/box.scale.xy*textDim),0);
-      break;
+  if (boxIdx==0){
+    switch(idx) {
+      case 0: { //front
+        let textDim=vec2f(textureDimensions(wallTex,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5*box[boxIdx].scale.xy))/box[boxIdx].scale.xy*textDim),0);
+        break;
+      }
+      case 1: { //back
+        let textDim=vec2f(textureDimensions(wallTex,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5*box[boxIdx].scale.xy))/box[boxIdx].scale.xy*textDim),0);
+        break;
+      }
+      case 2: { //left
+        color = vec4f(0.f/255, 130.f/255, 186.f/255, 1.); // Bucknell Blue 2
+        break;
+      }
+      case 3: { //right
+        color = vec4f(89.f/255, 203.f/255, 232.f/255, 1.); // Bucknell Blue 3
+        break;
+      }
+      case 4: { //top
+        color = vec4f(217.f/255, 217.f/255, 214.f/255, 1.); // Bucknell gray 1
+        break;
+      }
+      case 5: { //down
+        color = vec4f(167.f/255, 168.f/255, 170.f/255, 1.); // Bucknell gray 2
+        break;
+      }
+      default: {
+        color = vec4f(0.f/255, 0.f/255, 0.f/255, 1.); // Black
+        break;
+      }
     }
-    case 1: { //back
-      let textDim=vec2f(textureDimensions(wallTex,0));
-      // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5*box.scale.xy))/box.scale.xy*textDim),0);
-      break;
-    }
-    case 2: { //left
-      color = vec4f(0.f/255, 130.f/255, 186.f/255, 1.); // Bucknell Blue 2
-      break;
-    }
-    case 3: { //right
-      color = vec4f(89.f/255, 203.f/255, 232.f/255, 1.); // Bucknell Blue 3
-      break;
-    }
-    case 4: { //top
-      color = vec4f(217.f/255, 217.f/255, 214.f/255, 1.); // Bucknell gray 1
-      break;
-    }
-    case 5: { //down
-      color = vec4f(167.f/255, 168.f/255, 170.f/255, 1.); // Bucknell gray 2
-      break;
-    }
-    default: {
-      color = vec4f(0.f/255, 0.f/255, 0.f/255, 1.); // Black
-      break;
-    }
+    return color;
   }
-  return color;
+  else{
+    switch(idx) {
+      case 0: { //front
+        let textDim=vec2f(textureDimensions(evoNegZ,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        color=textureLoad(evoNegZ, vec2i((hitPoint.xy-vec2f(-0.5*box[boxIdx].scale.xy))/box[boxIdx].scale.xy*textDim),0);
+        break;
+      }
+      case 1: { //back
+        let textDim=vec2f(textureDimensions(evoPosZ,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        color=textureLoad(evoPosZ, vec2i((hitPoint.xy-vec2f(-0.5*box[boxIdx].scale.xy))/box[boxIdx].scale.xy*textDim),0);
+        break;
+      }
+      case 2: { //left
+        let textDim=vec2f(textureDimensions(evoNegX,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        color=textureLoad(evoNegX, vec2i((hitPoint.yz-vec2f(-0.5*box[boxIdx].scale.yz))/box[boxIdx].scale.yz*textDim),0);
+        break;
+      }
+      case 3: { //right
+        let textDim=vec2f(textureDimensions(evoPosX,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        color=textureLoad(evoPosX, vec2i((hitPoint.yz-vec2f(-0.5*box[boxIdx].scale.yz))/box[boxIdx].scale.yz*textDim),0);
+        break;
+      }
+      case 4: { //top
+        let textDim=vec2f(textureDimensions(evoNegY,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        color=textureLoad(evoNegY, vec2i((hitPoint.xz-vec2f(-0.5*box[boxIdx].scale.xz))/box[boxIdx].scale.xz*textDim),0);
+        break;
+      }
+      case 5: { //down
+        let textDim=vec2f(textureDimensions(evoPosY,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        color=textureLoad(evoPosY, vec2i((hitPoint.xz-vec2f(-0.5*box[boxIdx].scale.xz))/box[boxIdx].scale.xz*textDim),0);
+        break;
+      }
+      default: {
+        color = vec4f(0.f/255, 0.f/255, 0.f/255, 1.); // Black
+        break;
+      }
+    }
+    return color;
+  }
 }
 
 // a function to get the box normal
-fn boxNormal(idx: i32, hitPoint: vec3f, box: Box) -> vec3f {
+fn boxNormal(idx: i32, hitPoint: vec3f, boxIdx:i32) -> vec3f {
   // my box's normal is facing inward as I want to see the inside instead of the outside
   // Pay attention here: how you arrange your quad vertices will affect which normal is pointing inward and which is pointing outward! The normal is always relative to how you define your model!
   // if you see your surface is black, try to flip your normal
-  switch(idx) {
-    case 0: { //front
-      let textDim=vec2f(textureDimensions(wallTexNorm,0));
-      // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5*box.scale.xy))/box.scale.xy*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
-      color=normalize(color);
-      // color.x*=-1; 
-      // color.y*=-1; 
-      color.z*=-1; 
-      return color;
+  if (boxIdx==0){
+    switch(idx) {
+      case 0: { //front
+        let textDim=vec2f(textureDimensions(wallTexNorm,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5*box[boxIdx].scale.xy))/box[boxIdx].scale.xy*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
+        color=normalize(color);
+        // color.x*=-1; 
+        // color.y*=-1; 
+        color.z*=-1; 
+        return color;
+      }
+      case 1: { //back
+        let textDim=vec2f(textureDimensions(wallTexNorm,0));
+        // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+        var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5*box[boxIdx].scale.xy))/box[boxIdx].scale.xy*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
+        color=normalize(color);
+        // color.x*=-1; 
+        // color.y*=-1; 
+        // color.z*=-1; 
+        return color;
+      }
+      case 2: { //left
+        return -vec3f(-1, 0, 0);
+      }
+      case 3: { //right
+        return vec3f(-1, 0, 0);
+      }
+      case 4: { //top
+        return vec3f(0, -1, 0);
+      }
+      case 5: { //down
+        return -vec3f(0, -1, 0);
+      }
+      default: {
+        return vec3f(0, 0, 0);
+      }
     }
-    case 1: { //back
-      let textDim=vec2f(textureDimensions(wallTexNorm,0));
-      // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5*box.scale.xy))/box.scale.xy*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
-      color=normalize(color);
-      // color.x*=-1; 
-      // color.y*=-1; 
-      // color.z*=-1; 
-      return color;
-    }
-    case 2: { //left
-      return -vec3f(-1, 0, 0);
-    }
-    case 3: { //right
-      return vec3f(-1, 0, 0);
-    }
-    case 4: { //top
-      return vec3f(0, -1, 0);
-    }
-    case 5: { //down
-      return -vec3f(0, -1, 0);
-    }
-    default: {
-      return vec3f(0, 0, 0);
+  }
+  else{
+    switch(idx) {
+      case 0: {
+        return vec3f(0, 0, -1);
+      }
+      case 1: { //back
+        return -vec3f(0, 0, -1);
+      }
+      case 2: { //left
+        return -vec3f(-1, 0, 0);
+      }
+      case 3: { //right
+        return vec3f(-1, 0, 0);
+      }
+      case 4: { //top
+        return vec3f(0, -1, 0);
+      }
+      case 5: { //down
+        return -vec3f(0, -1, 0);
+      }
+      default: {
+        return vec3f(0, 0, 0);
+      }
     }
   }
 }
@@ -610,9 +690,9 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       var hitPt = spt + rdir * hitInfo.x;
       hitPt = transformHitPoint(hitPt, box[goodBox]);
 
-      var diffuse = boxDiffuseColor(i32(hitInfo.y),hitPt,box[goodBox]); // get the box diffuse property
+      var diffuse = boxDiffuseColor(i32(hitInfo.y),hitPt,goodBox); // get the box diffuse property
       //   2. get the box normal
-      var normal = boxNormal(i32(hitInfo.y),hitPt,box[goodBox]);
+      var normal = boxNormal(i32(hitInfo.y),hitPt,goodBox);
       //   3. transform the normal to the world coordinates
       //   Note: here it is using the box pose/motor and scale. 
       //         you will need to modify this transformation for different objects
@@ -630,9 +710,11 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       var lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
       //   7. finally, modulate the diffuse color by the light
       // lightInfo.intensity = toon(lightInfo.intensity, 5);
+      if (goodBox==1){
+        lightInfo.intensity=vec4f(1,1,1,1);
+      }
       diffuse *= lightInfo.intensity;
       // last, compute the final color. Here Lambertian = emit + diffuse
-      
       if (light.model[0]==0){
         // LAMBERTIAN MODEL
         color = emit + diffuse;
@@ -729,9 +811,9 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       //   1. get the box diffuse color - i.e. the material property of diffusion on the box
       var hitPt = spt + rdir * hitInfo.x;
       hitPt = transformHitPoint(hitPt,box[goodBox]);
-      var diffuse = boxDiffuseColor(i32(hitInfo.y), hitPt,box[goodBox]); // get the box diffuse property
+      var diffuse = boxDiffuseColor(i32(hitInfo.y), hitPt,goodBox); // get the box diffuse property
       //   2. get the box normal
-      var normal = boxNormal(i32(hitInfo.y),hitPt,box[goodBox]);
+      var normal = boxNormal(i32(hitInfo.y),hitPt,goodBox);
       //   3. transform the normal to the world coordinates
       //   Note: here it is using the box pose/motor and scale. 
       //         you will need to modify this transformation for different objects
@@ -747,6 +829,9 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       //   6. compute the light information
       //   Note: I do the light computation in the world coordiantes because the light intensity depends on the distance and angles in the world coordiantes! If you do it in other coordinate system, make sure you transform them properly back to the world one.
       var lightInfo = getLightInfo(lightPos, lightDir, hitPt, normal);
+      if (goodBox==1){
+        lightInfo.intensity=vec4f(1,1,1,1);
+      }
       //   7. finally, modulate the diffuse color by the light
       // lightInfo.intensity = toon(lightInfo.intensity, 5);
       diffuse *= lightInfo.intensity;

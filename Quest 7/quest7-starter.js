@@ -141,6 +141,9 @@ async function init() {
         break;
       case "u": case "U":
        toggleMovement= !toggleMovement;
+      case "b": case "B":
+        console.log("Toggle Brain");
+        tracerObj.toggleModel();
     }
   });
 

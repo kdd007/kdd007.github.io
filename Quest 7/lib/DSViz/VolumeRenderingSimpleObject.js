@@ -29,6 +29,7 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
     super(device, canvasFormat);
     this._volume = new VolumeData('./assets/brainweb-t1-1mm-pn0-rf0.raws');
     this._camera = camera;
+    this.currModel=new Float32Array(1).fill(0);
   }
   
   async createGeometry() {
@@ -57,9 +58,16 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
       size: this._volume._data.length * Float32Array.BYTES_PER_ELEMENT,
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
+
+    this._toggleBuffer = this._device.createBuffer({
+      label: "Toggle " + this.getName(),
+      size: Int32Array.BYTES_PER_ELEMENT,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
     // Copy from CPU to GPU
     // Note, here we make use of the offset to copy them over one by one
     this._device.queue.writeBuffer(this._dataBuffer, 0, new Float32Array(this._volume._data));
+    this._device.queue.writeBuffer(this._toggleBuffer, 0, this.currModel);
   }
   
   updateGeometry() {
@@ -101,7 +109,12 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
         binding: 3,
         visibility: GPUShaderStage.COMPUTE,
         storageTexture: { format: this._canvasFormat } // texture
-      }]
+      }, {
+          binding: 4,
+          visibility: GPUShaderStage.COMPUTE,
+          buffer: {buffer: this._toggleBuffer} 
+        }
+      ]
     });
     this._pipelineLayout = this._device.createPipelineLayout({
       label: "Ray Trace Volume Pipeline Layout",
@@ -151,13 +164,20 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
       {
         binding: 3,
         resource: outTexture.createView()
+      },
+      {
+        binding: 4,
+        resource: { buffer: this._toggleBuffer }
       }
       ],
     });
     this._wgWidth = Math.ceil(outTexture.width);
     this._wgHeight = Math.ceil(outTexture.height);
   }
-  
+  toggleModel(){
+    this.currModel[0]=(this.currModel[0]+1)%(2);
+    this._device.queue.writeBuffer(this._toggleBuffer, 0, this.currModel);
+  }
   compute(pass) {
     // add to compute pass
     if (this._camera?._isProjective) {

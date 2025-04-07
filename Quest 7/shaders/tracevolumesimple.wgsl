@@ -291,6 +291,7 @@ struct VolInfo {
 @group(0) @binding(2) var<storage> volData: array<f32>;
 // binding the output texture to store the ray tracing results
 @group(0) @binding(3) var outTexture: texture_storage_2d<rgba8unorm, write>;
+@group(0) @binding(4) var<uniform> toggleModel: f32;
 
 
 // a function to transform the direction to the model coordiantes
@@ -407,44 +408,47 @@ fn traceScene(uv: vec2i, p: vec3f, d: vec3f) {
   if (hits.x >= 0) {
     const maxIntensity: f32 = 4095.;
 
-
-    var curHit: f32 = hits.x + EPSILON;
-    // let halfSize = volInfo.dims.xyz * volInfo.sizes.xyz * 0.5
-    //                / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z);
-    let voxelSize: vec3f = volInfo.sizes.xyz / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z); // normalized voxel size
-    var curIntensity: f32 = 0.;
-
-
-    while (curHit < hits.y) {
-      let curPt: vec3f = p + d * curHit + voxelSize/2 *volInfo.dims.xyz;
+    if (toggleModel==0){
+      var curHit: f32 = hits.x + EPSILON;
+      // let halfSize = volInfo.dims.xyz * volInfo.sizes.xyz * 0.5
+      //                / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z);
+      let voxelSize: vec3f = volInfo.sizes.xyz / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z); // normalized voxel size
+      var curIntensity: f32 = 0.;
 
 
-      let vPos = curPt / voxelSize;
-      // let vPos = (curPt / halfSize + 1) * 0.5 * volInfo.dims.xyz;
-      let vIdx: i32 = i32(vPos.z) * i32(volInfo.dims.x * volInfo.dims.y)
-                      + i32(vPos.y) * i32(volInfo.dims.x)
-                      + i32(vPos.x);
+      while (curHit < hits.y) {
+        let curPt: vec3f = p + d * curHit + voxelSize/2 *volInfo.dims.xyz;
 
 
-      curIntensity = max(curIntensity, volData[vIdx]);
+        let vPos = curPt / voxelSize;
+        // let vPos = (curPt / halfSize + 1) * 0.5 * volInfo.dims.xyz;
+        let vIdx: i32 = i32(vPos.z) * i32(volInfo.dims.x * volInfo.dims.y)
+                        + i32(vPos.y) * i32(volInfo.dims.x)
+                        + i32(vPos.x);
 
 
-      var minCorner = floor(vPos);
-      var maxCorner = ceil(vPos);
-      curHit = getNextHitValue(hits.x, curHit, minCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy); // xy
-      curHit = getNextHitValue(hits.x, curHit, maxCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy);
-      curHit = getNextHitValue(hits.x, curHit, minCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz); // yz
-      curHit = getNextHitValue(hits.x, curHit, maxCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz);
-      curHit = getNextHitValue(hits.x, curHit, minCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz); // xz
-      curHit = getNextHitValue(hits.x, curHit, maxCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz);
+        curIntensity = max(curIntensity, volData[vIdx]);
 
 
-      curHit += 0.005;
+        var minCorner = floor(vPos);
+        var maxCorner = ceil(vPos);
+        curHit = getNextHitValue(hits.x, curHit, minCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy); // xy
+        curHit = getNextHitValue(hits.x, curHit, maxCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy);
+        curHit = getNextHitValue(hits.x, curHit, minCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz); // yz
+        curHit = getNextHitValue(hits.x, curHit, maxCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz);
+        curHit = getNextHitValue(hits.x, curHit, minCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz); // xz
+        curHit = getNextHitValue(hits.x, curHit, maxCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz);
+
+
+        curHit += 0.005;
+      }
+      curIntensity /= maxIntensity;
+      color = vec4f(curIntensity, curIntensity, curIntensity, 1.);
     }
-    curIntensity /= maxIntensity;
-    color = vec4f(curIntensity, curIntensity, curIntensity, 1.);
-    // let diff = hits.y-hits.x;
-    // color=vec4f(diff, 1-diff, 0, 1);  
+    else if (toggleModel==1){
+      let diff = hits.y-hits.x;
+      color=vec4f(diff, 1-diff, 0, 1);
+    }  
   }
   else {
     color = vec4f(0.f/255, 56.f/255, 101.f/255, 1.); // Bucknell Blue
