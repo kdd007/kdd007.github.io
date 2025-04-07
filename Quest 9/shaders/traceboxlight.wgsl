@@ -281,7 +281,7 @@ struct Light {
 // binding the camera pose
 @group(0) @binding(0) var<uniform> cameraPose: Camera ;
 // binding the box
-@group(0) @binding(1) var<uniform> box: Box;
+@group(0) @binding(1) var<uniform> box: array<Box,2>;
 // binding the output texture to store the ray tracing results
 @group(0) @binding(2) var outTexture: texture_storage_2d<rgba8unorm, write>;
 // binding the Light
@@ -346,47 +346,47 @@ fn quadRayHitCheck(s: vec3f, d: vec3f, q: Quad, ct: f32) -> vec2f {
 }
 
 // a function to transform the direction to the model coordiantes
-fn transformDir(d: vec3f) -> vec3f {
+fn transformDir(d: vec3f, currBox: Box) -> vec3f {
   // transform the direction using the camera pose
   var out = applyMotorToDir(d, cameraPose.motor);
   // transform it using the object pose
-  out = applyMotorToDir(out, reverse(box.motor));
-  out /= box.scale.xyz;
+  out = applyMotorToDir(out, reverse(currBox.motor));
+  out /= currBox.scale.xyz;
   return out;
 }
 
 // a function to transform the start pt to the model coordiantes
-fn transformPt(pt: vec3f) -> vec3f {
+fn transformPt(pt: vec3f, currBox: Box) -> vec3f {
   // transform the point using the camera pose
   var out = applyMotorToPoint(pt, cameraPose.motor);
   // transform it using the object pose
-  out = applyMotorToPoint(out, reverse(box.motor));
-  out /= box.scale.xyz;
+  out = applyMotorToPoint(out, reverse(currBox.motor));
+  out /= currBox.scale.xyz;
   return out;
 }
 
 // a function to transform normal to the world coordiantes
-fn transformNormal(n: vec3f) -> vec3f {
-  var out = n * box.scale.xyz;
-  out = applyMotorToDir(out, box.motor);
+fn transformNormal(n: vec3f, currBox: Box) -> vec3f {
+  var out = n * currBox.scale.xyz;
+  out = applyMotorToDir(out, currBox.motor);
   return normalize(out);
 }
 
 // a function to transform hit point to the world coordiantes
-fn transformHitPoint(pt: vec3f) -> vec3f {
-  var out = pt * box.scale.xyz;
-  out = applyMotorToPoint(out, box.motor);
+fn transformHitPoint(pt: vec3f, currBox: Box) -> vec3f {
+  var out = pt * currBox.scale.xyz;
+  out = applyMotorToPoint(out, currBox.motor);
   return out;
 }
 
 // a function to compute the ray box intersection
-fn rayBoxIntersection(s: vec3f, d: vec3f) -> vec2f { // output is (t, idx)
+fn rayBoxIntersection(s: vec3f, d: vec3f, currBox: Box) -> vec2f { // output is (t, idx)
   // t is the hit value, idx is the fact it hits
   // here we have six planes to check and we keep the cloest hit point
   var t = -1.;
   var idx = -1.;
   for (var i = 0; i < 6; i++) {
-    let info = quadRayHitCheck(s, d, box.faces[i], t);
+    let info = quadRayHitCheck(s, d, currBox.faces[i], t);
     if (info.y > 0) {
       t = info.x;
       idx = f32(i);
@@ -401,20 +401,20 @@ fn boxEmitColor() -> vec4f {
 }
 
 // a function to get the box diffuse color
-fn boxDiffuseColor(idx: i32, hitPoint: vec3f) -> vec4f {
+fn boxDiffuseColor(idx: i32, hitPoint: vec3f,box: Box) -> vec4f {
   // my box has different colors for each foace
   var color: vec4f;
   switch(idx) {
     case 0: { //front
       let textDim=vec2f(textureDimensions(wallTex,0));
       // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0);
+      color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5*box.scale.xy))/box.scale.xy*textDim),0);
       break;
     }
     case 1: { //back
       let textDim=vec2f(textureDimensions(wallTex,0));
       // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0);
+      color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5*box.scale.xy))/box.scale.xy*textDim),0);
       break;
     }
     case 2: { //left
@@ -442,7 +442,7 @@ fn boxDiffuseColor(idx: i32, hitPoint: vec3f) -> vec4f {
 }
 
 // a function to get the box normal
-fn boxNormal(idx: i32, hitPoint: vec3f) -> vec3f {
+fn boxNormal(idx: i32, hitPoint: vec3f, box: Box) -> vec3f {
   // my box's normal is facing inward as I want to see the inside instead of the outside
   // Pay attention here: how you arrange your quad vertices will affect which normal is pointing inward and which is pointing outward! The normal is always relative to how you define your model!
   // if you see your surface is black, try to flip your normal
@@ -450,7 +450,7 @@ fn boxNormal(idx: i32, hitPoint: vec3f) -> vec3f {
     case 0: { //front
       let textDim=vec2f(textureDimensions(wallTexNorm,0));
       // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
+      var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5*box.scale.xy))/box.scale.xy*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
       color=normalize(color);
       // color.x*=-1; 
       // color.y*=-1; 
@@ -460,7 +460,7 @@ fn boxNormal(idx: i32, hitPoint: vec3f) -> vec3f {
     case 1: { //back
       let textDim=vec2f(textureDimensions(wallTexNorm,0));
       // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
+      var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5*box.scale.xy))/box.scale.xy*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
       color=normalize(color);
       // color.x*=-1; 
       // color.y*=-1; 
@@ -489,6 +489,7 @@ fn boxNormal(idx: i32, hitPoint: vec3f) -> vec3f {
 struct LightInfo {
   intensity: vec4f, // the final light intensity
   lightdir: vec3f, // the final light direction
+  dist: f32, // the final light dist
 }
 
 // a function to compute the light intensity and direction
@@ -511,6 +512,7 @@ fn getLightInfo(lightPos: vec3f, lightDir: vec3f, hitPoint: vec3f, objectNormal:
     out.intensity = intensity * max(dot(viewDirection, -objectNormal), 0);
     // the final light diretion is the current view direction
     out.lightdir = viewDirection;
+    out.dist= dot(hitPoint - lightPos,hitPoint - lightPos); 
     return out;
   }
   else if (light.model[1]==1){
@@ -524,6 +526,8 @@ fn getLightInfo(lightPos: vec3f, lightDir: vec3f, hitPoint: vec3f, objectNormal:
     out.intensity = intensity * max(dot(viewDirection, -objectNormal), 0);
     // the final light diretion is the current view direction
     out.lightdir = viewDirection;
+    out.dist= dot(hitPoint - lightPos,hitPoint - lightPos); 
+
     return out;
   }
   else{
@@ -546,6 +550,7 @@ fn getLightInfo(lightPos: vec3f, lightDir: vec3f, hitPoint: vec3f, objectNormal:
       // the final light diretion is the current view direction
       out.lightdir = viewDirection;
     }
+    out.dist= dot(hitPoint - lightPos,hitPoint - lightPos); 
     return out;
   }
 }
@@ -567,13 +572,32 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
     // compute the pixel size
     let psize = vec2f(2, 2) / cameraPose.res.xy;
     // orthogonal camera ray sent from each pixel center at z = 0
-    var spt = vec3f((f32(uv.x) + 0.5) * psize.x - 1, (f32(uv.y) + 0.5) * psize.y - 1, 0);
-    var rdir = vec3f(0, 0, 1);
+    var startSpt = vec3f((f32(uv.x) + 0.5) * psize.x - 1, (f32(uv.y) + 0.5) * psize.y - 1, 0);
+    var startRDir = vec3f(0, 0, 1);
+
+    var spt=vec3f(0,0,0);
+    var rdir=vec3f(0,0,0);
+    var hitInfo=vec2f(1000000,0);
+    var goodBox=0;
     // apply transformation
-    spt = transformPt(spt);
-    rdir = transformDir(rdir);
-    // compute the intersection to the object
-    var hitInfo = rayBoxIntersection(spt, rdir);
+    for (var i=0 ; i<2; i+=1){
+      var currSpt = transformPt(startSpt, box[i]); ///
+      var currRDir = transformDir(startRDir,box[i]);///
+      // compute the intersection to the object
+      var currHitInfo = rayBoxIntersection(currSpt, currRDir, box[i]);///
+      if (hitInfo.x==0) {
+        spt=currSpt;
+        rdir=currRDir;
+        hitInfo=currHitInfo;
+        goodBox=i;
+      }
+      else if ((currHitInfo.x < hitInfo.x) && currHitInfo.x != -1) {
+        spt=currSpt;
+        rdir=currRDir;
+        hitInfo=currHitInfo;
+        goodBox=i;
+      }
+    }
     // assign colors
     var color = vec4f(0.f/255, 56.f/255, 101.f/255, 1.); // Bucknell Blue
     if (hitInfo.x > 0) { // if there is a hit
@@ -584,14 +608,15 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       // then, compute the diffuse color, which depends on the light source
       //   1. get the box diffuse color - i.e. the material property of diffusion on the box
       var hitPt = spt + rdir * hitInfo.x;
-      hitPt = transformHitPoint(hitPt);
-      var diffuse = boxDiffuseColor(i32(hitInfo.y),hitPt); // get the box diffuse property
+      hitPt = transformHitPoint(hitPt, box[goodBox]);
+
+      var diffuse = boxDiffuseColor(i32(hitInfo.y),hitPt,box[goodBox]); // get the box diffuse property
       //   2. get the box normal
-      var normal = boxNormal(i32(hitInfo.y),hitPt);
+      var normal = boxNormal(i32(hitInfo.y),hitPt,box[goodBox]);
       //   3. transform the normal to the world coordinates
       //   Note: here it is using the box pose/motor and scale. 
       //         you will need to modify this transformation for different objects
-      normal = transformNormal(normal);
+      normal = transformNormal(normal,box[goodBox]);
       //   4. transform the light to the world coordinates
       //   Note: My light is stationary, so Icancel the camera movement to keep it stationary
       // let lightPos = applyMotorToPoint(light.position.xyz, reverse(cameraPose.motor));
@@ -631,13 +656,14 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
       }
       else if (light.model[0]==3){
         // BLINN-PHONG MODEL
-        let R=reflect(lightInfo.lightdir, normal);
+        // let R=reflect(lightInfo.lightdir, normal);
         let viewDir= normalize(-hitPt);
+        var dist= lightInfo.dist;
         let halfDir = normalize(lightInfo.lightdir + viewDir);
-        var specular= vec4f(1, 1, 1, 1)* lightInfo.intensity * pow(dot(rdir, -R),100);
-
+        var specular= vec4f(1, 1, 1, 1)* lightInfo.intensity * pow(dot(halfDir, normal), 100);
+        specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
         let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
-        color= emit + diffuse + ambient;
+        color= emit + diffuse + specular;
       }
     }
     // set the final color to the pixel
@@ -666,13 +692,32 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
     // compute the pixel size
     let psize = vec2f(2, 2) / cameraPose.res.xy * cameraPose.focal.xy;
     // orthogonal camera ray sent from each pixel center at z = 0
-    var spt = vec3f(0, 0, 0);
-    var rdir = normalize(vec3f((f32(uv.x) + 0.5) * psize.x - cameraPose.focal.x, (f32(uv.y) + 0.5) * psize.y - cameraPose.focal.y, 1));
+    var startSpt = vec3f(0, 0, 0);
+    var startRDir = normalize(vec3f((f32(uv.x) + 0.5) * psize.x - cameraPose.focal.x, (f32(uv.y) + 0.5) * psize.y - cameraPose.focal.y, 1));
+
+    var spt=vec3f(0,0,0);
+    var rdir=vec3f(0,0,0);
+    var hitInfo=vec2f(1000000,0);
+    var goodBox=0;
     // apply transformation
-    spt = transformPt(spt);
-    rdir = transformDir(rdir);
-    /////////////////////////
-    var hitInfo = rayBoxIntersection(spt, rdir);
+    for (var i=0 ; i<2; i+=1){
+      var currSpt = transformPt(startSpt, box[i]); ///
+      var currRDir = transformDir(startRDir,box[i]);///
+      // compute the intersection to the object
+      var currHitInfo = rayBoxIntersection(currSpt, currRDir, box[i]);///
+      if (hitInfo.x==0) {
+        spt=currSpt;
+        rdir=currRDir;
+        hitInfo=currHitInfo;
+        goodBox=i;
+      }
+      else if ((currHitInfo.x < hitInfo.x) && currHitInfo.x != -1) {
+        spt=currSpt;
+        rdir=currRDir;
+        hitInfo=currHitInfo;
+        goodBox=i;
+      }
+    }
     // assign colors
     var color = vec4f(0.f/255, 56.f/255, 101.f/255, 1.); // Bucknell Blue
     if (hitInfo.x > 0) { // if there is a hit
@@ -683,14 +728,14 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       // then, compute the diffuse color, which depends on the light source
       //   1. get the box diffuse color - i.e. the material property of diffusion on the box
       var hitPt = spt + rdir * hitInfo.x;
-      hitPt = transformHitPoint(hitPt);
-      var diffuse = boxDiffuseColor(i32(hitInfo.y), hitPt); // get the box diffuse property
+      hitPt = transformHitPoint(hitPt,box[goodBox]);
+      var diffuse = boxDiffuseColor(i32(hitInfo.y), hitPt,box[goodBox]); // get the box diffuse property
       //   2. get the box normal
-      var normal = boxNormal(i32(hitInfo.y),hitPt);
+      var normal = boxNormal(i32(hitInfo.y),hitPt,box[goodBox]);
       //   3. transform the normal to the world coordinates
       //   Note: here it is using the box pose/motor and scale. 
       //         you will need to modify this transformation for different objects
-      normal = transformNormal(normal);
+      normal = transformNormal(normal, box[goodBox]);
       //   4. transform the light to the world coordinates
       //   Note: My light is stationary, so Icancel the camera movement to keep it stationary
       // let lightPos = applyMotorToPoint(light.position.xyz, reverse(cameraPose.motor));
@@ -729,13 +774,14 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
       }
       else if (light.model[0]==3){
         // BLINN-PHONG MODEL
-        let R=reflect(lightInfo.lightdir, normal);
-        let viewDir= normalize(-hitPt);
+        // let R=reflect(lightInfo.lightdir, normal);
+        let viewDir= normalize(hitPt);
+        var dist= lightInfo.dist;
         let halfDir = normalize(lightInfo.lightdir + viewDir);
-        var specular= vec4f(1, 1, 1, 1)* lightInfo.intensity * pow(dot(rdir, -R),100);
-
+        var specular= vec4f(1, 1, 1, 1)* lightInfo.intensity * pow(dot(halfDir, -normal), 100);
+        specular = clamp(specular, vec4f(0, 0, 0, 0) , vec4f(1, 1, 1, 1));
         let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
-        color= emit + diffuse + ambient;
+        color= emit + diffuse + specular;
       }
     }
     // set the final color to the pixel

@@ -21,12 +21,12 @@
  *                                anything the license permits.
  */
  
-export default class UnitCube {
+export default class SmallUnitCube {
   constructor() {
     // Create the UnitCube vertices using two triangles
-    this._pose = new Float32Array(Array(8).fill(0)); 
-    // this pose has [pos x, pos y, pos z, dummy, angle x, angle y, angle z, dummy]
-    this._scales = new Float32Array(Array(4).fill(1));
+    this._pose = new Float32Array(Array(16).fill(0));
+    this._pose[0] = 1;
+    this._scales = new Float32Array(Array(4).fill(1000000));
     this._front = new Float32Array([
     // x, y, z, w
       -0.5, -0.5, 0.5, 1,
@@ -72,6 +72,6 @@ export default class UnitCube {
   }
   
   updatePose(newPose) {
-    for (let i = 0; i < 8; ++i) this._pose[i] = newPose[i];
+    for (let i = 0; i < 16; ++i) this._pose[i] = newPose[i];
   }
 }

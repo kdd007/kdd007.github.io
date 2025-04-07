@@ -30,7 +30,7 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     super(device, canvasFormat);
     // this._box = new UnitCube();
     // this._secondBox= new SmallUnitCube();
-    this._box=[new UnitCube(),new SmallUnitCube()];
+    this._box=[new UnitCube(), new SmallUnitCube()];
     this._camera = camera;
     this._showTexture = showTexture;
     this._textList=[]
@@ -57,7 +57,7 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     // Note, here we combine all the information in one buffer
     this._boxBuffer = this._device.createBuffer({
       label: "Box " + this.getName(),
-      size: this._box[0]._pose.byteLength + this._box[0]._scales.byteLength + this._box[0]._top.byteLength * 6,
+      size: 2*(this._box[0]._pose.byteLength + this._box[0]._scales.byteLength + this._box[0]._top.byteLength * 6),
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
 
@@ -84,23 +84,23 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._top);
     offset += this._box[0]._top.byteLength;
     this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._down);
+    offset += this._box[0]._top.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._pose);
+    offset += this._box[1]._pose.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._scales);
+    offset += this._box[1]._scales.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._front);
+    offset += this._box[1]._front.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._back);
+    offset += this._box[1]._back.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._left);
+    offset += this._box[1]._left.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._right);
+    offset += this._box[1]._right.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._top);
+    offset += this._box[1]._top.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._down);
 
-    // offset = 0;
-    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._pose);
-    // offset += this._secondBox._pose.byteLength;
-    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._scales);
-    // offset += this._secondBox._scales.byteLength;
-    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._front);
-    // offset += this._secondBox._front.byteLength;
-    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._back);
-    // offset += this._secondBox._back.byteLength;
-    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._left);
-    // offset += this._secondBox._left.byteLength;
-    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._right);
-    // offset += this._secondBox._right.byteLength;
-    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._top);
-    // offset += this._secondBox._top.byteLength;
-    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._down);
     // Create light buffer to store the light in GPU
     // Note: our light has a common memory layout - check the abstract light class
     this._lightBuffer = this._device.createBuffer({
@@ -136,10 +136,12 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
   
   updateBoxPose() {
     this._device.queue.writeBuffer(this._box[0]._poseBuffer, 0, this._box[0]._pose);
+    this._device.queue.writeBuffer(this._box[1]._poseBuffer, 0, this._box[1]._pose);
   }
   
   updateBoxScales() {
     this._device.queue.writeBuffer(this._boxBuffer, this._box[0]._pose.byteLength, this._box[0]._scales);
+    this._device.queue.writeBuffer(this._boxBuffer, this._box[1]._pose.byteLength, this._box[1]._scales);
   }
 
   

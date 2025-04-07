@@ -23,11 +23,14 @@
 
 import RayTracingObject from "./RayTracingObject.js"
 import UnitCube from "../DS/UnitCube.js"
+import SmallUnitCube from "../DS/UnitCube2.js";
 
 export default class RayTracingBoxLightObject extends RayTracingObject {
   constructor(device, canvasFormat, camera, showTexture = true, imgPath) {
     super(device, canvasFormat);
-    this._box = new UnitCube();
+    // this._box = new UnitCube();
+    // this._secondBox= new SmallUnitCube();
+    this._box=[new UnitCube(), new SmallUnitCube()];
     this._camera = camera;
     this._showTexture = showTexture;
     this._textList=[]
@@ -54,27 +57,50 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     // Note, here we combine all the information in one buffer
     this._boxBuffer = this._device.createBuffer({
       label: "Box " + this.getName(),
-      size: this._box._pose.byteLength + this._box._scales.byteLength + this._box._top.byteLength * 6,
+      size: 2*(this._box[0]._pose.byteLength + this._box[0]._scales.byteLength + this._box[0]._top.byteLength * 6),
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
+
+    // this._secondBoxBuffer = this._device.createBuffer({
+    //   label: "Box " + this.getName(),
+    //   size: this._secondBox._pose.byteLength + this._secondBox._scales.byteLength + this._secondBox._top.byteLength * 6,
+    //   usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    // });
     // Copy from CPU to GPU
     // Note, here we make use of the offset to copy them over one by one
     let offset = 0;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._pose);
-    offset += this._box._pose.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._scales);
-    offset += this._box._scales.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._front);
-    offset += this._box._front.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._back);
-    offset += this._box._back.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._left);
-    offset += this._box._left.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._right);
-    offset += this._box._right.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._top);
-    offset += this._box._top.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._down);
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._pose);
+    offset += this._box[0]._pose.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._scales);
+    offset += this._box[0]._scales.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._front);
+    offset += this._box[0]._front.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._back);
+    offset += this._box[0]._back.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._left);
+    offset += this._box[0]._left.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._right);
+    offset += this._box[0]._right.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._top);
+    offset += this._box[0]._top.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._down);
+    offset += this._box[0]._top.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._pose);
+    offset += this._box[1]._pose.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._scales);
+    offset += this._box[1]._scales.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._front);
+    offset += this._box[1]._front.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._back);
+    offset += this._box[1]._back.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._left);
+    offset += this._box[1]._left.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._right);
+    offset += this._box[1]._right.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._top);
+    offset += this._box[1]._top.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[1]._down);
+
     // Create light buffer to store the light in GPU
     // Note: our light has a common memory layout - check the abstract light class
     this._lightBuffer = this._device.createBuffer({
@@ -109,12 +135,15 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
   }
   
   updateBoxPose() {
-    this._device.queue.writeBuffer(this._boxBuffer, 0, this._box._pose);
+    this._device.queue.writeBuffer(this._box[0]._poseBuffer, 0, this._box[0]._pose);
+    this._device.queue.writeBuffer(this._box[1]._poseBuffer, 0, this._box[1]._pose);
   }
   
   updateBoxScales() {
-    this._device.queue.writeBuffer(this._boxBuffer, this._box._pose.byteLength, this._box._scales);
+    this._device.queue.writeBuffer(this._boxBuffer, this._box[0]._pose.byteLength, this._box[0]._scales);
+    this._device.queue.writeBuffer(this._boxBuffer, this._box[1]._pose.byteLength, this._box[1]._scales);
   }
+
   
   updateCameraPose() {
     this._device.queue.writeBuffer(this._cameraBuffer, 0, this._camera._pose);
@@ -176,7 +205,27 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
       }, {
         binding: 6,
         visibility: GPUShaderStage.COMPUTE,
-        texture: {} // xd6
+        texture: {} // negx
+      }, {
+        binding: 7,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // negy
+      }, {
+        binding: 8,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // negz
+      }, {
+        binding: 9,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // posx
+      }, {
+        binding: 10,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // posy
+      }, {
+        binding: 11,
+        visibility: GPUShaderStage.COMPUTE,
+        texture: {} // posz
       }]
     });
     this._pipelineLayout = this._device.createPipelineLayout({
@@ -237,7 +286,27 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
       },
       {
         binding: 6,
-        resource: this._textureBufferList[2].createView()
+        resource: this._textureBufferList[3].createView()
+      },
+      {
+        binding: 7,
+        resource: this._textureBufferList[4].createView()
+      },
+      {
+        binding: 8,
+        resource: this._textureBufferList[5].createView()
+      },
+      {
+        binding: 9,
+        resource: this._textureBufferList[6].createView()
+      },
+      {
+        binding: 10,
+        resource: this._textureBufferList[7].createView()
+      },
+      {
+        binding: 11,
+        resource: this._textureBufferList[8].createView()
       }
       ],
     });
