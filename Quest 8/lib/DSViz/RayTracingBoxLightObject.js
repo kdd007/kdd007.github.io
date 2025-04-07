@@ -246,7 +246,7 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
   }
   
   changeModel(){
-    this._currModel[0]=(this._currModel[0]+1)%3;
+    this._currModel[0]=(this._currModel[0]+1)%4;
   }
   changeLight(){
     this._currModel[1]=(this._currModel[1]+1)%3;

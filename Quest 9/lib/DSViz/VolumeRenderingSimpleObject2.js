@@ -77,7 +77,7 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
   }
 
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/tracevolumesimple2.wgsl");
+    let shaderCode = await this.loadShader("./shaders/tracevolumesimple2.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,

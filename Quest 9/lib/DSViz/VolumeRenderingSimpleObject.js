@@ -21,13 +21,13 @@
  *                                anything the license permits.
  */
 
-import RayTracingObject from "/lib/DSViz/RayTracingObject.js"
-import VolumeData from "/lib/DS/VolumeData.js"
+import RayTracingObject from "./lib/DSViz/RayTracingObject.js"
+import VolumeData from "./lib/DS/VolumeData.js"
 
 export default class VolumeRenderingSimpleObject extends RayTracingObject {
   constructor(device, canvasFormat, camera) {
     super(device, canvasFormat);
-    this._volume = new VolumeData('/assets/brainweb-t1-1mm-pn0-rf0.raws');
+    this._volume = new VolumeData('./assets/brainweb-t1-1mm-pn0-rf0.raws');
     this._camera = camera;
   }
   
@@ -77,7 +77,7 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
   }
 
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/tracevolumesimple.wgsl");
+    let shaderCode = await this.loadShader("./shaders/tracevolumesimple.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,
@@ -161,9 +161,11 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
   compute(pass) {
     // add to compute pass
     if (this._camera?._isProjective) {
+      console.log("P")
       pass.setPipeline(this._computeProjectivePipeline);        // set the compute projective pipeline
     }
     else {
+      console.log("O")
       pass.setPipeline(this._computePipeline);                 // set the compute orthogonal pipeline
     }
     pass.setBindGroup(0, this._bindGroup);                  // bind the buffer

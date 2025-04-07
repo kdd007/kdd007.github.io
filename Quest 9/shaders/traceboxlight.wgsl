@@ -412,7 +412,9 @@ fn boxDiffuseColor(idx: i32, hitPoint: vec3f) -> vec4f {
       break;
     }
     case 1: { //back
-      color = vec4f(255.f/255, 163.f/255, 0.f/255, 1.); // Bucknell Orange 2
+      let textDim=vec2f(textureDimensions(wallTex,0));
+      // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+      color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0);
       break;
     }
     case 2: { //left
@@ -446,17 +448,24 @@ fn boxNormal(idx: i32, hitPoint: vec3f) -> vec3f {
   // if you see your surface is black, try to flip your normal
   switch(idx) {
     case 0: { //front
-      let textDim=vec2f(textureDimensions(wallTex,0));
+      let textDim=vec2f(textureDimensions(wallTexNorm,0));
       // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
-      let color=textureLoad(wallTex, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0).xyz-0.75;// Subtract 0.5 to get positive and negative directions
-      var normColor=normalize(color);
-      normColor.x*=-1; 
-      // normColor.y*=-1; 
-      // normColor.z*=-1; 
-      return normColor;
+      var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
+      color=normalize(color);
+      // color.x*=-1; 
+      // color.y*=-1; 
+      color.z*=-1; 
+      return color;
     }
     case 1: { //back
-      return -vec3f(0, 0, -1);
+      let textDim=vec2f(textureDimensions(wallTexNorm,0));
+      // color = vec4f(232.f/255, 119.f/255, 34.f/255, 1.); // Bucknell Orange 1
+      var color=textureLoad(wallTexNorm, vec2i((hitPoint.xy-vec2f(-0.5))*textDim),0).xyz-0.5;// Subtract 0.5 to get positive and negative directions
+      color=normalize(color);
+      // color.x*=-1; 
+      // color.y*=-1; 
+      // color.z*=-1; 
+      return color;
     }
     case 2: { //left
       return -vec3f(-1, 0, 0);
@@ -620,6 +629,16 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
         color = emit + diffuse + specular + ambient;
         color = toon(color,5);
       }
+      else if (light.model[0]==3){
+        // BLINN-PHONG MODEL
+        let R=reflect(lightInfo.lightdir, normal);
+        let viewDir= normalize(-hitPt);
+        let halfDir = normalize(lightInfo.lightdir + viewDir);
+        var specular= vec4f(1, 1, 1, 1)* lightInfo.intensity * pow(dot(rdir, -R),100);
+
+        let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
+        color= emit + diffuse + ambient;
+      }
     }
     // set the final color to the pixel
     textureStore(outTexture, uv, color); 
@@ -707,6 +726,16 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
         let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
         color = emit + diffuse + specular + ambient;
         color = toon(color,5);
+      }
+      else if (light.model[0]==3){
+        // BLINN-PHONG MODEL
+        let R=reflect(lightInfo.lightdir, normal);
+        let viewDir= normalize(-hitPt);
+        let halfDir = normalize(lightInfo.lightdir + viewDir);
+        var specular= vec4f(1, 1, 1, 1)* lightInfo.intensity * pow(dot(rdir, -R),100);
+
+        let ambient= vec4f(0.1, 0.1, 0.1, 1)*lightInfo.intensity;
+        color= emit + diffuse + ambient;
       }
     }
     // set the final color to the pixel

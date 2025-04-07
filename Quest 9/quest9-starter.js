@@ -48,7 +48,8 @@ async function init() {
   // camera._pose[2] = 0.5;
   // camera._pose[3] = 0.5;
   // Create an object to trace
-  var list=["./assets/woodfloor_c.jpg","./assets/woodfloor_n.png","./assets/woodfloor_s_z.png"]
+  // var list=["./assets/woodfloor_c.jpg","./assets/woodfloor_n.png","./assets/woodfloor_s_z.png"]
+  var list= ["./assets/T_Tile_Sandstone_02_4096_D.png","./assets/T_Tile_Sandstone_02_4096_N.png", "./assets/T_Tile_Sandstone_02_4096_S.png"]
   var tracerObj = new RayTracingBoxLightObject(tracer._device, tracer._canvasFormat, camera, true, list);
   await tracer.setTracerObject(tracerObj);
   // Create a light object and set it to our box light object
@@ -56,11 +57,12 @@ async function init() {
   var pointLight = new PointLight();
   var directionalLight= new DirectionalLight();
   var spotLight= new SpotlightLight([1, 1, 1], [0, -0.5, 0]);
+  var currModel=0;
   var currLight=0;
   var lightModels=[pointLight, directionalLight, spotLight]
   tracerObj.updateLight(lightModels[currLight]);
   let toggleMovement=true;
-  let shadings=["Lambertian", "Phong", "Toon"];
+  let shadings=["Lambertian", "Phong", "Toon", "Blinn-Phong"];
   let models=["Point", "Directional", "Spot"];
 
   
@@ -158,6 +160,7 @@ async function init() {
         break;
       case "m": case "M":
         tracerObj.changeModel();
+        currLight=(currLight+1)%3
         tracerObj.updateLight(lightModels[currLight]);
         infoText.updateText('WS: Move in Z\n' +
           'AD: Move in X\n' +
@@ -174,8 +177,8 @@ async function init() {
           break;
       case "n": case "N":
         tracerObj.changeLight();
-        currLight=(currLight+1)%3
-        tracerObj.updateLight(lightModels[currLight]);
+        currModel=(currModel+1)%3
+        tracerObj.updateLight(lightModels[currModel]);
         infoText.updateText('WS: Move in Z\n' +
           'AD: Move in X\n' +
           'Space/Shift: Move in Y\n' +

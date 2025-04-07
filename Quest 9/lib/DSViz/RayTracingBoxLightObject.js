@@ -21,13 +21,16 @@
  *                                anything the license permits.
  */
 
-import RayTracingObject from "/lib/DSViz/RayTracingObject.js"
-import UnitCube from "/lib/DS/UnitCube.js"
+import RayTracingObject from "./RayTracingObject.js"
+import UnitCube from "../DS/UnitCube.js"
+import SmallUnitCube from "../DS/UnitCube2.js";
 
 export default class RayTracingBoxLightObject extends RayTracingObject {
   constructor(device, canvasFormat, camera, showTexture = true, imgPath) {
     super(device, canvasFormat);
-    this._box = new UnitCube();
+    // this._box = new UnitCube();
+    // this._secondBox= new SmallUnitCube();
+    this._box=[new UnitCube(),new SmallUnitCube()];
     this._camera = camera;
     this._showTexture = showTexture;
     this._textList=[]
@@ -54,27 +57,50 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
     // Note, here we combine all the information in one buffer
     this._boxBuffer = this._device.createBuffer({
       label: "Box " + this.getName(),
-      size: this._box._pose.byteLength + this._box._scales.byteLength + this._box._top.byteLength * 6,
+      size: this._box[0]._pose.byteLength + this._box[0]._scales.byteLength + this._box[0]._top.byteLength * 6,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
+
+    // this._secondBoxBuffer = this._device.createBuffer({
+    //   label: "Box " + this.getName(),
+    //   size: this._secondBox._pose.byteLength + this._secondBox._scales.byteLength + this._secondBox._top.byteLength * 6,
+    //   usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    // });
     // Copy from CPU to GPU
     // Note, here we make use of the offset to copy them over one by one
     let offset = 0;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._pose);
-    offset += this._box._pose.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._scales);
-    offset += this._box._scales.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._front);
-    offset += this._box._front.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._back);
-    offset += this._box._back.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._left);
-    offset += this._box._left.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._right);
-    offset += this._box._right.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._top);
-    offset += this._box._top.byteLength;
-    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box._down);
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._pose);
+    offset += this._box[0]._pose.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._scales);
+    offset += this._box[0]._scales.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._front);
+    offset += this._box[0]._front.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._back);
+    offset += this._box[0]._back.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._left);
+    offset += this._box[0]._left.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._right);
+    offset += this._box[0]._right.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._top);
+    offset += this._box[0]._top.byteLength;
+    this._device.queue.writeBuffer(this._boxBuffer, offset, this._box[0]._down);
+
+    // offset = 0;
+    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._pose);
+    // offset += this._secondBox._pose.byteLength;
+    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._scales);
+    // offset += this._secondBox._scales.byteLength;
+    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._front);
+    // offset += this._secondBox._front.byteLength;
+    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._back);
+    // offset += this._secondBox._back.byteLength;
+    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._left);
+    // offset += this._secondBox._left.byteLength;
+    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._right);
+    // offset += this._secondBox._right.byteLength;
+    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._top);
+    // offset += this._secondBox._top.byteLength;
+    // this._device.queue.writeBuffer(this._secondBoxBuffer, offset, this._secondBox._down);
     // Create light buffer to store the light in GPU
     // Note: our light has a common memory layout - check the abstract light class
     this._lightBuffer = this._device.createBuffer({
@@ -109,12 +135,13 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
   }
   
   updateBoxPose() {
-    this._device.queue.writeBuffer(this._boxBuffer, 0, this._box._pose);
+    this._device.queue.writeBuffer(this._box[0]._poseBuffer, 0, this._box[0]._pose);
   }
   
   updateBoxScales() {
-    this._device.queue.writeBuffer(this._boxBuffer, this._box._pose.byteLength, this._box._scales);
+    this._device.queue.writeBuffer(this._boxBuffer, this._box[0]._pose.byteLength, this._box[0]._scales);
   }
+
   
   updateCameraPose() {
     this._device.queue.writeBuffer(this._cameraBuffer, 0, this._camera._pose);
@@ -141,7 +168,7 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
   }
 
   async createShaders() {
-    let shaderCode = await this.loadShader("/shaders/traceboxlight.wgsl");
+    let shaderCode = await this.loadShader("./shaders/traceboxlight.wgsl");
     this._shaderModule = this._device.createShaderModule({
       label: " Shader " + this.getName(),
       code: shaderCode,
@@ -246,7 +273,7 @@ export default class RayTracingBoxLightObject extends RayTracingObject {
   }
   
   changeModel(){
-    this._currModel[0]=(this._currModel[0]+1)%3;
+    this._currModel[0]=(this._currModel[0]+1)%4;
   }
   changeLight(){
     this._currModel[1]=(this._currModel[1]+1)%3;
