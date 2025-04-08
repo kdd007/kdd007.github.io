@@ -32,7 +32,6 @@ import RayTracer from './lib/Viz/RayTracer.js'
 import StandardTextObject from './lib/DSViz/StandardTextObject.js'
 import VolumeRenderingSimpleObject from './lib/DSViz/VolumeRenderingSimpleObject.js'
 import Camera from './lib/Viz/3DCamera.js'
-// import PopupTextObject from './lib/DSViz/PopupTextObject.js'
 
 async function init() {
   // Create a canvas tag

@@ -1,0 +1,3503 @@
+; SPIR-V
+; Version: 1.3
+; Generator: Google Tint Compiler; 0
+; Bound: 2652
+; Schema: 0
+               OpCapability Shader
+               OpCapability ImageQuery
+        %988 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint GLCompute %tint_symbol_130 "tint_symbol_130" %tint_symbol_131_1
+               OpEntryPoint GLCompute %tint_symbol_152 "tint_symbol_152" %tint_symbol_131_2
+               OpExecutionMode %tint_symbol_130 LocalSize 16 16 1
+               OpExecutionMode %tint_symbol_152 LocalSize 16 16 1
+               OpName %tint_symbol_131_1 "tint_symbol_131_1"
+               OpName %tint_symbol_131_2 "tint_symbol_131_2"
+               OpName %tint_symbol_82_block "tint_symbol_82_block"
+               OpMemberName %tint_symbol_82_block 0 "inner"
+               OpName %tint_symbol_63 "tint_symbol_63"
+               OpMemberName %tint_symbol_63 0 "tint_symbol_64"
+               OpName %tint_symbol "tint_symbol"
+               OpMemberName %tint_symbol 0 "tint_symbol_1"
+               OpMemberName %tint_symbol 1 "tint_symbol_2"
+               OpMemberName %tint_symbol 2 "tint_symbol_3"
+               OpMemberName %tint_symbol 3 "tint_symbol_4"
+               OpMemberName %tint_symbol 4 "tint_symbol_5"
+               OpMemberName %tint_symbol 5 "tint_symbol_6"
+               OpMemberName %tint_symbol 6 "tint_symbol_7"
+               OpMemberName %tint_symbol 7 "tint_symbol_8"
+               OpMemberName %tint_symbol 8 "tint_symbol_9"
+               OpMemberName %tint_symbol 9 "tint_symbol_10"
+               OpMemberName %tint_symbol 10 "tint_symbol_11"
+               OpMemberName %tint_symbol 11 "tint_symbol_12"
+               OpMemberName %tint_symbol 12 "tint_symbol_13"
+               OpMemberName %tint_symbol 13 "tint_symbol_14"
+               OpMemberName %tint_symbol 14 "tint_symbol_15"
+               OpMemberName %tint_symbol 15 "tint_symbol_16"
+               OpMemberName %tint_symbol_63 1 "tint_symbol_65"
+               OpMemberName %tint_symbol_63 2 "tint_symbol_66"
+               OpName %tint_symbol_82 "tint_symbol_82"
+               OpName %tint_symbol_83_block "tint_symbol_83_block"
+               OpMemberName %tint_symbol_83_block 0 "inner"
+               OpName %tint_symbol_72 "tint_symbol_72"
+               OpMemberName %tint_symbol_72 0 "tint_symbol_64"
+               OpMemberName %tint_symbol_72 1 "tint_symbol_73"
+               OpMemberName %tint_symbol_72 2 "tint_symbol_74"
+               OpName %tint_symbol_67 "tint_symbol_67"
+               OpMemberName %tint_symbol_67 0 "tint_symbol_68"
+               OpMemberName %tint_symbol_67 1 "tint_symbol_69"
+               OpMemberName %tint_symbol_67 2 "tint_symbol_70"
+               OpMemberName %tint_symbol_67 3 "tint_symbol_71"
+               OpName %tint_symbol_83 "tint_symbol_83"
+               OpName %tint_symbol_84 "tint_symbol_84"
+               OpName %tint_symbol_85_block "tint_symbol_85_block"
+               OpMemberName %tint_symbol_85_block 0 "inner"
+               OpName %tint_symbol_75 "tint_symbol_75"
+               OpMemberName %tint_symbol_75 0 "tint_symbol_76"
+               OpMemberName %tint_symbol_75 1 "tint_symbol_77"
+               OpMemberName %tint_symbol_75 2 "tint_symbol_78"
+               OpMemberName %tint_symbol_75 3 "tint_symbol_79"
+               OpMemberName %tint_symbol_75 4 "tint_symbol_80"
+               OpMemberName %tint_symbol_75 5 "tint_symbol_81"
+               OpName %tint_symbol_85 "tint_symbol_85"
+               OpName %tint_symbol_86 "tint_symbol_86"
+               OpName %tint_symbol_87 "tint_symbol_87"
+               OpName %tint_symbol_88 "tint_symbol_88"
+               OpName %tint_symbol_89 "tint_symbol_89"
+               OpName %tint_symbol_90 "tint_symbol_90"
+               OpName %tint_symbol_91 "tint_symbol_91"
+               OpName %tint_symbol_92 "tint_symbol_92"
+               OpName %tint_symbol_93 "tint_symbol_93"
+               OpName %tint_ftoi "tint_ftoi"
+               OpName %v "v"
+               OpName %tint_ftoi_1 "tint_ftoi_1"
+               OpName %v_0 "v"
+               OpName %tint_symbol_17 "tint_symbol_17"
+               OpName %tint_symbol_18 "tint_symbol_18"
+               OpName %tint_symbol_19 "tint_symbol_19"
+               OpName %tint_symbol_20 "tint_symbol_20"
+               OpName %tint_symbol_21 "tint_symbol_21"
+               OpName %tint_symbol_18_0 "tint_symbol_18"
+               OpName %tint_symbol_22 "tint_symbol_22"
+               OpName %tint_symbol_23 "tint_symbol_23"
+               OpName %tint_symbol_24 "tint_symbol_24"
+               OpName %tint_symbol_25 "tint_symbol_25"
+               OpName %tint_symbol_24_0 "tint_symbol_24"
+               OpName %tint_symbol_26 "tint_symbol_26"
+               OpName %tint_symbol_27 "tint_symbol_27"
+               OpName %tint_symbol_28 "tint_symbol_28"
+               OpName %tint_symbol_29 "tint_symbol_29"
+               OpName %tint_symbol_24_1 "tint_symbol_24"
+               OpName %tint_symbol_30 "tint_symbol_30"
+               OpName %tint_symbol_28_0 "tint_symbol_28"
+               OpName %tint_symbol_34 "tint_symbol_34"
+               OpName %tint_symbol_24_2 "tint_symbol_24"
+               OpName %tint_return_flag "tint_return_flag"
+               OpName %tint_return_value "tint_return_value"
+               OpName %tint_symbol_31 "tint_symbol_31"
+               OpName %tint_symbol_1 "tint_symbol_1"
+               OpName %tint_symbol_28_1 "tint_symbol_28"
+               OpName %tint_symbol_35 "tint_symbol_35"
+               OpName %tint_symbol_36 "tint_symbol_36"
+               OpName %tint_symbol_28_2 "tint_symbol_28"
+               OpName %tint_symbol_37 "tint_symbol_37"
+               OpName %tint_symbol_40 "tint_symbol_40"
+               OpName %tint_symbol_24_3 "tint_symbol_24"
+               OpName %tint_symbol_41 "tint_symbol_41"
+               OpName %tint_symbol_23_0 "tint_symbol_23"
+               OpName %tint_symbol_42 "tint_symbol_42"
+               OpName %tint_symbol_23_1 "tint_symbol_23"
+               OpName %tint_symbol_43 "tint_symbol_43"
+               OpName %tint_symbol_32 "tint_symbol_32"
+               OpName %tint_symbol_28_3 "tint_symbol_28"
+               OpName %tint_symbol_44 "tint_symbol_44"
+               OpName %tint_symbol_45 "tint_symbol_45"
+               OpName %tint_symbol_46 "tint_symbol_46"
+               OpName %tint_symbol_47 "tint_symbol_47"
+               OpName %tint_symbol_52 "tint_symbol_52"
+               OpMemberName %tint_symbol_52 0 "tint_symbol_23"
+               OpMemberName %tint_symbol_52 1 "tint_symbol_53"
+               OpMemberName %tint_symbol_52 2 "tint_symbol_54"
+               OpName %tint_symbol_55 "tint_symbol_55"
+               OpName %tint_symbol_39 "tint_symbol_39"
+               OpName %tint_symbol_56 "tint_symbol_56"
+               OpName %tint_symbol_58 "tint_symbol_58"
+               OpName %tint_symbol_60 "tint_symbol_60"
+               OpName %tint_symbol_23_2 "tint_symbol_23"
+               OpName %tint_symbol_24_4 "tint_symbol_24"
+               OpName %tint_symbol_61 "tint_symbol_61"
+               OpName %tint_symbol_28_4 "tint_symbol_28"
+               OpName %tint_symbol_24_5 "tint_symbol_24"
+               OpName %tint_symbol_94 "tint_symbol_94"
+               OpName %tint_symbol_1_0 "tint_symbol_1"
+               OpName %tint_symbol_28_5 "tint_symbol_28"
+               OpName %tint_symbol_95 "tint_symbol_95"
+               OpName %tint_symbol_96 "tint_symbol_96"
+               OpName %tint_return_flag_1 "tint_return_flag_1"
+               OpName %tint_return_value_1 "tint_return_value_1"
+               OpName %tint_symbol_58_0 "tint_symbol_58"
+               OpName %tint_symbol_97 "tint_symbol_97"
+               OpName %tint_symbol_98 "tint_symbol_98"
+               OpName %tint_symbol_28_6 "tint_symbol_28"
+               OpName %tint_symbol_99 "tint_symbol_99"
+               OpName %tint_symbol_100 "tint_symbol_100"
+               OpName %tint_symbol_101 "tint_symbol_101"
+               OpName %tint_symbol_102 "tint_symbol_102"
+               OpName %tint_symbol_99_0 "tint_symbol_99"
+               OpName %tint_symbol_100_0 "tint_symbol_100"
+               OpName %tint_symbol_103 "tint_symbol_103"
+               OpName %tint_symbol_32_0 "tint_symbol_32"
+               OpName %tint_symbol_99_1 "tint_symbol_99"
+               OpName %tint_symbol_100_1 "tint_symbol_100"
+               OpName %tint_symbol_104 "tint_symbol_104"
+               OpName %tint_symbol_102_0 "tint_symbol_102"
+               OpName %tint_symbol_99_2 "tint_symbol_99"
+               OpName %tint_symbol_100_2 "tint_symbol_100"
+               OpName %tint_symbol_105 "tint_symbol_105"
+               OpName %tint_symbol_1_1 "tint_symbol_1"
+               OpName %tint_symbol_28_7 "tint_symbol_28"
+               OpName %tint_symbol_99_3 "tint_symbol_99"
+               OpName %tint_symbol_106 "tint_symbol_106"
+               OpName %tint_symbol_107 "tint_symbol_107"
+               OpName %tint_symbol_108 "tint_symbol_108"
+               OpName %var_for_index "var_for_index"
+               OpName %tint_symbol_110 "tint_symbol_110"
+               OpName %tint_symbol_111 "tint_symbol_111"
+               OpName %tint_symbol_107_0 "tint_symbol_107"
+               OpName %tint_symbol_112 "tint_symbol_112"
+               OpName %tint_symbol_113 "tint_symbol_113"
+               OpName %tint_return_flag_2 "tint_return_flag_2"
+               OpName %tint_return_value_2 "tint_return_value_2"
+               OpName %tint_symbol_114 "tint_symbol_114"
+               OpName %tint_symbol_116 "tint_symbol_116"
+               OpName %tint_symbol_107_1 "tint_symbol_107"
+               OpName %tint_symbol_112_0 "tint_symbol_112"
+               OpName %tint_symbol_113_0 "tint_symbol_113"
+               OpName %tint_return_flag_3 "tint_return_flag_3"
+               OpName %tint_return_value_3 "tint_return_value_3"
+               OpName %tint_symbol_114_0 "tint_symbol_114"
+               OpName %tint_symbol_114_1 "tint_symbol_114"
+               OpName %tint_symbol_117 "tint_symbol_117"
+               OpMemberName %tint_symbol_117 0 "tint_symbol_76"
+               OpMemberName %tint_symbol_117 1 "tint_symbol_118"
+               OpMemberName %tint_symbol_117 2 "tint_symbol_119"
+               OpName %tint_symbol_120 "tint_symbol_120"
+               OpName %tint_symbol_121 "tint_symbol_121"
+               OpName %tint_symbol_122 "tint_symbol_122"
+               OpName %tint_symbol_112_1 "tint_symbol_112"
+               OpName %tint_symbol_123 "tint_symbol_123"
+               OpName %tint_return_flag_4 "tint_return_flag_4"
+               OpName %tint_return_value_4 "tint_return_value_4"
+               OpName %tint_symbol_76 "tint_symbol_76"
+               OpName %tint_symbol_119 "tint_symbol_119"
+               OpName %tint_symbol_125 "tint_symbol_125"
+               OpName %tint_symbol_100_3 "tint_symbol_100"
+               OpName %tint_symbol_76_0 "tint_symbol_76"
+               OpName %tint_symbol_125_0 "tint_symbol_125"
+               OpName %tint_symbol_100_4 "tint_symbol_100"
+               OpName %tint_symbol_76_1 "tint_symbol_76"
+               OpName %tint_symbol_119_0 "tint_symbol_119"
+               OpName %tint_symbol_125_1 "tint_symbol_125"
+               OpName %tint_symbol_100_5 "tint_symbol_100"
+               OpName %tint_symbol_126 "tint_symbol_126"
+               OpName %tint_symbol_114_2 "tint_symbol_114"
+               OpName %tint_symbol_127 "tint_symbol_127"
+               OpName %tint_symbol_130_inner "tint_symbol_130_inner"
+               OpName %tint_symbol_131 "tint_symbol_131"
+               OpName %tint_symbol_135 "tint_symbol_135"
+               OpName %tint_symbol_136 "tint_symbol_136"
+               OpName %tint_symbol_37_0 "tint_symbol_37"
+               OpName %tint_symbol_137 "tint_symbol_137"
+               OpName %tint_symbol_58_1 "tint_symbol_58"
+               OpName %tint_symbol_138 "tint_symbol_138"
+               OpName %tint_symbol_108_0 "tint_symbol_108"
+               OpName %tint_symbol_139 "tint_symbol_139"
+               OpName %tint_symbol_140 "tint_symbol_140"
+               OpName %tint_symbol_141 "tint_symbol_141"
+               OpName %tint_symbol_114_3 "tint_symbol_114"
+               OpName %tint_symbol_143 "tint_symbol_143"
+               OpName %tint_symbol_144 "tint_symbol_144"
+               OpName %tint_symbol_145 "tint_symbol_145"
+               OpName %tint_symbol_146 "tint_symbol_146"
+               OpName %tint_symbol_148 "tint_symbol_148"
+               OpName %tint_symbol_148_0 "tint_symbol_148"
+               OpName %tint_symbol_119_1 "tint_symbol_119"
+               OpName %tint_symbol_148_1 "tint_symbol_148"
+               OpName %tint_symbol_130 "tint_symbol_130"
+               OpName %tint_symbol_152_inner "tint_symbol_152_inner"
+               OpName %tint_symbol_131_0 "tint_symbol_131"
+               OpName %tint_symbol_135_0 "tint_symbol_135"
+               OpName %tint_symbol_136_0 "tint_symbol_136"
+               OpName %tint_symbol_37_1 "tint_symbol_37"
+               OpName %tint_symbol_137_0 "tint_symbol_137"
+               OpName %tint_symbol_58_2 "tint_symbol_58"
+               OpName %tint_symbol_138_0 "tint_symbol_138"
+               OpName %tint_symbol_108_1 "tint_symbol_108"
+               OpName %tint_symbol_139_0 "tint_symbol_139"
+               OpName %tint_symbol_140_0 "tint_symbol_140"
+               OpName %tint_symbol_141_0 "tint_symbol_141"
+               OpName %tint_symbol_114_4 "tint_symbol_114"
+               OpName %tint_symbol_143_0 "tint_symbol_143"
+               OpName %tint_symbol_144_0 "tint_symbol_144"
+               OpName %tint_symbol_145_0 "tint_symbol_145"
+               OpName %tint_symbol_146_0 "tint_symbol_146"
+               OpName %tint_symbol_148_2 "tint_symbol_148"
+               OpName %tint_symbol_148_3 "tint_symbol_148"
+               OpName %tint_symbol_119_2 "tint_symbol_119"
+               OpName %tint_symbol_148_4 "tint_symbol_148"
+               OpName %tint_symbol_152 "tint_symbol_152"
+               OpDecorate %tint_symbol_131_1 BuiltIn GlobalInvocationId
+               OpDecorate %tint_symbol_131_2 BuiltIn GlobalInvocationId
+               OpDecorate %tint_symbol_82_block Block
+               OpMemberDecorate %tint_symbol_82_block 0 Offset 0
+               OpMemberDecorate %tint_symbol_63 0 Offset 0
+               OpMemberDecorate %tint_symbol 0 Offset 0
+               OpMemberDecorate %tint_symbol 1 Offset 4
+               OpMemberDecorate %tint_symbol 2 Offset 8
+               OpMemberDecorate %tint_symbol 3 Offset 12
+               OpMemberDecorate %tint_symbol 4 Offset 16
+               OpMemberDecorate %tint_symbol 5 Offset 20
+               OpMemberDecorate %tint_symbol 6 Offset 24
+               OpMemberDecorate %tint_symbol 7 Offset 28
+               OpMemberDecorate %tint_symbol 8 Offset 32
+               OpMemberDecorate %tint_symbol 9 Offset 36
+               OpMemberDecorate %tint_symbol 10 Offset 40
+               OpMemberDecorate %tint_symbol 11 Offset 44
+               OpMemberDecorate %tint_symbol 12 Offset 48
+               OpMemberDecorate %tint_symbol 13 Offset 52
+               OpMemberDecorate %tint_symbol 14 Offset 56
+               OpMemberDecorate %tint_symbol 15 Offset 60
+               OpMemberDecorate %tint_symbol_63 1 Offset 64
+               OpMemberDecorate %tint_symbol_63 2 Offset 72
+               OpDecorate %tint_symbol_82 NonWritable
+               OpDecorate %tint_symbol_82 DescriptorSet 0
+               OpDecorate %tint_symbol_82 Binding 0
+               OpDecorate %tint_symbol_83_block Block
+               OpMemberDecorate %tint_symbol_83_block 0 Offset 0
+               OpMemberDecorate %tint_symbol_72 0 Offset 0
+               OpMemberDecorate %tint_symbol_72 1 Offset 64
+               OpMemberDecorate %tint_symbol_72 2 Offset 80
+               OpMemberDecorate %tint_symbol_67 0 Offset 0
+               OpMemberDecorate %tint_symbol_67 1 Offset 16
+               OpMemberDecorate %tint_symbol_67 2 Offset 32
+               OpMemberDecorate %tint_symbol_67 3 Offset 48
+               OpDecorate %_arr_tint_symbol_67_uint_6 ArrayStride 64
+               OpDecorate %_arr_tint_symbol_72_uint_2 ArrayStride 464
+               OpDecorate %tint_symbol_83 NonWritable
+               OpDecorate %tint_symbol_83 DescriptorSet 0
+               OpDecorate %tint_symbol_83 Binding 1
+               OpDecorate %tint_symbol_84 NonReadable
+               OpDecorate %tint_symbol_84 DescriptorSet 0
+               OpDecorate %tint_symbol_84 Binding 2
+               OpDecorate %tint_symbol_85_block Block
+               OpMemberDecorate %tint_symbol_85_block 0 Offset 0
+               OpMemberDecorate %tint_symbol_75 0 Offset 0
+               OpMemberDecorate %tint_symbol_75 1 Offset 16
+               OpMemberDecorate %tint_symbol_75 2 Offset 32
+               OpMemberDecorate %tint_symbol_75 3 Offset 48
+               OpMemberDecorate %tint_symbol_75 4 Offset 64
+               OpMemberDecorate %tint_symbol_75 5 Offset 80
+               OpDecorate %tint_symbol_85 NonWritable
+               OpDecorate %tint_symbol_85 DescriptorSet 0
+               OpDecorate %tint_symbol_85 Binding 3
+               OpDecorate %tint_symbol_86 DescriptorSet 0
+               OpDecorate %tint_symbol_86 Binding 4
+               OpDecorate %tint_symbol_87 DescriptorSet 0
+               OpDecorate %tint_symbol_87 Binding 5
+               OpDecorate %tint_symbol_88 DescriptorSet 0
+               OpDecorate %tint_symbol_88 Binding 6
+               OpDecorate %tint_symbol_89 DescriptorSet 0
+               OpDecorate %tint_symbol_89 Binding 7
+               OpDecorate %tint_symbol_90 DescriptorSet 0
+               OpDecorate %tint_symbol_90 Binding 8
+               OpDecorate %tint_symbol_91 DescriptorSet 0
+               OpDecorate %tint_symbol_91 Binding 9
+               OpDecorate %tint_symbol_92 DescriptorSet 0
+               OpDecorate %tint_symbol_92 Binding 10
+               OpDecorate %tint_symbol_93 DescriptorSet 0
+               OpDecorate %tint_symbol_93 Binding 11
+               OpMemberDecorate %tint_symbol_52 0 Offset 0
+               OpMemberDecorate %tint_symbol_52 1 Offset 12
+               OpMemberDecorate %tint_symbol_52 2 Offset 16
+               OpMemberDecorate %tint_symbol_117 0 Offset 0
+               OpMemberDecorate %tint_symbol_117 1 Offset 16
+               OpMemberDecorate %tint_symbol_117 2 Offset 28
+       %uint = OpTypeInt 32 0
+     %v3uint = OpTypeVector %uint 3
+%_ptr_Input_v3uint = OpTypePointer Input %v3uint
+%tint_symbol_131_1 = OpVariable %_ptr_Input_v3uint Input
+%tint_symbol_131_2 = OpVariable %_ptr_Input_v3uint Input
+      %float = OpTypeFloat 32
+%tint_symbol = OpTypeStruct %float %float %float %float %float %float %float %float %float %float %float %float %float %float %float %float
+    %v2float = OpTypeVector %float 2
+%tint_symbol_63 = OpTypeStruct %tint_symbol %v2float %v2float
+%tint_symbol_82_block = OpTypeStruct %tint_symbol_63
+%_ptr_Uniform_tint_symbol_82_block = OpTypePointer Uniform %tint_symbol_82_block
+%tint_symbol_82 = OpVariable %_ptr_Uniform_tint_symbol_82_block Uniform
+    %v4float = OpTypeVector %float 4
+%tint_symbol_67 = OpTypeStruct %v4float %v4float %v4float %v4float
+     %uint_6 = OpConstant %uint 6
+%_arr_tint_symbol_67_uint_6 = OpTypeArray %tint_symbol_67 %uint_6
+%tint_symbol_72 = OpTypeStruct %tint_symbol %v4float %_arr_tint_symbol_67_uint_6
+     %uint_2 = OpConstant %uint 2
+%_arr_tint_symbol_72_uint_2 = OpTypeArray %tint_symbol_72 %uint_2
+%tint_symbol_83_block = OpTypeStruct %_arr_tint_symbol_72_uint_2
+%_ptr_Uniform_tint_symbol_83_block = OpTypePointer Uniform %tint_symbol_83_block
+%tint_symbol_83 = OpVariable %_ptr_Uniform_tint_symbol_83_block Uniform
+         %25 = OpTypeImage %float 2D 0 0 0 2 Rgba8
+%_ptr_UniformConstant_25 = OpTypePointer UniformConstant %25
+%tint_symbol_84 = OpVariable %_ptr_UniformConstant_25 UniformConstant
+     %v4uint = OpTypeVector %uint 4
+%tint_symbol_75 = OpTypeStruct %v4float %v4float %v4float %v4float %v4float %v4uint
+%tint_symbol_85_block = OpTypeStruct %tint_symbol_75
+%_ptr_Uniform_tint_symbol_85_block = OpTypePointer Uniform %tint_symbol_85_block
+%tint_symbol_85 = OpVariable %_ptr_Uniform_tint_symbol_85_block Uniform
+         %33 = OpTypeImage %float 2D 0 0 0 1 Unknown
+%_ptr_UniformConstant_33 = OpTypePointer UniformConstant %33
+%tint_symbol_86 = OpVariable %_ptr_UniformConstant_33 UniformConstant
+%tint_symbol_87 = OpVariable %_ptr_UniformConstant_33 UniformConstant
+%tint_symbol_88 = OpVariable %_ptr_UniformConstant_33 UniformConstant
+%tint_symbol_89 = OpVariable %_ptr_UniformConstant_33 UniformConstant
+%tint_symbol_90 = OpVariable %_ptr_UniformConstant_33 UniformConstant
+%tint_symbol_91 = OpVariable %_ptr_UniformConstant_33 UniformConstant
+%tint_symbol_92 = OpVariable %_ptr_UniformConstant_33 UniformConstant
+%tint_symbol_93 = OpVariable %_ptr_UniformConstant_33 UniformConstant
+        %int = OpTypeInt 32 1
+      %v2int = OpTypeVector %int 2
+         %41 = OpTypeFunction %v2int %v2float
+%float_2_14748352e_09 = OpConstant %float 2.14748352e+09
+         %49 = OpConstantComposite %v2float %float_2_14748352e_09 %float_2_14748352e_09
+       %bool = OpTypeBool
+     %v2bool = OpTypeVector %bool 2
+%float_n2_14748365e_09 = OpConstant %float -2.14748365e+09
+         %55 = OpConstantComposite %v2float %float_n2_14748365e_09 %float_n2_14748365e_09
+%int_n2147483648 = OpConstant %int -2147483648
+         %58 = OpConstantComposite %v2int %int_n2147483648 %int_n2147483648
+%int_2147483647 = OpConstant %int 2147483647
+         %61 = OpConstantComposite %v2int %int_2147483647 %int_2147483647
+         %62 = OpTypeFunction %int %float
+         %71 = OpTypeFunction %tint_symbol %tint_symbol %tint_symbol
+%_ptr_Function_tint_symbol = OpTypePointer Function %tint_symbol
+         %78 = OpConstantNull %tint_symbol
+     %uint_0 = OpConstant %uint 0
+%_ptr_Function_float = OpTypePointer Function %float
+     %uint_1 = OpConstant %uint 1
+     %uint_3 = OpConstant %uint 3
+     %uint_4 = OpConstant %uint 4
+     %uint_5 = OpConstant %uint 5
+     %uint_7 = OpConstant %uint 7
+     %uint_8 = OpConstant %uint 8
+     %uint_9 = OpConstant %uint 9
+    %uint_10 = OpConstant %uint 10
+    %uint_11 = OpConstant %uint 11
+    %uint_12 = OpConstant %uint 12
+    %uint_13 = OpConstant %uint 13
+    %uint_14 = OpConstant %uint 14
+    %uint_15 = OpConstant %uint 15
+        %863 = OpTypeFunction %tint_symbol %tint_symbol
+        %901 = OpTypeFunction %float %tint_symbol
+        %905 = OpConstantNull %float
+    %v3float = OpTypeVector %float 3
+        %990 = OpTypeFunction %tint_symbol %v3float
+    %float_1 = OpConstant %float 1
+    %float_2 = OpConstant %float 2
+%_ptr_Function_bool = OpTypePointer Function %bool
+       %1027 = OpConstantNull %bool
+       %true = OpConstantTrue %bool
+       %1034 = OpConstantComposite %tint_symbol %float_1 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905
+       %1073 = OpTypeFunction %tint_symbol %v3float %v3float
+       %1109 = OpTypeFunction %tint_symbol %float %v3float %v3float
+       %1150 = OpTypeFunction %v3float %tint_symbol
+       %1166 = OpTypeFunction %tint_symbol %v3float %float
+       %1176 = OpTypeFunction %tint_symbol %v3float %v3float %v3float
+      %int_1 = OpConstant %int 1
+      %int_2 = OpConstant %int 2
+       %1207 = OpConstantNull %int
+%tint_symbol_52 = OpTypeStruct %v3float %bool %bool
+       %1286 = OpTypeFunction %tint_symbol_52 %tint_symbol %tint_symbol
+%_ptr_Function_tint_symbol_52 = OpTypePointer Function %tint_symbol_52
+       %1295 = OpConstantNull %tint_symbol_52
+%_ptr_Function_v3float = OpTypePointer Function %v3float
+%float_9_99999994en09 = OpConstant %float 9.99999994e-09
+       %1327 = OpTypeFunction %v3float %v3float %tint_symbol
+       %1343 = OpTypeFunction %v2float %v3float %v3float %tint_symbol_67 %float
+%_ptr_Function_v2float = OpTypePointer Function %v2float
+       %1353 = OpConstantNull %v2float
+   %float_n1 = OpConstant %float -1
+       %1547 = OpTypeFunction %v3float %v3float %tint_symbol_72
+%_ptr_Uniform_tint_symbol = OpTypePointer Uniform %tint_symbol
+       %1557 = OpConstantNull %v3float
+       %1609 = OpTypeFunction %v2float %v3float %v3float %tint_symbol_72
+%_ptr_Function_int = OpTypePointer Function %int
+      %int_6 = OpConstant %int 6
+%_ptr_Function__arr_tint_symbol_67_uint_6 = OpTypePointer Function %_arr_tint_symbol_67_uint_6
+       %1632 = OpConstantNull %_arr_tint_symbol_67_uint_6
+%_ptr_Function_tint_symbol_67 = OpTypePointer Function %tint_symbol_67
+       %1651 = OpTypeFunction %v4float
+       %1654 = OpConstantComposite %v4float %905 %905 %905 %float_1
+       %1655 = OpTypeFunction %v4float %int %v3float %int
+%_ptr_Function_v4float = OpTypePointer Function %v4float
+       %1664 = OpConstantNull %v4float
+     %v2uint = OpTypeVector %uint 2
+ %float_n0_5 = OpConstant %float -0.5
+%_ptr_Uniform_v4float = OpTypePointer Uniform %v4float
+%float_0_509803951 = OpConstant %float 0.509803951
+%float_0_729411781 = OpConstant %float 0.729411781
+       %1719 = OpConstantComposite %v4float %905 %float_0_509803951 %float_0_729411781 %float_1
+%float_0_349019617 = OpConstant %float 0.349019617
+%float_0_796078444 = OpConstant %float 0.796078444
+%float_0_909803927 = OpConstant %float 0.909803927
+       %1723 = OpConstantComposite %v4float %float_0_349019617 %float_0_796078444 %float_0_909803927 %float_1
+%float_0_850980401 = OpConstant %float 0.850980401
+%float_0_839215696 = OpConstant %float 0.839215696
+       %1726 = OpConstantComposite %v4float %float_0_850980401 %float_0_850980401 %float_0_839215696 %float_1
+%float_0_654901981 = OpConstant %float 0.654901981
+%float_0_65882355 = OpConstant %float 0.65882355
+%float_0_666666687 = OpConstant %float 0.666666687
+       %1730 = OpConstantComposite %v4float %float_0_654901981 %float_0_65882355 %float_0_666666687 %float_1
+       %1850 = OpTypeFunction %v3float %int %v3float %int
+  %float_0_5 = OpConstant %float 0.5
+       %1927 = OpConstantComposite %v3float %float_1 %905 %905
+       %1928 = OpConstantComposite %v3float %float_n1 %905 %905
+       %1929 = OpConstantComposite %v3float %905 %float_n1 %905
+       %1930 = OpConstantComposite %v3float %905 %float_1 %905
+       %1939 = OpConstantComposite %v3float %905 %905 %float_n1
+       %1940 = OpConstantComposite %v3float %905 %905 %float_1
+%tint_symbol_117 = OpTypeStruct %v4float %v3float %float
+       %1942 = OpTypeFunction %tint_symbol_117 %v3float %v3float %v3float %v3float
+%_ptr_Function_tint_symbol_117 = OpTypePointer Function %tint_symbol_117
+       %1953 = OpConstantNull %tint_symbol_117
+%_ptr_Uniform_uint = OpTypePointer Uniform %uint
+       %1957 = OpConstantNull %uint
+%_ptr_Uniform_float = OpTypePointer Uniform %float
+       %2088 = OpTypeFunction %v4float %v4float %float
+       %void = OpTypeVoid
+       %2099 = OpTypeFunction %void %v3uint
+       %2120 = OpConstantComposite %v2float %float_2 %float_2
+%_ptr_Uniform_v2float = OpTypePointer Uniform %v2float
+%float_1000000 = OpConstant %float 1000000
+       %2144 = OpConstantComposite %v2float %float_1000000 %905
+%_ptr_Uniform_tint_symbol_72 = OpTypePointer Uniform %tint_symbol_72
+%float_0_219607845 = OpConstant %float 0.219607845
+%float_0_396078438 = OpConstant %float 0.396078438
+       %2208 = OpConstantComposite %v4float %905 %float_0_219607845 %float_0_396078438 %float_1
+       %2262 = OpConstantComposite %v4float %float_1 %float_1 %float_1 %float_1
+  %float_100 = OpConstant %float 100
+%float_0_100000001 = OpConstant %float 0.100000001
+       %2298 = OpConstantComposite %v4float %float_0_100000001 %float_0_100000001 %float_0_100000001 %float_1
+    %float_5 = OpConstant %float 5
+       %2374 = OpTypeFunction %void
+  %tint_ftoi = OpFunction %v2int None %41
+          %v = OpFunctionParameter %v2float
+         %46 = OpLabel
+         %50 = OpFOrdLessThan %v2bool %v %49
+         %56 = OpFOrdLessThan %v2bool %v %55
+         %59 = OpConvertFToS %v2int %v
+         %53 = OpSelect %v2int %56 %58 %59
+         %47 = OpSelect %v2int %50 %53 %61
+               OpReturnValue %47
+               OpFunctionEnd
+%tint_ftoi_1 = OpFunction %int None %62
+        %v_0 = OpFunctionParameter %float
+         %65 = OpLabel
+         %67 = OpFOrdLessThan %bool %v_0 %float_2_14748352e_09
+         %69 = OpFOrdLessThan %bool %v_0 %float_n2_14748365e_09
+         %70 = OpConvertFToS %int %v_0
+         %68 = OpSelect %int %69 %int_n2147483648 %70
+         %66 = OpSelect %int %67 %68 %int_2147483647
+               OpReturnValue %66
+               OpFunctionEnd
+%tint_symbol_17 = OpFunction %tint_symbol None %71
+%tint_symbol_18 = OpFunctionParameter %tint_symbol
+%tint_symbol_19 = OpFunctionParameter %tint_symbol
+         %75 = OpLabel
+%tint_symbol_20 = OpVariable %_ptr_Function_tint_symbol Function %78
+         %81 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_0
+         %82 = OpCompositeExtract %float %tint_symbol_18 0
+         %83 = OpCompositeExtract %float %tint_symbol_19 0
+         %84 = OpFMul %float %82 %83
+         %85 = OpCompositeExtract %float %tint_symbol_18 1
+         %86 = OpCompositeExtract %float %tint_symbol_19 1
+         %87 = OpFMul %float %85 %86
+         %88 = OpFSub %float %84 %87
+         %89 = OpCompositeExtract %float %tint_symbol_18 2
+         %90 = OpCompositeExtract %float %tint_symbol_19 2
+         %91 = OpFMul %float %89 %90
+         %92 = OpFSub %float %88 %91
+         %93 = OpCompositeExtract %float %tint_symbol_18 3
+         %94 = OpCompositeExtract %float %tint_symbol_19 3
+         %95 = OpFMul %float %93 %94
+         %96 = OpFSub %float %92 %95
+         %97 = OpCompositeExtract %float %tint_symbol_18 7
+         %98 = OpCompositeExtract %float %tint_symbol_19 7
+         %99 = OpFMul %float %97 %98
+        %100 = OpFSub %float %96 %99
+        %101 = OpCompositeExtract %float %tint_symbol_18 11
+        %102 = OpCompositeExtract %float %tint_symbol_19 11
+        %103 = OpFMul %float %101 %102
+        %104 = OpFAdd %float %100 %103
+        %105 = OpCompositeExtract %float %tint_symbol_18 12
+        %106 = OpCompositeExtract %float %tint_symbol_19 12
+        %107 = OpFMul %float %105 %106
+        %108 = OpFAdd %float %104 %107
+        %109 = OpCompositeExtract %float %tint_symbol_18 13
+        %110 = OpCompositeExtract %float %tint_symbol_19 13
+        %111 = OpFMul %float %109 %110
+        %112 = OpFAdd %float %108 %111
+               OpStore %81 %112
+        %114 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_1
+        %115 = OpCompositeExtract %float %tint_symbol_18 0
+        %116 = OpCompositeExtract %float %tint_symbol_19 1
+        %117 = OpFMul %float %115 %116
+        %118 = OpCompositeExtract %float %tint_symbol_18 1
+        %119 = OpCompositeExtract %float %tint_symbol_19 0
+        %120 = OpFMul %float %118 %119
+        %121 = OpFAdd %float %117 %120
+        %122 = OpCompositeExtract %float %tint_symbol_18 2
+        %123 = OpCompositeExtract %float %tint_symbol_19 3
+        %124 = OpFMul %float %122 %123
+        %125 = OpFSub %float %121 %124
+        %126 = OpCompositeExtract %float %tint_symbol_18 3
+        %127 = OpCompositeExtract %float %tint_symbol_19 2
+        %128 = OpFMul %float %126 %127
+        %129 = OpFAdd %float %125 %128
+        %130 = OpCompositeExtract %float %tint_symbol_18 7
+        %131 = OpCompositeExtract %float %tint_symbol_19 13
+        %132 = OpFMul %float %130 %131
+        %133 = OpFAdd %float %129 %132
+        %134 = OpCompositeExtract %float %tint_symbol_18 11
+        %135 = OpCompositeExtract %float %tint_symbol_19 12
+        %136 = OpFMul %float %134 %135
+        %137 = OpFAdd %float %133 %136
+        %138 = OpCompositeExtract %float %tint_symbol_18 12
+        %139 = OpCompositeExtract %float %tint_symbol_19 11
+        %140 = OpFMul %float %138 %139
+        %141 = OpFSub %float %137 %140
+        %142 = OpCompositeExtract %float %tint_symbol_18 13
+        %143 = OpCompositeExtract %float %tint_symbol_19 7
+        %144 = OpFMul %float %142 %143
+        %145 = OpFAdd %float %141 %144
+               OpStore %114 %145
+        %146 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_2
+        %147 = OpCompositeExtract %float %tint_symbol_18 0
+        %148 = OpCompositeExtract %float %tint_symbol_19 2
+        %149 = OpFMul %float %147 %148
+        %150 = OpCompositeExtract %float %tint_symbol_18 1
+        %151 = OpCompositeExtract %float %tint_symbol_19 3
+        %152 = OpFMul %float %150 %151
+        %153 = OpFAdd %float %149 %152
+        %154 = OpCompositeExtract %float %tint_symbol_18 2
+        %155 = OpCompositeExtract %float %tint_symbol_19 0
+        %156 = OpFMul %float %154 %155
+        %157 = OpFAdd %float %153 %156
+        %158 = OpCompositeExtract %float %tint_symbol_18 3
+        %159 = OpCompositeExtract %float %tint_symbol_19 1
+        %160 = OpFMul %float %158 %159
+        %161 = OpFSub %float %157 %160
+        %162 = OpCompositeExtract %float %tint_symbol_18 7
+        %163 = OpCompositeExtract %float %tint_symbol_19 12
+        %164 = OpFMul %float %162 %163
+        %165 = OpFSub %float %161 %164
+        %166 = OpCompositeExtract %float %tint_symbol_18 11
+        %167 = OpCompositeExtract %float %tint_symbol_19 13
+        %168 = OpFMul %float %166 %167
+        %169 = OpFAdd %float %165 %168
+        %170 = OpCompositeExtract %float %tint_symbol_18 12
+        %171 = OpCompositeExtract %float %tint_symbol_19 7
+        %172 = OpFMul %float %170 %171
+        %173 = OpFSub %float %169 %172
+        %174 = OpCompositeExtract %float %tint_symbol_18 13
+        %175 = OpCompositeExtract %float %tint_symbol_19 11
+        %176 = OpFMul %float %174 %175
+        %177 = OpFSub %float %173 %176
+               OpStore %146 %177
+        %179 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_3
+        %180 = OpCompositeExtract %float %tint_symbol_18 0
+        %181 = OpCompositeExtract %float %tint_symbol_19 3
+        %182 = OpFMul %float %180 %181
+        %183 = OpCompositeExtract %float %tint_symbol_18 1
+        %184 = OpCompositeExtract %float %tint_symbol_19 2
+        %185 = OpFMul %float %183 %184
+        %186 = OpFSub %float %182 %185
+        %187 = OpCompositeExtract %float %tint_symbol_18 2
+        %188 = OpCompositeExtract %float %tint_symbol_19 1
+        %189 = OpFMul %float %187 %188
+        %190 = OpFAdd %float %186 %189
+        %191 = OpCompositeExtract %float %tint_symbol_18 3
+        %192 = OpCompositeExtract %float %tint_symbol_19 0
+        %193 = OpFMul %float %191 %192
+        %194 = OpFAdd %float %190 %193
+        %195 = OpCompositeExtract %float %tint_symbol_18 7
+        %196 = OpCompositeExtract %float %tint_symbol_19 11
+        %197 = OpFMul %float %195 %196
+        %198 = OpFAdd %float %194 %197
+        %199 = OpCompositeExtract %float %tint_symbol_18 11
+        %200 = OpCompositeExtract %float %tint_symbol_19 7
+        %201 = OpFMul %float %199 %200
+        %202 = OpFAdd %float %198 %201
+        %203 = OpCompositeExtract %float %tint_symbol_18 12
+        %204 = OpCompositeExtract %float %tint_symbol_19 13
+        %205 = OpFMul %float %203 %204
+        %206 = OpFAdd %float %202 %205
+        %207 = OpCompositeExtract %float %tint_symbol_18 13
+        %208 = OpCompositeExtract %float %tint_symbol_19 12
+        %209 = OpFMul %float %207 %208
+        %210 = OpFSub %float %206 %209
+               OpStore %179 %210
+        %212 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_4
+        %213 = OpCompositeExtract %float %tint_symbol_18 0
+        %214 = OpCompositeExtract %float %tint_symbol_19 4
+        %215 = OpFMul %float %213 %214
+        %216 = OpCompositeExtract %float %tint_symbol_18 1
+        %217 = OpCompositeExtract %float %tint_symbol_19 5
+        %218 = OpFMul %float %216 %217
+        %219 = OpFAdd %float %215 %218
+        %220 = OpCompositeExtract %float %tint_symbol_18 2
+        %221 = OpCompositeExtract %float %tint_symbol_19 6
+        %222 = OpFMul %float %220 %221
+        %223 = OpFAdd %float %219 %222
+        %224 = OpCompositeExtract %float %tint_symbol_18 3
+        %225 = OpCompositeExtract %float %tint_symbol_19 15
+        %226 = OpFMul %float %224 %225
+        %227 = OpFSub %float %223 %226
+        %228 = OpCompositeExtract %float %tint_symbol_18 4
+        %229 = OpCompositeExtract %float %tint_symbol_19 0
+        %230 = OpFMul %float %228 %229
+        %231 = OpFAdd %float %227 %230
+        %232 = OpCompositeExtract %float %tint_symbol_18 5
+        %233 = OpCompositeExtract %float %tint_symbol_19 1
+        %234 = OpFMul %float %232 %233
+        %235 = OpFSub %float %231 %234
+        %236 = OpCompositeExtract %float %tint_symbol_18 6
+        %237 = OpCompositeExtract %float %tint_symbol_19 2
+        %238 = OpFMul %float %236 %237
+        %239 = OpFSub %float %235 %238
+        %240 = OpCompositeExtract %float %tint_symbol_18 7
+        %241 = OpCompositeExtract %float %tint_symbol_19 10
+        %242 = OpFMul %float %240 %241
+        %243 = OpFAdd %float %239 %242
+        %244 = OpCompositeExtract %float %tint_symbol_18 8
+        %245 = OpCompositeExtract %float %tint_symbol_19 12
+        %246 = OpFMul %float %244 %245
+        %247 = OpFAdd %float %243 %246
+        %248 = OpCompositeExtract %float %tint_symbol_18 9
+        %249 = OpCompositeExtract %float %tint_symbol_19 13
+        %250 = OpFMul %float %248 %249
+        %251 = OpFAdd %float %247 %250
+        %252 = OpCompositeExtract %float %tint_symbol_18 10
+        %253 = OpCompositeExtract %float %tint_symbol_19 7
+        %254 = OpFMul %float %252 %253
+        %255 = OpFSub %float %251 %254
+        %256 = OpCompositeExtract %float %tint_symbol_18 11
+        %257 = OpCompositeExtract %float %tint_symbol_19 14
+        %258 = OpFMul %float %256 %257
+        %259 = OpFSub %float %255 %258
+        %260 = OpCompositeExtract %float %tint_symbol_18 12
+        %261 = OpCompositeExtract %float %tint_symbol_19 8
+        %262 = OpFMul %float %260 %261
+        %263 = OpFAdd %float %259 %262
+        %264 = OpCompositeExtract %float %tint_symbol_18 13
+        %265 = OpCompositeExtract %float %tint_symbol_19 9
+        %266 = OpFMul %float %264 %265
+        %267 = OpFAdd %float %263 %266
+        %268 = OpCompositeExtract %float %tint_symbol_18 14
+        %269 = OpCompositeExtract %float %tint_symbol_19 11
+        %270 = OpFMul %float %268 %269
+        %271 = OpFAdd %float %267 %270
+        %272 = OpCompositeExtract %float %tint_symbol_18 15
+        %273 = OpCompositeExtract %float %tint_symbol_19 3
+        %274 = OpFMul %float %272 %273
+        %275 = OpFSub %float %271 %274
+               OpStore %212 %275
+        %277 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_5
+        %278 = OpCompositeExtract %float %tint_symbol_18 0
+        %279 = OpCompositeExtract %float %tint_symbol_19 5
+        %280 = OpFMul %float %278 %279
+        %281 = OpCompositeExtract %float %tint_symbol_18 1
+        %282 = OpCompositeExtract %float %tint_symbol_19 4
+        %283 = OpFMul %float %281 %282
+        %284 = OpFSub %float %280 %283
+        %285 = OpCompositeExtract %float %tint_symbol_18 2
+        %286 = OpCompositeExtract %float %tint_symbol_19 15
+        %287 = OpFMul %float %285 %286
+        %288 = OpFAdd %float %284 %287
+        %289 = OpCompositeExtract %float %tint_symbol_18 3
+        %290 = OpCompositeExtract %float %tint_symbol_19 6
+        %291 = OpFMul %float %289 %290
+        %292 = OpFAdd %float %288 %291
+        %293 = OpCompositeExtract %float %tint_symbol_18 4
+        %294 = OpCompositeExtract %float %tint_symbol_19 1
+        %295 = OpFMul %float %293 %294
+        %296 = OpFAdd %float %292 %295
+        %297 = OpCompositeExtract %float %tint_symbol_18 5
+        %298 = OpCompositeExtract %float %tint_symbol_19 0
+        %299 = OpFMul %float %297 %298
+        %300 = OpFAdd %float %296 %299
+        %301 = OpCompositeExtract %float %tint_symbol_18 6
+        %302 = OpCompositeExtract %float %tint_symbol_19 3
+        %303 = OpFMul %float %301 %302
+        %304 = OpFSub %float %300 %303
+        %305 = OpCompositeExtract %float %tint_symbol_18 7
+        %306 = OpCompositeExtract %float %tint_symbol_19 9
+        %307 = OpFMul %float %305 %306
+        %308 = OpFSub %float %304 %307
+        %309 = OpCompositeExtract %float %tint_symbol_18 8
+        %310 = OpCompositeExtract %float %tint_symbol_19 11
+        %311 = OpFMul %float %309 %310
+        %312 = OpFSub %float %308 %311
+        %313 = OpCompositeExtract %float %tint_symbol_18 9
+        %314 = OpCompositeExtract %float %tint_symbol_19 7
+        %315 = OpFMul %float %313 %314
+        %316 = OpFAdd %float %312 %315
+        %317 = OpCompositeExtract %float %tint_symbol_18 10
+        %318 = OpCompositeExtract %float %tint_symbol_19 12
+        %319 = OpFMul %float %317 %318
+        %320 = OpFAdd %float %316 %319
+        %321 = OpCompositeExtract %float %tint_symbol_18 11
+        %322 = OpCompositeExtract %float %tint_symbol_19 8
+        %323 = OpFMul %float %321 %322
+        %324 = OpFSub %float %320 %323
+        %325 = OpCompositeExtract %float %tint_symbol_18 12
+        %326 = OpCompositeExtract %float %tint_symbol_19 14
+        %327 = OpFMul %float %325 %326
+        %328 = OpFSub %float %324 %327
+        %329 = OpCompositeExtract %float %tint_symbol_18 13
+        %330 = OpCompositeExtract %float %tint_symbol_19 10
+        %331 = OpFMul %float %329 %330
+        %332 = OpFAdd %float %328 %331
+        %333 = OpCompositeExtract %float %tint_symbol_18 14
+        %334 = OpCompositeExtract %float %tint_symbol_19 12
+        %335 = OpFMul %float %333 %334
+        %336 = OpFAdd %float %332 %335
+        %337 = OpCompositeExtract %float %tint_symbol_18 15
+        %338 = OpCompositeExtract %float %tint_symbol_19 2
+        %339 = OpFMul %float %337 %338
+        %340 = OpFAdd %float %336 %339
+               OpStore %277 %340
+        %341 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_6
+        %342 = OpCompositeExtract %float %tint_symbol_18 0
+        %343 = OpCompositeExtract %float %tint_symbol_19 6
+        %344 = OpFMul %float %342 %343
+        %345 = OpCompositeExtract %float %tint_symbol_18 1
+        %346 = OpCompositeExtract %float %tint_symbol_19 15
+        %347 = OpFMul %float %345 %346
+        %348 = OpFSub %float %344 %347
+        %349 = OpCompositeExtract %float %tint_symbol_18 2
+        %350 = OpCompositeExtract %float %tint_symbol_19 4
+        %351 = OpFMul %float %349 %350
+        %352 = OpFSub %float %348 %351
+        %353 = OpCompositeExtract %float %tint_symbol_18 3
+        %354 = OpCompositeExtract %float %tint_symbol_19 5
+        %355 = OpFMul %float %353 %354
+        %356 = OpFSub %float %352 %355
+        %357 = OpCompositeExtract %float %tint_symbol_18 4
+        %358 = OpCompositeExtract %float %tint_symbol_19 2
+        %359 = OpFMul %float %357 %358
+        %360 = OpFAdd %float %356 %359
+        %361 = OpCompositeExtract %float %tint_symbol_18 5
+        %362 = OpCompositeExtract %float %tint_symbol_19 3
+        %363 = OpFMul %float %361 %362
+        %364 = OpFAdd %float %360 %363
+        %365 = OpCompositeExtract %float %tint_symbol_18 6
+        %366 = OpCompositeExtract %float %tint_symbol_19 0
+        %367 = OpFMul %float %365 %366
+        %368 = OpFAdd %float %364 %367
+        %369 = OpCompositeExtract %float %tint_symbol_18 7
+        %370 = OpCompositeExtract %float %tint_symbol_19 8
+        %371 = OpFMul %float %369 %370
+        %372 = OpFAdd %float %368 %371
+        %373 = OpCompositeExtract %float %tint_symbol_18 8
+        %374 = OpCompositeExtract %float %tint_symbol_19 7
+        %375 = OpFMul %float %373 %374
+        %376 = OpFSub %float %372 %375
+        %377 = OpCompositeExtract %float %tint_symbol_18 9
+        %378 = OpCompositeExtract %float %tint_symbol_19 11
+        %379 = OpFMul %float %377 %378
+        %380 = OpFSub %float %376 %379
+        %381 = OpCompositeExtract %float %tint_symbol_18 10
+        %382 = OpCompositeExtract %float %tint_symbol_19 12
+        %383 = OpFMul %float %381 %382
+        %384 = OpFSub %float %380 %383
+        %385 = OpCompositeExtract %float %tint_symbol_18 11
+        %386 = OpCompositeExtract %float %tint_symbol_19 9
+        %387 = OpFMul %float %385 %386
+        %388 = OpFSub %float %384 %387
+        %389 = OpCompositeExtract %float %tint_symbol_18 12
+        %390 = OpCompositeExtract %float %tint_symbol_19 10
+        %391 = OpFMul %float %389 %390
+        %392 = OpFSub %float %388 %391
+        %393 = OpCompositeExtract %float %tint_symbol_18 13
+        %394 = OpCompositeExtract %float %tint_symbol_19 14
+        %395 = OpFMul %float %393 %394
+        %396 = OpFSub %float %392 %395
+        %397 = OpCompositeExtract %float %tint_symbol_18 14
+        %398 = OpCompositeExtract %float %tint_symbol_19 13
+        %399 = OpFMul %float %397 %398
+        %400 = OpFAdd %float %396 %399
+        %401 = OpCompositeExtract %float %tint_symbol_18 15
+        %402 = OpCompositeExtract %float %tint_symbol_19 1
+        %403 = OpFMul %float %401 %402
+        %404 = OpFSub %float %400 %403
+               OpStore %341 %404
+        %406 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_7
+        %407 = OpCompositeExtract %float %tint_symbol_18 0
+        %408 = OpCompositeExtract %float %tint_symbol_19 7
+        %409 = OpFMul %float %407 %408
+        %410 = OpCompositeExtract %float %tint_symbol_18 1
+        %411 = OpCompositeExtract %float %tint_symbol_19 13
+        %412 = OpFMul %float %410 %411
+        %413 = OpFAdd %float %409 %412
+        %414 = OpCompositeExtract %float %tint_symbol_18 2
+        %415 = OpCompositeExtract %float %tint_symbol_19 12
+        %416 = OpFMul %float %414 %415
+        %417 = OpFSub %float %413 %416
+        %418 = OpCompositeExtract %float %tint_symbol_18 3
+        %419 = OpCompositeExtract %float %tint_symbol_19 11
+        %420 = OpFMul %float %418 %419
+        %421 = OpFAdd %float %417 %420
+        %422 = OpCompositeExtract %float %tint_symbol_18 7
+        %423 = OpCompositeExtract %float %tint_symbol_19 0
+        %424 = OpFMul %float %422 %423
+        %425 = OpFAdd %float %421 %424
+        %426 = OpCompositeExtract %float %tint_symbol_18 11
+        %427 = OpCompositeExtract %float %tint_symbol_19 3
+        %428 = OpFMul %float %426 %427
+        %429 = OpFAdd %float %425 %428
+        %430 = OpCompositeExtract %float %tint_symbol_18 12
+        %431 = OpCompositeExtract %float %tint_symbol_19 2
+        %432 = OpFMul %float %430 %431
+        %433 = OpFSub %float %429 %432
+        %434 = OpCompositeExtract %float %tint_symbol_18 13
+        %435 = OpCompositeExtract %float %tint_symbol_19 1
+        %436 = OpFMul %float %434 %435
+        %437 = OpFAdd %float %433 %436
+               OpStore %406 %437
+        %439 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_8
+        %440 = OpCompositeExtract %float %tint_symbol_18 0
+        %441 = OpCompositeExtract %float %tint_symbol_19 8
+        %442 = OpFMul %float %440 %441
+        %443 = OpCompositeExtract %float %tint_symbol_18 1
+        %444 = OpCompositeExtract %float %tint_symbol_19 14
+        %445 = OpFMul %float %443 %444
+        %446 = OpFAdd %float %442 %445
+        %447 = OpCompositeExtract %float %tint_symbol_18 2
+        %448 = OpCompositeExtract %float %tint_symbol_19 10
+        %449 = OpFMul %float %447 %448
+        %450 = OpFSub %float %446 %449
+        %451 = OpCompositeExtract %float %tint_symbol_18 3
+        %452 = OpCompositeExtract %float %tint_symbol_19 9
+        %453 = OpFMul %float %451 %452
+        %454 = OpFAdd %float %450 %453
+        %455 = OpCompositeExtract %float %tint_symbol_18 4
+        %456 = OpCompositeExtract %float %tint_symbol_19 12
+        %457 = OpFMul %float %455 %456
+        %458 = OpFAdd %float %454 %457
+        %459 = OpCompositeExtract %float %tint_symbol_18 5
+        %460 = OpCompositeExtract %float %tint_symbol_19 11
+        %461 = OpFMul %float %459 %460
+        %462 = OpFSub %float %458 %461
+        %463 = OpCompositeExtract %float %tint_symbol_18 6
+        %464 = OpCompositeExtract %float %tint_symbol_19 7
+        %465 = OpFMul %float %463 %464
+        %466 = OpFAdd %float %462 %465
+        %467 = OpCompositeExtract %float %tint_symbol_18 7
+        %468 = OpCompositeExtract %float %tint_symbol_19 6
+        %469 = OpFMul %float %467 %468
+        %470 = OpFSub %float %466 %469
+        %471 = OpCompositeExtract %float %tint_symbol_18 8
+        %472 = OpCompositeExtract %float %tint_symbol_19 0
+        %473 = OpFMul %float %471 %472
+        %474 = OpFAdd %float %470 %473
+        %475 = OpCompositeExtract %float %tint_symbol_18 9
+        %476 = OpCompositeExtract %float %tint_symbol_19 3
+        %477 = OpFMul %float %475 %476
+        %478 = OpFSub %float %474 %477
+        %479 = OpCompositeExtract %float %tint_symbol_18 10
+        %480 = OpCompositeExtract %float %tint_symbol_19 2
+        %481 = OpFMul %float %479 %480
+        %482 = OpFAdd %float %478 %481
+        %483 = OpCompositeExtract %float %tint_symbol_18 11
+        %484 = OpCompositeExtract %float %tint_symbol_19 5
+        %485 = OpFMul %float %483 %484
+        %486 = OpFSub %float %482 %485
+        %487 = OpCompositeExtract %float %tint_symbol_18 12
+        %488 = OpCompositeExtract %float %tint_symbol_19 4
+        %489 = OpFMul %float %487 %488
+        %490 = OpFAdd %float %486 %489
+        %491 = OpCompositeExtract %float %tint_symbol_18 13
+        %492 = OpCompositeExtract %float %tint_symbol_19 15
+        %493 = OpFMul %float %491 %492
+        %494 = OpFSub %float %490 %493
+        %495 = OpCompositeExtract %float %tint_symbol_18 14
+        %496 = OpCompositeExtract %float %tint_symbol_19 1
+        %497 = OpFMul %float %495 %496
+        %498 = OpFAdd %float %494 %497
+        %499 = OpCompositeExtract %float %tint_symbol_18 15
+        %500 = OpCompositeExtract %float %tint_symbol_19 13
+        %501 = OpFMul %float %499 %500
+        %502 = OpFAdd %float %498 %501
+               OpStore %439 %502
+        %504 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_9
+        %505 = OpCompositeExtract %float %tint_symbol_18 0
+        %506 = OpCompositeExtract %float %tint_symbol_19 9
+        %507 = OpFMul %float %505 %506
+        %508 = OpCompositeExtract %float %tint_symbol_18 1
+        %509 = OpCompositeExtract %float %tint_symbol_19 10
+        %510 = OpFMul %float %508 %509
+        %511 = OpFAdd %float %507 %510
+        %512 = OpCompositeExtract %float %tint_symbol_18 2
+        %513 = OpCompositeExtract %float %tint_symbol_19 14
+        %514 = OpFMul %float %512 %513
+        %515 = OpFAdd %float %511 %514
+        %516 = OpCompositeExtract %float %tint_symbol_18 3
+        %517 = OpCompositeExtract %float %tint_symbol_19 8
+        %518 = OpFMul %float %516 %517
+        %519 = OpFSub %float %515 %518
+        %520 = OpCompositeExtract %float %tint_symbol_18 4
+        %521 = OpCompositeExtract %float %tint_symbol_19 13
+        %522 = OpFMul %float %520 %521
+        %523 = OpFAdd %float %519 %522
+        %524 = OpCompositeExtract %float %tint_symbol_18 5
+        %525 = OpCompositeExtract %float %tint_symbol_19 7
+        %526 = OpFMul %float %524 %525
+        %527 = OpFSub %float %523 %526
+        %528 = OpCompositeExtract %float %tint_symbol_18 6
+        %529 = OpCompositeExtract %float %tint_symbol_19 11
+        %530 = OpFMul %float %528 %529
+        %531 = OpFSub %float %527 %530
+        %532 = OpCompositeExtract %float %tint_symbol_18 7
+        %533 = OpCompositeExtract %float %tint_symbol_19 5
+        %534 = OpFMul %float %532 %533
+        %535 = OpFAdd %float %531 %534
+        %536 = OpCompositeExtract %float %tint_symbol_18 8
+        %537 = OpCompositeExtract %float %tint_symbol_19 3
+        %538 = OpFMul %float %536 %537
+        %539 = OpFAdd %float %535 %538
+        %540 = OpCompositeExtract %float %tint_symbol_18 9
+        %541 = OpCompositeExtract %float %tint_symbol_19 0
+        %542 = OpFMul %float %540 %541
+        %543 = OpFAdd %float %539 %542
+        %544 = OpCompositeExtract %float %tint_symbol_18 10
+        %545 = OpCompositeExtract %float %tint_symbol_19 1
+        %546 = OpFMul %float %544 %545
+        %547 = OpFSub %float %543 %546
+        %548 = OpCompositeExtract %float %tint_symbol_18 11
+        %549 = OpCompositeExtract %float %tint_symbol_19 6
+        %550 = OpFMul %float %548 %549
+        %551 = OpFSub %float %547 %550
+        %552 = OpCompositeExtract %float %tint_symbol_18 12
+        %553 = OpCompositeExtract %float %tint_symbol_19 15
+        %554 = OpFMul %float %552 %553
+        %555 = OpFAdd %float %551 %554
+        %556 = OpCompositeExtract %float %tint_symbol_18 13
+        %557 = OpCompositeExtract %float %tint_symbol_19 4
+        %558 = OpFMul %float %556 %557
+        %559 = OpFAdd %float %555 %558
+        %560 = OpCompositeExtract %float %tint_symbol_18 14
+        %561 = OpCompositeExtract %float %tint_symbol_19 2
+        %562 = OpFMul %float %560 %561
+        %563 = OpFAdd %float %559 %562
+        %564 = OpCompositeExtract %float %tint_symbol_18 15
+        %565 = OpCompositeExtract %float %tint_symbol_19 12
+        %566 = OpFMul %float %564 %565
+        %567 = OpFSub %float %563 %566
+               OpStore %504 %567
+        %569 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_10
+        %570 = OpCompositeExtract %float %tint_symbol_18 0
+        %571 = OpCompositeExtract %float %tint_symbol_19 10
+        %572 = OpFMul %float %570 %571
+        %573 = OpCompositeExtract %float %tint_symbol_18 1
+        %574 = OpCompositeExtract %float %tint_symbol_19 9
+        %575 = OpFMul %float %573 %574
+        %576 = OpFSub %float %572 %575
+        %577 = OpCompositeExtract %float %tint_symbol_18 2
+        %578 = OpCompositeExtract %float %tint_symbol_19 8
+        %579 = OpFMul %float %577 %578
+        %580 = OpFAdd %float %576 %579
+        %581 = OpCompositeExtract %float %tint_symbol_18 3
+        %582 = OpCompositeExtract %float %tint_symbol_19 14
+        %583 = OpFMul %float %581 %582
+        %584 = OpFAdd %float %580 %583
+        %585 = OpCompositeExtract %float %tint_symbol_18 4
+        %586 = OpCompositeExtract %float %tint_symbol_19 7
+        %587 = OpFMul %float %585 %586
+        %588 = OpFAdd %float %584 %587
+        %589 = OpCompositeExtract %float %tint_symbol_18 5
+        %590 = OpCompositeExtract %float %tint_symbol_19 13
+        %591 = OpFMul %float %589 %590
+        %592 = OpFAdd %float %588 %591
+        %593 = OpCompositeExtract %float %tint_symbol_18 6
+        %594 = OpCompositeExtract %float %tint_symbol_19 12
+        %595 = OpFMul %float %593 %594
+        %596 = OpFSub %float %592 %595
+        %597 = OpCompositeExtract %float %tint_symbol_18 7
+        %598 = OpCompositeExtract %float %tint_symbol_19 4
+        %599 = OpFMul %float %597 %598
+        %600 = OpFSub %float %596 %599
+        %601 = OpCompositeExtract %float %tint_symbol_18 8
+        %602 = OpCompositeExtract %float %tint_symbol_19 2
+        %603 = OpFMul %float %601 %602
+        %604 = OpFSub %float %600 %603
+        %605 = OpCompositeExtract %float %tint_symbol_18 9
+        %606 = OpCompositeExtract %float %tint_symbol_19 1
+        %607 = OpFMul %float %605 %606
+        %608 = OpFAdd %float %604 %607
+        %609 = OpCompositeExtract %float %tint_symbol_18 10
+        %610 = OpCompositeExtract %float %tint_symbol_19 0
+        %611 = OpFMul %float %609 %610
+        %612 = OpFAdd %float %608 %611
+        %613 = OpCompositeExtract %float %tint_symbol_18 11
+        %614 = OpCompositeExtract %float %tint_symbol_19 15
+        %615 = OpFMul %float %613 %614
+        %616 = OpFSub %float %612 %615
+        %617 = OpCompositeExtract %float %tint_symbol_18 12
+        %618 = OpCompositeExtract %float %tint_symbol_19 6
+        %619 = OpFMul %float %617 %618
+        %620 = OpFSub %float %616 %619
+        %621 = OpCompositeExtract %float %tint_symbol_18 13
+        %622 = OpCompositeExtract %float %tint_symbol_19 5
+        %623 = OpFMul %float %621 %622
+        %624 = OpFAdd %float %620 %623
+        %625 = OpCompositeExtract %float %tint_symbol_18 14
+        %626 = OpCompositeExtract %float %tint_symbol_19 3
+        %627 = OpFMul %float %625 %626
+        %628 = OpFAdd %float %624 %627
+        %629 = OpCompositeExtract %float %tint_symbol_18 15
+        %630 = OpCompositeExtract %float %tint_symbol_19 11
+        %631 = OpFMul %float %629 %630
+        %632 = OpFAdd %float %628 %631
+               OpStore %569 %632
+        %634 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_11
+        %635 = OpCompositeExtract %float %tint_symbol_18 0
+        %636 = OpCompositeExtract %float %tint_symbol_19 11
+        %637 = OpFMul %float %635 %636
+        %638 = OpCompositeExtract %float %tint_symbol_18 1
+        %639 = OpCompositeExtract %float %tint_symbol_19 12
+        %640 = OpFMul %float %638 %639
+        %641 = OpFAdd %float %637 %640
+        %642 = OpCompositeExtract %float %tint_symbol_18 2
+        %643 = OpCompositeExtract %float %tint_symbol_19 13
+        %644 = OpFMul %float %642 %643
+        %645 = OpFAdd %float %641 %644
+        %646 = OpCompositeExtract %float %tint_symbol_18 3
+        %647 = OpCompositeExtract %float %tint_symbol_19 7
+        %648 = OpFMul %float %646 %647
+        %649 = OpFSub %float %645 %648
+        %650 = OpCompositeExtract %float %tint_symbol_18 7
+        %651 = OpCompositeExtract %float %tint_symbol_19 3
+        %652 = OpFMul %float %650 %651
+        %653 = OpFSub %float %649 %652
+        %654 = OpCompositeExtract %float %tint_symbol_18 11
+        %655 = OpCompositeExtract %float %tint_symbol_19 0
+        %656 = OpFMul %float %654 %655
+        %657 = OpFAdd %float %653 %656
+        %658 = OpCompositeExtract %float %tint_symbol_18 12
+        %659 = OpCompositeExtract %float %tint_symbol_19 1
+        %660 = OpFMul %float %658 %659
+        %661 = OpFSub %float %657 %660
+        %662 = OpCompositeExtract %float %tint_symbol_18 13
+        %663 = OpCompositeExtract %float %tint_symbol_19 2
+        %664 = OpFMul %float %662 %663
+        %665 = OpFSub %float %661 %664
+               OpStore %634 %665
+        %667 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_12
+        %668 = OpCompositeExtract %float %tint_symbol_18 0
+        %669 = OpCompositeExtract %float %tint_symbol_19 12
+        %670 = OpFMul %float %668 %669
+        %671 = OpCompositeExtract %float %tint_symbol_18 1
+        %672 = OpCompositeExtract %float %tint_symbol_19 11
+        %673 = OpFMul %float %671 %672
+        %674 = OpFSub %float %670 %673
+        %675 = OpCompositeExtract %float %tint_symbol_18 2
+        %676 = OpCompositeExtract %float %tint_symbol_19 7
+        %677 = OpFMul %float %675 %676
+        %678 = OpFAdd %float %674 %677
+        %679 = OpCompositeExtract %float %tint_symbol_18 3
+        %680 = OpCompositeExtract %float %tint_symbol_19 13
+        %681 = OpFMul %float %679 %680
+        %682 = OpFAdd %float %678 %681
+        %683 = OpCompositeExtract %float %tint_symbol_18 7
+        %684 = OpCompositeExtract %float %tint_symbol_19 2
+        %685 = OpFMul %float %683 %684
+        %686 = OpFAdd %float %682 %685
+        %687 = OpCompositeExtract %float %tint_symbol_18 11
+        %688 = OpCompositeExtract %float %tint_symbol_19 1
+        %689 = OpFMul %float %687 %688
+        %690 = OpFAdd %float %686 %689
+        %691 = OpCompositeExtract %float %tint_symbol_18 12
+        %692 = OpCompositeExtract %float %tint_symbol_19 0
+        %693 = OpFMul %float %691 %692
+        %694 = OpFAdd %float %690 %693
+        %695 = OpCompositeExtract %float %tint_symbol_18 13
+        %696 = OpCompositeExtract %float %tint_symbol_19 3
+        %697 = OpFMul %float %695 %696
+        %698 = OpFSub %float %694 %697
+               OpStore %667 %698
+        %700 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_13
+        %701 = OpCompositeExtract %float %tint_symbol_18 0
+        %702 = OpCompositeExtract %float %tint_symbol_19 13
+        %703 = OpFMul %float %701 %702
+        %704 = OpCompositeExtract %float %tint_symbol_18 1
+        %705 = OpCompositeExtract %float %tint_symbol_19 7
+        %706 = OpFMul %float %704 %705
+        %707 = OpFSub %float %703 %706
+        %708 = OpCompositeExtract %float %tint_symbol_18 2
+        %709 = OpCompositeExtract %float %tint_symbol_19 11
+        %710 = OpFMul %float %708 %709
+        %711 = OpFSub %float %707 %710
+        %712 = OpCompositeExtract %float %tint_symbol_18 3
+        %713 = OpCompositeExtract %float %tint_symbol_19 12
+        %714 = OpFMul %float %712 %713
+        %715 = OpFSub %float %711 %714
+        %716 = OpCompositeExtract %float %tint_symbol_18 7
+        %717 = OpCompositeExtract %float %tint_symbol_19 1
+        %718 = OpFMul %float %716 %717
+        %719 = OpFSub %float %715 %718
+        %720 = OpCompositeExtract %float %tint_symbol_18 11
+        %721 = OpCompositeExtract %float %tint_symbol_19 2
+        %722 = OpFMul %float %720 %721
+        %723 = OpFAdd %float %719 %722
+        %724 = OpCompositeExtract %float %tint_symbol_18 12
+        %725 = OpCompositeExtract %float %tint_symbol_19 3
+        %726 = OpFMul %float %724 %725
+        %727 = OpFAdd %float %723 %726
+        %728 = OpCompositeExtract %float %tint_symbol_18 13
+        %729 = OpCompositeExtract %float %tint_symbol_19 0
+        %730 = OpFMul %float %728 %729
+        %731 = OpFAdd %float %727 %730
+               OpStore %700 %731
+        %733 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_14
+        %734 = OpCompositeExtract %float %tint_symbol_18 0
+        %735 = OpCompositeExtract %float %tint_symbol_19 14
+        %736 = OpFMul %float %734 %735
+        %737 = OpCompositeExtract %float %tint_symbol_18 1
+        %738 = OpCompositeExtract %float %tint_symbol_19 8
+        %739 = OpFMul %float %737 %738
+        %740 = OpFSub %float %736 %739
+        %741 = OpCompositeExtract %float %tint_symbol_18 2
+        %742 = OpCompositeExtract %float %tint_symbol_19 9
+        %743 = OpFMul %float %741 %742
+        %744 = OpFSub %float %740 %743
+        %745 = OpCompositeExtract %float %tint_symbol_18 3
+        %746 = OpCompositeExtract %float %tint_symbol_19 10
+        %747 = OpFMul %float %745 %746
+        %748 = OpFSub %float %744 %747
+        %749 = OpCompositeExtract %float %tint_symbol_18 4
+        %750 = OpCompositeExtract %float %tint_symbol_19 11
+        %751 = OpFMul %float %749 %750
+        %752 = OpFAdd %float %748 %751
+        %753 = OpCompositeExtract %float %tint_symbol_18 5
+        %754 = OpCompositeExtract %float %tint_symbol_19 12
+        %755 = OpFMul %float %753 %754
+        %756 = OpFAdd %float %752 %755
+        %757 = OpCompositeExtract %float %tint_symbol_18 6
+        %758 = OpCompositeExtract %float %tint_symbol_19 13
+        %759 = OpFMul %float %757 %758
+        %760 = OpFAdd %float %756 %759
+        %761 = OpCompositeExtract %float %tint_symbol_18 7
+        %762 = OpCompositeExtract %float %tint_symbol_19 15
+        %763 = OpFMul %float %761 %762
+        %764 = OpFAdd %float %760 %763
+        %765 = OpCompositeExtract %float %tint_symbol_18 8
+        %766 = OpCompositeExtract %float %tint_symbol_19 1
+        %767 = OpFMul %float %765 %766
+        %768 = OpFSub %float %764 %767
+        %769 = OpCompositeExtract %float %tint_symbol_18 9
+        %770 = OpCompositeExtract %float %tint_symbol_19 2
+        %771 = OpFMul %float %769 %770
+        %772 = OpFSub %float %768 %771
+        %773 = OpCompositeExtract %float %tint_symbol_18 10
+        %774 = OpCompositeExtract %float %tint_symbol_19 3
+        %775 = OpFMul %float %773 %774
+        %776 = OpFSub %float %772 %775
+        %777 = OpCompositeExtract %float %tint_symbol_18 11
+        %778 = OpCompositeExtract %float %tint_symbol_19 4
+        %779 = OpFMul %float %777 %778
+        %780 = OpFSub %float %776 %779
+        %781 = OpCompositeExtract %float %tint_symbol_18 12
+        %782 = OpCompositeExtract %float %tint_symbol_19 5
+        %783 = OpFMul %float %781 %782
+        %784 = OpFSub %float %780 %783
+        %785 = OpCompositeExtract %float %tint_symbol_18 13
+        %786 = OpCompositeExtract %float %tint_symbol_19 6
+        %787 = OpFMul %float %785 %786
+        %788 = OpFSub %float %784 %787
+        %789 = OpCompositeExtract %float %tint_symbol_18 14
+        %790 = OpCompositeExtract %float %tint_symbol_19 0
+        %791 = OpFMul %float %789 %790
+        %792 = OpFAdd %float %788 %791
+        %793 = OpCompositeExtract %float %tint_symbol_18 15
+        %794 = OpCompositeExtract %float %tint_symbol_19 7
+        %795 = OpFMul %float %793 %794
+        %796 = OpFSub %float %792 %795
+               OpStore %733 %796
+        %798 = OpAccessChain %_ptr_Function_float %tint_symbol_20 %uint_15
+        %799 = OpCompositeExtract %float %tint_symbol_18 0
+        %800 = OpCompositeExtract %float %tint_symbol_19 15
+        %801 = OpFMul %float %799 %800
+        %802 = OpCompositeExtract %float %tint_symbol_18 1
+        %803 = OpCompositeExtract %float %tint_symbol_19 6
+        %804 = OpFMul %float %802 %803
+        %805 = OpFAdd %float %801 %804
+        %806 = OpCompositeExtract %float %tint_symbol_18 2
+        %807 = OpCompositeExtract %float %tint_symbol_19 5
+        %808 = OpFMul %float %806 %807
+        %809 = OpFSub %float %805 %808
+        %810 = OpCompositeExtract %float %tint_symbol_18 3
+        %811 = OpCompositeExtract %float %tint_symbol_19 4
+        %812 = OpFMul %float %810 %811
+        %813 = OpFAdd %float %809 %812
+        %814 = OpCompositeExtract %float %tint_symbol_18 4
+        %815 = OpCompositeExtract %float %tint_symbol_19 3
+        %816 = OpFMul %float %814 %815
+        %817 = OpFAdd %float %813 %816
+        %818 = OpCompositeExtract %float %tint_symbol_18 5
+        %819 = OpCompositeExtract %float %tint_symbol_19 2
+        %820 = OpFMul %float %818 %819
+        %821 = OpFSub %float %817 %820
+        %822 = OpCompositeExtract %float %tint_symbol_18 6
+        %823 = OpCompositeExtract %float %tint_symbol_19 1
+        %824 = OpFMul %float %822 %823
+        %825 = OpFAdd %float %821 %824
+        %826 = OpCompositeExtract %float %tint_symbol_18 7
+        %827 = OpCompositeExtract %float %tint_symbol_19 14
+        %828 = OpFMul %float %826 %827
+        %829 = OpFSub %float %825 %828
+        %830 = OpCompositeExtract %float %tint_symbol_18 8
+        %831 = OpCompositeExtract %float %tint_symbol_19 13
+        %832 = OpFMul %float %830 %831
+        %833 = OpFAdd %float %829 %832
+        %834 = OpCompositeExtract %float %tint_symbol_18 9
+        %835 = OpCompositeExtract %float %tint_symbol_19 12
+        %836 = OpFMul %float %834 %835
+        %837 = OpFSub %float %833 %836
+        %838 = OpCompositeExtract %float %tint_symbol_18 10
+        %839 = OpCompositeExtract %float %tint_symbol_19 11
+        %840 = OpFMul %float %838 %839
+        %841 = OpFAdd %float %837 %840
+        %842 = OpCompositeExtract %float %tint_symbol_18 11
+        %843 = OpCompositeExtract %float %tint_symbol_19 10
+        %844 = OpFMul %float %842 %843
+        %845 = OpFSub %float %841 %844
+        %846 = OpCompositeExtract %float %tint_symbol_18 12
+        %847 = OpCompositeExtract %float %tint_symbol_19 9
+        %848 = OpFMul %float %846 %847
+        %849 = OpFAdd %float %845 %848
+        %850 = OpCompositeExtract %float %tint_symbol_18 13
+        %851 = OpCompositeExtract %float %tint_symbol_19 8
+        %852 = OpFMul %float %850 %851
+        %853 = OpFSub %float %849 %852
+        %854 = OpCompositeExtract %float %tint_symbol_18 14
+        %855 = OpCompositeExtract %float %tint_symbol_19 7
+        %856 = OpFMul %float %854 %855
+        %857 = OpFAdd %float %853 %856
+        %858 = OpCompositeExtract %float %tint_symbol_18 15
+        %859 = OpCompositeExtract %float %tint_symbol_19 0
+        %860 = OpFMul %float %858 %859
+        %861 = OpFAdd %float %857 %860
+               OpStore %798 %861
+        %862 = OpLoad %tint_symbol %tint_symbol_20
+               OpReturnValue %862
+               OpFunctionEnd
+%tint_symbol_21 = OpFunction %tint_symbol None %863
+%tint_symbol_18_0 = OpFunctionParameter %tint_symbol
+        %866 = OpLabel
+        %867 = OpCompositeExtract %float %tint_symbol_18_0 0
+        %869 = OpCompositeExtract %float %tint_symbol_18_0 1
+        %868 = OpFNegate %float %869
+        %871 = OpCompositeExtract %float %tint_symbol_18_0 2
+        %870 = OpFNegate %float %871
+        %873 = OpCompositeExtract %float %tint_symbol_18_0 3
+        %872 = OpFNegate %float %873
+        %875 = OpCompositeExtract %float %tint_symbol_18_0 4
+        %874 = OpFNegate %float %875
+        %877 = OpCompositeExtract %float %tint_symbol_18_0 5
+        %876 = OpFNegate %float %877
+        %879 = OpCompositeExtract %float %tint_symbol_18_0 6
+        %878 = OpFNegate %float %879
+        %881 = OpCompositeExtract %float %tint_symbol_18_0 7
+        %880 = OpFNegate %float %881
+        %883 = OpCompositeExtract %float %tint_symbol_18_0 8
+        %882 = OpFNegate %float %883
+        %885 = OpCompositeExtract %float %tint_symbol_18_0 9
+        %884 = OpFNegate %float %885
+        %887 = OpCompositeExtract %float %tint_symbol_18_0 10
+        %886 = OpFNegate %float %887
+        %888 = OpCompositeExtract %float %tint_symbol_18_0 11
+        %889 = OpCompositeExtract %float %tint_symbol_18_0 12
+        %890 = OpCompositeExtract %float %tint_symbol_18_0 13
+        %891 = OpCompositeExtract %float %tint_symbol_18_0 14
+        %892 = OpCompositeExtract %float %tint_symbol_18_0 15
+        %893 = OpCompositeConstruct %tint_symbol %867 %868 %870 %872 %874 %876 %878 %880 %882 %884 %886 %888 %889 %890 %891 %892
+               OpReturnValue %893
+               OpFunctionEnd
+%tint_symbol_22 = OpFunction %tint_symbol None %71
+%tint_symbol_23 = OpFunctionParameter %tint_symbol
+%tint_symbol_24 = OpFunctionParameter %tint_symbol
+        %897 = OpLabel
+        %898 = OpFunctionCall %tint_symbol %tint_symbol_21 %tint_symbol_24
+        %899 = OpFunctionCall %tint_symbol %tint_symbol_17 %tint_symbol_23 %898
+        %900 = OpFunctionCall %tint_symbol %tint_symbol_17 %tint_symbol_24 %899
+               OpReturnValue %900
+               OpFunctionEnd
+%tint_symbol_25 = OpFunction %float None %901
+%tint_symbol_24_0 = OpFunctionParameter %tint_symbol
+        %904 = OpLabel
+%tint_symbol_26 = OpVariable %_ptr_Function_float Function %905
+               OpStore %tint_symbol_26 %905
+        %907 = OpLoad %float %tint_symbol_26
+        %908 = OpCompositeExtract %float %tint_symbol_24_0 0
+        %909 = OpCompositeExtract %float %tint_symbol_24_0 0
+        %910 = OpFMul %float %908 %909
+        %911 = OpFAdd %float %907 %910
+               OpStore %tint_symbol_26 %911
+        %912 = OpLoad %float %tint_symbol_26
+        %913 = OpCompositeExtract %float %tint_symbol_24_0 1
+        %914 = OpCompositeExtract %float %tint_symbol_24_0 1
+        %915 = OpFMul %float %913 %914
+        %916 = OpFAdd %float %912 %915
+               OpStore %tint_symbol_26 %916
+        %917 = OpLoad %float %tint_symbol_26
+        %918 = OpCompositeExtract %float %tint_symbol_24_0 2
+        %919 = OpCompositeExtract %float %tint_symbol_24_0 2
+        %920 = OpFMul %float %918 %919
+        %921 = OpFAdd %float %917 %920
+               OpStore %tint_symbol_26 %921
+        %922 = OpLoad %float %tint_symbol_26
+        %923 = OpCompositeExtract %float %tint_symbol_24_0 3
+        %924 = OpCompositeExtract %float %tint_symbol_24_0 3
+        %925 = OpFMul %float %923 %924
+        %926 = OpFAdd %float %922 %925
+               OpStore %tint_symbol_26 %926
+        %927 = OpLoad %float %tint_symbol_26
+        %928 = OpCompositeExtract %float %tint_symbol_24_0 4
+        %929 = OpCompositeExtract %float %tint_symbol_24_0 4
+        %930 = OpFMul %float %928 %929
+        %931 = OpFAdd %float %927 %930
+               OpStore %tint_symbol_26 %931
+        %932 = OpLoad %float %tint_symbol_26
+        %933 = OpCompositeExtract %float %tint_symbol_24_0 5
+        %934 = OpCompositeExtract %float %tint_symbol_24_0 5
+        %935 = OpFMul %float %933 %934
+        %936 = OpFAdd %float %932 %935
+               OpStore %tint_symbol_26 %936
+        %937 = OpLoad %float %tint_symbol_26
+        %938 = OpCompositeExtract %float %tint_symbol_24_0 6
+        %939 = OpCompositeExtract %float %tint_symbol_24_0 6
+        %940 = OpFMul %float %938 %939
+        %941 = OpFAdd %float %937 %940
+               OpStore %tint_symbol_26 %941
+        %942 = OpLoad %float %tint_symbol_26
+        %943 = OpCompositeExtract %float %tint_symbol_24_0 7
+        %944 = OpCompositeExtract %float %tint_symbol_24_0 7
+        %945 = OpFMul %float %943 %944
+        %946 = OpFAdd %float %942 %945
+               OpStore %tint_symbol_26 %946
+        %947 = OpLoad %float %tint_symbol_26
+        %948 = OpCompositeExtract %float %tint_symbol_24_0 8
+        %949 = OpCompositeExtract %float %tint_symbol_24_0 8
+        %950 = OpFMul %float %948 %949
+        %951 = OpFAdd %float %947 %950
+               OpStore %tint_symbol_26 %951
+        %952 = OpLoad %float %tint_symbol_26
+        %953 = OpCompositeExtract %float %tint_symbol_24_0 9
+        %954 = OpCompositeExtract %float %tint_symbol_24_0 9
+        %955 = OpFMul %float %953 %954
+        %956 = OpFAdd %float %952 %955
+               OpStore %tint_symbol_26 %956
+        %957 = OpLoad %float %tint_symbol_26
+        %958 = OpCompositeExtract %float %tint_symbol_24_0 10
+        %959 = OpCompositeExtract %float %tint_symbol_24_0 10
+        %960 = OpFMul %float %958 %959
+        %961 = OpFAdd %float %957 %960
+               OpStore %tint_symbol_26 %961
+        %962 = OpLoad %float %tint_symbol_26
+        %963 = OpCompositeExtract %float %tint_symbol_24_0 11
+        %964 = OpCompositeExtract %float %tint_symbol_24_0 11
+        %965 = OpFMul %float %963 %964
+        %966 = OpFAdd %float %962 %965
+               OpStore %tint_symbol_26 %966
+        %967 = OpLoad %float %tint_symbol_26
+        %968 = OpCompositeExtract %float %tint_symbol_24_0 12
+        %969 = OpCompositeExtract %float %tint_symbol_24_0 12
+        %970 = OpFMul %float %968 %969
+        %971 = OpFAdd %float %967 %970
+               OpStore %tint_symbol_26 %971
+        %972 = OpLoad %float %tint_symbol_26
+        %973 = OpCompositeExtract %float %tint_symbol_24_0 13
+        %974 = OpCompositeExtract %float %tint_symbol_24_0 13
+        %975 = OpFMul %float %973 %974
+        %976 = OpFAdd %float %972 %975
+               OpStore %tint_symbol_26 %976
+        %977 = OpLoad %float %tint_symbol_26
+        %978 = OpCompositeExtract %float %tint_symbol_24_0 14
+        %979 = OpCompositeExtract %float %tint_symbol_24_0 14
+        %980 = OpFMul %float %978 %979
+        %981 = OpFAdd %float %977 %980
+               OpStore %tint_symbol_26 %981
+        %982 = OpLoad %float %tint_symbol_26
+        %983 = OpCompositeExtract %float %tint_symbol_24_0 15
+        %984 = OpCompositeExtract %float %tint_symbol_24_0 15
+        %985 = OpFMul %float %983 %984
+        %986 = OpFAdd %float %982 %985
+               OpStore %tint_symbol_26 %986
+        %989 = OpLoad %float %tint_symbol_26
+        %987 = OpExtInst %float %988 Sqrt %989
+               OpReturnValue %987
+               OpFunctionEnd
+%tint_symbol_27 = OpFunction %tint_symbol None %990
+%tint_symbol_28 = OpFunctionParameter %v3float
+        %994 = OpLabel
+        %997 = OpCompositeExtract %float %tint_symbol_28 0
+        %996 = OpFNegate %float %997
+        %999 = OpFDiv %float %996 %float_2
+       %1001 = OpCompositeExtract %float %tint_symbol_28 1
+       %1000 = OpFNegate %float %1001
+       %1002 = OpFDiv %float %1000 %float_2
+       %1004 = OpCompositeExtract %float %tint_symbol_28 2
+       %1003 = OpFNegate %float %1004
+       %1005 = OpFDiv %float %1003 %float_2
+       %1006 = OpCompositeConstruct %tint_symbol %float_1 %905 %905 %905 %999 %1002 %1005 %905 %905 %905 %905 %905 %905 %905 %905 %905
+               OpReturnValue %1006
+               OpFunctionEnd
+%tint_symbol_29 = OpFunction %tint_symbol None %863
+%tint_symbol_24_1 = OpFunctionParameter %tint_symbol
+       %1009 = OpLabel
+       %1010 = OpCompositeExtract %float %tint_symbol_24_1 4
+       %1011 = OpCompositeExtract %float %tint_symbol_24_1 5
+       %1012 = OpCompositeExtract %float %tint_symbol_24_1 6
+       %1013 = OpCompositeConstruct %tint_symbol %float_1 %905 %905 %905 %1010 %1011 %1012 %905 %905 %905 %905 %905 %905 %905 %905 %905
+               OpReturnValue %1013
+               OpFunctionEnd
+%tint_symbol_30 = OpFunction %tint_symbol None %990
+%tint_symbol_28_0 = OpFunctionParameter %v3float
+       %1016 = OpLabel
+       %1017 = OpCompositeExtract %float %tint_symbol_28_0 2
+       %1019 = OpCompositeExtract %float %tint_symbol_28_0 1
+       %1018 = OpFNegate %float %1019
+       %1020 = OpCompositeExtract %float %tint_symbol_28_0 0
+       %1021 = OpCompositeConstruct %tint_symbol %905 %1017 %1018 %1020 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905
+               OpReturnValue %1021
+               OpFunctionEnd
+%tint_symbol_34 = OpFunction %tint_symbol None %863
+%tint_symbol_24_2 = OpFunctionParameter %tint_symbol
+       %1024 = OpLabel
+%tint_return_flag = OpVariable %_ptr_Function_bool Function %1027
+%tint_return_value = OpVariable %_ptr_Function_tint_symbol Function %78
+       %1029 = OpFunctionCall %float %tint_symbol_25 %tint_symbol_24_2
+       %1030 = OpFOrdEqual %bool %1029 %905
+               OpSelectionMerge %1031 None
+               OpBranchConditional %1030 %1032 %1031
+       %1032 = OpLabel
+               OpStore %tint_return_flag %true
+               OpStore %tint_return_value %1034
+               OpBranch %1031
+       %1031 = OpLabel
+       %1036 = OpLoad %bool %tint_return_flag
+       %1035 = OpLogicalNot %bool %1036
+               OpSelectionMerge %1037 None
+               OpBranchConditional %1035 %1038 %1037
+       %1038 = OpLabel
+               OpStore %tint_return_flag %true
+       %1039 = OpCompositeExtract %float %tint_symbol_24_2 0
+       %1040 = OpFDiv %float %1039 %1029
+       %1041 = OpCompositeExtract %float %tint_symbol_24_2 1
+       %1042 = OpFDiv %float %1041 %1029
+       %1043 = OpCompositeExtract %float %tint_symbol_24_2 2
+       %1044 = OpFDiv %float %1043 %1029
+       %1045 = OpCompositeExtract %float %tint_symbol_24_2 3
+       %1046 = OpFDiv %float %1045 %1029
+       %1047 = OpCompositeExtract %float %tint_symbol_24_2 4
+       %1048 = OpFDiv %float %1047 %1029
+       %1049 = OpCompositeExtract %float %tint_symbol_24_2 5
+       %1050 = OpFDiv %float %1049 %1029
+       %1051 = OpCompositeExtract %float %tint_symbol_24_2 6
+       %1052 = OpFDiv %float %1051 %1029
+       %1053 = OpCompositeExtract %float %tint_symbol_24_2 7
+       %1054 = OpFDiv %float %1053 %1029
+       %1055 = OpCompositeExtract %float %tint_symbol_24_2 8
+       %1056 = OpFDiv %float %1055 %1029
+       %1057 = OpCompositeExtract %float %tint_symbol_24_2 9
+       %1058 = OpFDiv %float %1057 %1029
+       %1059 = OpCompositeExtract %float %tint_symbol_24_2 10
+       %1060 = OpFDiv %float %1059 %1029
+       %1061 = OpCompositeExtract %float %tint_symbol_24_2 11
+       %1062 = OpFDiv %float %1061 %1029
+       %1063 = OpCompositeExtract %float %tint_symbol_24_2 12
+       %1064 = OpFDiv %float %1063 %1029
+       %1065 = OpCompositeExtract %float %tint_symbol_24_2 13
+       %1066 = OpFDiv %float %1065 %1029
+       %1067 = OpCompositeExtract %float %tint_symbol_24_2 14
+       %1068 = OpFDiv %float %1067 %1029
+       %1069 = OpCompositeExtract %float %tint_symbol_24_2 15
+       %1070 = OpFDiv %float %1069 %1029
+       %1071 = OpCompositeConstruct %tint_symbol %1040 %1042 %1044 %1046 %1048 %1050 %1052 %1054 %1056 %1058 %1060 %1062 %1064 %1066 %1068 %1070
+               OpStore %tint_return_value %1071
+               OpBranch %1037
+       %1037 = OpLabel
+       %1072 = OpLoad %tint_symbol %tint_return_value
+               OpReturnValue %1072
+               OpFunctionEnd
+%tint_symbol_31 = OpFunction %tint_symbol None %1073
+%tint_symbol_1 = OpFunctionParameter %v3float
+%tint_symbol_28_1 = OpFunctionParameter %v3float
+       %1077 = OpLabel
+       %1078 = OpFunctionCall %tint_symbol %tint_symbol_30 %tint_symbol_28_1
+       %1079 = OpFunctionCall %tint_symbol %tint_symbol_34 %1078
+       %1080 = OpCompositeExtract %float %1079 1
+       %1081 = OpCompositeExtract %float %1079 2
+       %1082 = OpCompositeExtract %float %1079 3
+       %1085 = OpCompositeExtract %float %1079 2
+       %1084 = OpFNegate %float %1085
+       %1086 = OpCompositeExtract %float %tint_symbol_1 2
+       %1087 = OpFMul %float %1084 %1086
+       %1088 = OpCompositeExtract %float %1079 1
+       %1089 = OpCompositeExtract %float %tint_symbol_1 1
+       %1090 = OpFMul %float %1088 %1089
+       %1091 = OpFSub %float %1087 %1090
+       %1083 = OpFNegate %float %1091
+       %1093 = OpCompositeExtract %float %1079 1
+       %1094 = OpCompositeExtract %float %tint_symbol_1 0
+       %1095 = OpFMul %float %1093 %1094
+       %1096 = OpCompositeExtract %float %1079 3
+       %1097 = OpCompositeExtract %float %tint_symbol_1 2
+       %1098 = OpFMul %float %1096 %1097
+       %1099 = OpFSub %float %1095 %1098
+       %1092 = OpFNegate %float %1099
+       %1101 = OpCompositeExtract %float %1079 3
+       %1102 = OpCompositeExtract %float %tint_symbol_1 1
+       %1103 = OpFMul %float %1101 %1102
+       %1104 = OpCompositeExtract %float %1079 2
+       %1105 = OpCompositeExtract %float %tint_symbol_1 0
+       %1106 = OpFMul %float %1104 %1105
+       %1107 = OpFAdd %float %1103 %1106
+       %1100 = OpFNegate %float %1107
+       %1108 = OpCompositeConstruct %tint_symbol %905 %1080 %1081 %1082 %1083 %1092 %1100 %905 %905 %905 %905 %905 %905 %905 %905 %905
+               OpReturnValue %1108
+               OpFunctionEnd
+%tint_symbol_35 = OpFunction %tint_symbol None %1109
+%tint_symbol_36 = OpFunctionParameter %float
+%tint_symbol_28_2 = OpFunctionParameter %v3float
+%tint_symbol_37 = OpFunctionParameter %v3float
+       %1114 = OpLabel
+       %1116 = OpFDiv %float %tint_symbol_36 %float_2
+       %1115 = OpExtInst %float %988 Cos %1116
+       %1118 = OpFDiv %float %tint_symbol_36 %float_2
+       %1117 = OpExtInst %float %988 Sin %1118
+       %1119 = OpFunctionCall %tint_symbol %tint_symbol_31 %tint_symbol_37 %tint_symbol_28_2
+       %1120 = OpCompositeExtract %float %1119 1
+       %1121 = OpFMul %float %1117 %1120
+       %1122 = OpCompositeExtract %float %1119 2
+       %1123 = OpFMul %float %1117 %1122
+       %1124 = OpCompositeExtract %float %1119 3
+       %1125 = OpFMul %float %1117 %1124
+       %1126 = OpCompositeExtract %float %1119 4
+       %1127 = OpFMul %float %1117 %1126
+       %1128 = OpCompositeExtract %float %1119 5
+       %1129 = OpFMul %float %1117 %1128
+       %1130 = OpCompositeExtract %float %1119 6
+       %1131 = OpFMul %float %1117 %1130
+       %1132 = OpCompositeConstruct %tint_symbol %1115 %1121 %1123 %1125 %1127 %1129 %1131 %905 %905 %905 %905 %905 %905 %905 %905 %905
+               OpReturnValue %1132
+               OpFunctionEnd
+%tint_symbol_40 = OpFunction %tint_symbol None %863
+%tint_symbol_24_3 = OpFunctionParameter %tint_symbol
+       %1135 = OpLabel
+       %1136 = OpCompositeExtract %float %tint_symbol_24_3 0
+       %1137 = OpCompositeExtract %float %tint_symbol_24_3 1
+       %1138 = OpCompositeExtract %float %tint_symbol_24_3 2
+       %1139 = OpCompositeExtract %float %tint_symbol_24_3 3
+       %1140 = OpCompositeConstruct %tint_symbol %1136 %1137 %1138 %1139 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905
+               OpReturnValue %1140
+               OpFunctionEnd
+%tint_symbol_41 = OpFunction %tint_symbol None %990
+%tint_symbol_23_0 = OpFunctionParameter %v3float
+       %1143 = OpLabel
+       %1145 = OpCompositeExtract %float %tint_symbol_23_0 2
+       %1144 = OpFNegate %float %1145
+       %1146 = OpCompositeExtract %float %tint_symbol_23_0 1
+       %1148 = OpCompositeExtract %float %tint_symbol_23_0 0
+       %1147 = OpFNegate %float %1148
+       %1149 = OpCompositeConstruct %tint_symbol %905 %905 %905 %905 %905 %905 %905 %float_1 %1144 %1146 %1147 %905 %905 %905 %905 %905
+               OpReturnValue %1149
+               OpFunctionEnd
+%tint_symbol_42 = OpFunction %v3float None %1150
+%tint_symbol_23_1 = OpFunctionParameter %tint_symbol
+       %1153 = OpLabel
+       %1155 = OpCompositeExtract %float %tint_symbol_23_1 10
+       %1154 = OpFNegate %float %1155
+       %1156 = OpCompositeExtract %float %tint_symbol_23_1 7
+       %1157 = OpFDiv %float %1154 %1156
+       %1158 = OpCompositeExtract %float %tint_symbol_23_1 9
+       %1159 = OpCompositeExtract %float %tint_symbol_23_1 7
+       %1160 = OpFDiv %float %1158 %1159
+       %1162 = OpCompositeExtract %float %tint_symbol_23_1 8
+       %1161 = OpFNegate %float %1162
+       %1163 = OpCompositeExtract %float %tint_symbol_23_1 7
+       %1164 = OpFDiv %float %1161 %1163
+       %1165 = OpCompositeConstruct %v3float %1157 %1160 %1164
+               OpReturnValue %1165
+               OpFunctionEnd
+%tint_symbol_43 = OpFunction %tint_symbol None %1166
+%tint_symbol_32 = OpFunctionParameter %v3float
+%tint_symbol_28_3 = OpFunctionParameter %float
+       %1170 = OpLabel
+       %1171 = OpCompositeExtract %float %tint_symbol_32 0
+       %1172 = OpCompositeExtract %float %tint_symbol_32 1
+       %1173 = OpCompositeExtract %float %tint_symbol_32 2
+       %1174 = OpFNegate %float %tint_symbol_28_3
+       %1175 = OpCompositeConstruct %tint_symbol %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %905 %1171 %1172 %1173 %1174 %905
+               OpReturnValue %1175
+               OpFunctionEnd
+%tint_symbol_44 = OpFunction %tint_symbol None %1176
+%tint_symbol_45 = OpFunctionParameter %v3float
+%tint_symbol_46 = OpFunctionParameter %v3float
+%tint_symbol_47 = OpFunctionParameter %v3float
+       %1181 = OpLabel
+       %1183 = OpCompositeExtract %float %tint_symbol_46 1
+       %1185 = OpCompositeExtract %float %tint_symbol_47 2
+       %1186 = OpFMul %float %1183 %1185
+       %1187 = OpCompositeExtract %float %tint_symbol_47 1
+       %1188 = OpCompositeExtract %float %tint_symbol_46 2
+       %1189 = OpFMul %float %1187 %1188
+       %1190 = OpFSub %float %1186 %1189
+       %1191 = OpCompositeExtract %float %tint_symbol_45 1
+       %1192 = OpCompositeExtract %float %tint_symbol_47 2
+       %1193 = OpFMul %float %1191 %1192
+       %1194 = OpCompositeExtract %float %tint_symbol_47 1
+       %1195 = OpCompositeExtract %float %tint_symbol_45 2
+       %1196 = OpFMul %float %1194 %1195
+       %1197 = OpFSub %float %1193 %1196
+       %1198 = OpFSub %float %1190 %1197
+       %1199 = OpCompositeExtract %float %tint_symbol_45 1
+       %1200 = OpCompositeExtract %float %tint_symbol_46 2
+       %1201 = OpFMul %float %1199 %1200
+       %1202 = OpCompositeExtract %float %tint_symbol_46 1
+       %1203 = OpCompositeExtract %float %tint_symbol_45 2
+       %1204 = OpFMul %float %1202 %1203
+       %1205 = OpFSub %float %1201 %1204
+       %1206 = OpFAdd %float %1198 %1205
+       %1208 = OpCompositeExtract %float %tint_symbol_46 0
+       %1209 = OpCompositeExtract %float %tint_symbol_47 2
+       %1210 = OpFMul %float %1208 %1209
+       %1211 = OpCompositeExtract %float %tint_symbol_47 0
+       %1212 = OpCompositeExtract %float %tint_symbol_46 2
+       %1213 = OpFMul %float %1211 %1212
+       %1214 = OpFSub %float %1210 %1213
+       %1215 = OpCompositeExtract %float %tint_symbol_45 0
+       %1216 = OpCompositeExtract %float %tint_symbol_47 2
+       %1217 = OpFMul %float %1215 %1216
+       %1218 = OpCompositeExtract %float %tint_symbol_47 0
+       %1219 = OpCompositeExtract %float %tint_symbol_45 2
+       %1220 = OpFMul %float %1218 %1219
+       %1221 = OpFSub %float %1217 %1220
+       %1222 = OpFSub %float %1214 %1221
+       %1223 = OpCompositeExtract %float %tint_symbol_45 0
+       %1224 = OpCompositeExtract %float %tint_symbol_46 2
+       %1225 = OpFMul %float %1223 %1224
+       %1226 = OpCompositeExtract %float %tint_symbol_46 0
+       %1227 = OpCompositeExtract %float %tint_symbol_45 2
+       %1228 = OpFMul %float %1226 %1227
+       %1229 = OpFSub %float %1225 %1228
+       %1230 = OpFAdd %float %1222 %1229
+       %1231 = OpCompositeExtract %float %tint_symbol_46 0
+       %1232 = OpCompositeExtract %float %tint_symbol_47 1
+       %1233 = OpFMul %float %1231 %1232
+       %1234 = OpCompositeExtract %float %tint_symbol_47 0
+       %1235 = OpCompositeExtract %float %tint_symbol_46 1
+       %1236 = OpFMul %float %1234 %1235
+       %1237 = OpFSub %float %1233 %1236
+       %1238 = OpCompositeExtract %float %tint_symbol_45 0
+       %1239 = OpCompositeExtract %float %tint_symbol_47 1
+       %1240 = OpFMul %float %1238 %1239
+       %1241 = OpCompositeExtract %float %tint_symbol_47 0
+       %1242 = OpCompositeExtract %float %tint_symbol_45 1
+       %1243 = OpFMul %float %1241 %1242
+       %1244 = OpFSub %float %1240 %1243
+       %1245 = OpFSub %float %1237 %1244
+       %1246 = OpCompositeExtract %float %tint_symbol_45 0
+       %1247 = OpCompositeExtract %float %tint_symbol_46 1
+       %1248 = OpFMul %float %1246 %1247
+       %1249 = OpCompositeExtract %float %tint_symbol_46 0
+       %1250 = OpCompositeExtract %float %tint_symbol_45 1
+       %1251 = OpFMul %float %1249 %1250
+       %1252 = OpFSub %float %1248 %1251
+       %1253 = OpFAdd %float %1245 %1252
+       %1254 = OpCompositeExtract %float %tint_symbol_45 0
+       %1255 = OpCompositeExtract %float %tint_symbol_46 1
+       %1256 = OpCompositeExtract %float %tint_symbol_47 2
+       %1257 = OpFMul %float %1255 %1256
+       %1258 = OpCompositeExtract %float %tint_symbol_47 1
+       %1259 = OpCompositeExtract %float %tint_symbol_46 2
+       %1260 = OpFMul %float %1258 %1259
+       %1261 = OpFSub %float %1257 %1260
+       %1262 = OpFMul %float %1254 %1261
+       %1263 = OpCompositeExtract %float %tint_symbol_46 0
+       %1264 = OpCompositeExtract %float %tint_symbol_45 1
+       %1265 = OpCompositeExtract %float %tint_symbol_47 2
+       %1266 = OpFMul %float %1264 %1265
+       %1267 = OpCompositeExtract %float %tint_symbol_47 1
+       %1268 = OpCompositeExtract %float %tint_symbol_45 2
+       %1269 = OpFMul %float %1267 %1268
+       %1270 = OpFSub %float %1266 %1269
+       %1271 = OpFMul %float %1263 %1270
+       %1272 = OpFSub %float %1262 %1271
+       %1273 = OpCompositeExtract %float %tint_symbol_47 0
+       %1274 = OpCompositeExtract %float %tint_symbol_45 1
+       %1275 = OpCompositeExtract %float %tint_symbol_46 2
+       %1276 = OpFMul %float %1274 %1275
+       %1277 = OpCompositeExtract %float %tint_symbol_46 1
+       %1278 = OpCompositeExtract %float %tint_symbol_45 2
+       %1279 = OpFMul %float %1277 %1278
+       %1280 = OpFSub %float %1276 %1279
+       %1281 = OpFMul %float %1273 %1280
+       %1282 = OpFAdd %float %1272 %1281
+       %1284 = OpFNegate %float %1230
+       %1285 = OpCompositeConstruct %v3float %1206 %1284 %1253
+       %1283 = OpFunctionCall %tint_symbol %tint_symbol_43 %1285 %1282
+               OpReturnValue %1283
+               OpFunctionEnd
+%tint_symbol_55 = OpFunction %tint_symbol_52 None %1286
+%tint_symbol_39 = OpFunctionParameter %tint_symbol
+%tint_symbol_56 = OpFunctionParameter %tint_symbol
+       %1291 = OpLabel
+%tint_symbol_58 = OpVariable %_ptr_Function_tint_symbol_52 Function %1295
+       %1292 = OpFunctionCall %tint_symbol %tint_symbol_17 %tint_symbol_39 %tint_symbol_56
+       %1297 = OpAccessChain %_ptr_Function_v3float %tint_symbol_58 %uint_0
+       %1298 = OpFunctionCall %v3float %tint_symbol_42 %1292
+               OpStore %1297 %1298
+       %1299 = OpAccessChain %_ptr_Function_bool %tint_symbol_58 %uint_1
+       %1302 = OpCompositeExtract %float %1292 7
+       %1301 = OpExtInst %float %988 FAbs %1302
+       %1304 = OpFOrdLessThanEqual %bool %1301 %float_9_99999994en09
+       %1300 = OpLogicalNot %bool %1304
+               OpStore %1299 %1300
+       %1305 = OpAccessChain %_ptr_Function_bool %tint_symbol_58 %uint_2
+       %1306 = OpAccessChain %_ptr_Function_bool %tint_symbol_58 %uint_1
+       %1307 = OpLoad %bool %1306
+               OpSelectionMerge %1308 None
+               OpBranchConditional %1307 %1309 %1308
+       %1309 = OpLabel
+       %1311 = OpCompositeExtract %float %1292 8
+       %1310 = OpExtInst %float %988 FAbs %1311
+       %1312 = OpFOrdLessThanEqual %bool %1310 %float_9_99999994en09
+               OpBranch %1308
+       %1308 = OpLabel
+       %1313 = OpPhi %bool %1307 %1291 %1312 %1309
+               OpSelectionMerge %1314 None
+               OpBranchConditional %1313 %1315 %1314
+       %1315 = OpLabel
+       %1317 = OpCompositeExtract %float %1292 9
+       %1316 = OpExtInst %float %988 FAbs %1317
+       %1318 = OpFOrdLessThanEqual %bool %1316 %float_9_99999994en09
+               OpBranch %1314
+       %1314 = OpLabel
+       %1319 = OpPhi %bool %1313 %1308 %1318 %1315
+               OpSelectionMerge %1320 None
+               OpBranchConditional %1319 %1321 %1320
+       %1321 = OpLabel
+       %1323 = OpCompositeExtract %float %1292 10
+       %1322 = OpExtInst %float %988 FAbs %1323
+       %1324 = OpFOrdLessThanEqual %bool %1322 %float_9_99999994en09
+               OpBranch %1320
+       %1320 = OpLabel
+       %1325 = OpPhi %bool %1319 %1314 %1324 %1321
+               OpStore %1305 %1325
+       %1326 = OpLoad %tint_symbol_52 %tint_symbol_58
+               OpReturnValue %1326
+               OpFunctionEnd
+%tint_symbol_60 = OpFunction %v3float None %1327
+%tint_symbol_23_2 = OpFunctionParameter %v3float
+%tint_symbol_24_4 = OpFunctionParameter %tint_symbol
+       %1331 = OpLabel
+       %1332 = OpFunctionCall %tint_symbol %tint_symbol_41 %tint_symbol_23_2
+       %1333 = OpFunctionCall %tint_symbol %tint_symbol_22 %1332 %tint_symbol_24_4
+       %1334 = OpFunctionCall %v3float %tint_symbol_42 %1333
+               OpReturnValue %1334
+               OpFunctionEnd
+%tint_symbol_61 = OpFunction %v3float None %1327
+%tint_symbol_28_4 = OpFunctionParameter %v3float
+%tint_symbol_24_5 = OpFunctionParameter %tint_symbol
+       %1338 = OpLabel
+       %1339 = OpFunctionCall %tint_symbol %tint_symbol_40 %tint_symbol_24_5
+       %1340 = OpFunctionCall %tint_symbol %tint_symbol_41 %tint_symbol_28_4
+       %1341 = OpFunctionCall %tint_symbol %tint_symbol_22 %1340 %1339
+       %1342 = OpFunctionCall %v3float %tint_symbol_42 %1341
+               OpReturnValue %1342
+               OpFunctionEnd
+%tint_symbol_94 = OpFunction %v2float None %1343
+%tint_symbol_1_0 = OpFunctionParameter %v3float
+%tint_symbol_28_5 = OpFunctionParameter %v3float
+%tint_symbol_95 = OpFunctionParameter %tint_symbol_67
+%tint_symbol_96 = OpFunctionParameter %float
+       %1349 = OpLabel
+%tint_return_flag_1 = OpVariable %_ptr_Function_bool Function %1027
+%tint_return_value_1 = OpVariable %_ptr_Function_v2float Function %1353
+%tint_symbol_58_0 = OpVariable %_ptr_Function_tint_symbol_52 Function %1295
+%tint_symbol_97 = OpVariable %_ptr_Function_float Function %905
+       %1354 = OpFunctionCall %tint_symbol %tint_symbol_31 %tint_symbol_1_0 %tint_symbol_28_5
+       %1356 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1357 = OpVectorShuffle %v3float %1356 %1356 0 1 2
+       %1358 = OpCompositeExtract %v4float %tint_symbol_95 1
+       %1359 = OpVectorShuffle %v3float %1358 %1358 0 1 2
+       %1360 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1361 = OpVectorShuffle %v3float %1360 %1360 0 1 2
+       %1355 = OpFunctionCall %tint_symbol %tint_symbol_44 %1357 %1359 %1361
+       %1362 = OpFunctionCall %tint_symbol_52 %tint_symbol_55 %1354 %1355
+               OpStore %tint_symbol_58_0 %1362
+       %1364 = OpAccessChain %_ptr_Function_bool %tint_symbol_58_0 %uint_1
+       %1365 = OpLoad %bool %1364
+               OpSelectionMerge %1366 None
+               OpBranchConditional %1365 %1367 %1366
+       %1367 = OpLabel
+       %1369 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1370 = OpCompositeExtract %float %1369 2
+       %1371 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1372 = OpCompositeExtract %float %1371 2
+       %1373 = OpFSub %float %1370 %1372
+       %1368 = OpExtInst %float %988 FAbs %1373
+       %1374 = OpFOrdLessThanEqual %bool %1368 %float_9_99999994en09
+               OpSelectionMerge %1375 None
+               OpBranchConditional %1374 %1376 %1377
+       %1376 = OpLabel
+       %1378 = OpAccessChain %_ptr_Function_bool %tint_symbol_58_0 %uint_1
+       %1379 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1380 = OpCompositeExtract %float %1379 0
+       %1381 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_0
+       %1382 = OpLoad %float %1381
+       %1383 = OpFOrdLessThanEqual %bool %1380 %1382
+               OpSelectionMerge %1384 None
+               OpBranchConditional %1383 %1385 %1384
+       %1385 = OpLabel
+       %1386 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_0
+       %1387 = OpLoad %float %1386
+       %1388 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1389 = OpCompositeExtract %float %1388 0
+       %1390 = OpFOrdLessThanEqual %bool %1387 %1389
+               OpBranch %1384
+       %1384 = OpLabel
+       %1391 = OpPhi %bool %1383 %1376 %1390 %1385
+               OpSelectionMerge %1392 None
+               OpBranchConditional %1391 %1393 %1392
+       %1393 = OpLabel
+       %1394 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1395 = OpCompositeExtract %float %1394 1
+       %1396 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_1
+       %1397 = OpLoad %float %1396
+       %1398 = OpFOrdLessThanEqual %bool %1395 %1397
+               OpSelectionMerge %1399 None
+               OpBranchConditional %1398 %1400 %1399
+       %1400 = OpLabel
+       %1401 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_1
+       %1402 = OpLoad %float %1401
+       %1403 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1404 = OpCompositeExtract %float %1403 1
+       %1405 = OpFOrdLessThanEqual %bool %1402 %1404
+               OpBranch %1399
+       %1399 = OpLabel
+       %1406 = OpPhi %bool %1398 %1393 %1405 %1400
+               OpBranch %1392
+       %1392 = OpLabel
+       %1407 = OpPhi %bool %1391 %1384 %1406 %1399
+               OpStore %1378 %1407
+               OpBranch %1375
+       %1377 = OpLabel
+       %1409 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1410 = OpCompositeExtract %float %1409 1
+       %1411 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1412 = OpCompositeExtract %float %1411 1
+       %1413 = OpFSub %float %1410 %1412
+       %1408 = OpExtInst %float %988 FAbs %1413
+       %1414 = OpFOrdLessThanEqual %bool %1408 %float_9_99999994en09
+               OpSelectionMerge %1415 None
+               OpBranchConditional %1414 %1416 %1417
+       %1416 = OpLabel
+       %1418 = OpAccessChain %_ptr_Function_bool %tint_symbol_58_0 %uint_1
+       %1419 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1420 = OpCompositeExtract %float %1419 0
+       %1421 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_0
+       %1422 = OpLoad %float %1421
+       %1423 = OpFOrdLessThanEqual %bool %1420 %1422
+               OpSelectionMerge %1424 None
+               OpBranchConditional %1423 %1425 %1424
+       %1425 = OpLabel
+       %1426 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_0
+       %1427 = OpLoad %float %1426
+       %1428 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1429 = OpCompositeExtract %float %1428 0
+       %1430 = OpFOrdLessThanEqual %bool %1427 %1429
+               OpBranch %1424
+       %1424 = OpLabel
+       %1431 = OpPhi %bool %1423 %1416 %1430 %1425
+               OpSelectionMerge %1432 None
+               OpBranchConditional %1431 %1433 %1432
+       %1433 = OpLabel
+       %1434 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1435 = OpCompositeExtract %float %1434 2
+       %1436 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_2
+       %1437 = OpLoad %float %1436
+       %1438 = OpFOrdLessThanEqual %bool %1435 %1437
+               OpSelectionMerge %1439 None
+               OpBranchConditional %1438 %1440 %1439
+       %1440 = OpLabel
+       %1441 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_2
+       %1442 = OpLoad %float %1441
+       %1443 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1444 = OpCompositeExtract %float %1443 2
+       %1445 = OpFOrdLessThanEqual %bool %1442 %1444
+               OpBranch %1439
+       %1439 = OpLabel
+       %1446 = OpPhi %bool %1438 %1433 %1445 %1440
+               OpBranch %1432
+       %1432 = OpLabel
+       %1447 = OpPhi %bool %1431 %1424 %1446 %1439
+               OpStore %1418 %1447
+               OpBranch %1415
+       %1417 = OpLabel
+       %1449 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1450 = OpCompositeExtract %float %1449 0
+       %1451 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1452 = OpCompositeExtract %float %1451 0
+       %1453 = OpFSub %float %1450 %1452
+       %1448 = OpExtInst %float %988 FAbs %1453
+       %1454 = OpFOrdLessThanEqual %bool %1448 %float_9_99999994en09
+               OpSelectionMerge %1455 None
+               OpBranchConditional %1454 %1456 %1455
+       %1456 = OpLabel
+       %1457 = OpAccessChain %_ptr_Function_bool %tint_symbol_58_0 %uint_1
+       %1458 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1459 = OpCompositeExtract %float %1458 1
+       %1460 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_1
+       %1461 = OpLoad %float %1460
+       %1462 = OpFOrdLessThanEqual %bool %1459 %1461
+               OpSelectionMerge %1463 None
+               OpBranchConditional %1462 %1464 %1463
+       %1464 = OpLabel
+       %1465 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_1
+       %1466 = OpLoad %float %1465
+       %1467 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1468 = OpCompositeExtract %float %1467 1
+       %1469 = OpFOrdLessThanEqual %bool %1466 %1468
+               OpBranch %1463
+       %1463 = OpLabel
+       %1470 = OpPhi %bool %1462 %1456 %1469 %1464
+               OpSelectionMerge %1471 None
+               OpBranchConditional %1470 %1472 %1471
+       %1472 = OpLabel
+       %1473 = OpCompositeExtract %v4float %tint_symbol_95 0
+       %1474 = OpCompositeExtract %float %1473 2
+       %1475 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_2
+       %1476 = OpLoad %float %1475
+       %1477 = OpFOrdLessThanEqual %bool %1474 %1476
+               OpSelectionMerge %1478 None
+               OpBranchConditional %1477 %1479 %1478
+       %1479 = OpLabel
+       %1480 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_2
+       %1481 = OpLoad %float %1480
+       %1482 = OpCompositeExtract %v4float %tint_symbol_95 2
+       %1483 = OpCompositeExtract %float %1482 2
+       %1484 = OpFOrdLessThanEqual %bool %1481 %1483
+               OpBranch %1478
+       %1478 = OpLabel
+       %1485 = OpPhi %bool %1477 %1472 %1484 %1479
+               OpBranch %1471
+       %1471 = OpLabel
+       %1486 = OpPhi %bool %1470 %1463 %1485 %1478
+               OpStore %1457 %1486
+               OpBranch %1455
+       %1455 = OpLabel
+               OpBranch %1415
+       %1415 = OpLabel
+               OpBranch %1375
+       %1375 = OpLabel
+       %1487 = OpAccessChain %_ptr_Function_bool %tint_symbol_58_0 %uint_1
+       %1488 = OpLoad %bool %1487
+               OpSelectionMerge %1489 None
+               OpBranchConditional %1488 %1490 %1489
+       %1490 = OpLabel
+               OpStore %tint_symbol_97 %float_n1
+       %1493 = OpCompositeExtract %float %tint_symbol_28_5 0
+       %1494 = OpFOrdGreaterThan %bool %1493 %float_9_99999994en09
+               OpSelectionMerge %1495 None
+               OpBranchConditional %1494 %1496 %1497
+       %1496 = OpLabel
+       %1498 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_0
+       %1499 = OpLoad %float %1498
+       %1500 = OpCompositeExtract %float %tint_symbol_1_0 0
+       %1501 = OpFSub %float %1499 %1500
+       %1502 = OpCompositeExtract %float %tint_symbol_28_5 0
+       %1503 = OpFDiv %float %1501 %1502
+               OpStore %tint_symbol_97 %1503
+               OpBranch %1495
+       %1497 = OpLabel
+       %1504 = OpCompositeExtract %float %tint_symbol_28_5 1
+       %1505 = OpFOrdGreaterThan %bool %1504 %float_9_99999994en09
+               OpSelectionMerge %1506 None
+               OpBranchConditional %1505 %1507 %1508
+       %1507 = OpLabel
+       %1509 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_1
+       %1510 = OpLoad %float %1509
+       %1511 = OpCompositeExtract %float %tint_symbol_1_0 1
+       %1512 = OpFSub %float %1510 %1511
+       %1513 = OpCompositeExtract %float %tint_symbol_28_5 1
+       %1514 = OpFDiv %float %1512 %1513
+               OpStore %tint_symbol_97 %1514
+               OpBranch %1506
+       %1508 = OpLabel
+       %1515 = OpAccessChain %_ptr_Function_float %tint_symbol_58_0 %uint_0 %uint_2
+       %1516 = OpLoad %float %1515
+       %1517 = OpCompositeExtract %float %tint_symbol_1_0 2
+       %1518 = OpFSub %float %1516 %1517
+       %1519 = OpCompositeExtract %float %tint_symbol_28_5 2
+       %1520 = OpFDiv %float %1518 %1519
+               OpStore %tint_symbol_97 %1520
+               OpBranch %1506
+       %1506 = OpLabel
+               OpBranch %1495
+       %1495 = OpLabel
+       %1521 = OpLoad %float %tint_symbol_97
+       %1522 = OpFOrdLessThan %bool %1521 %905
+               OpSelectionMerge %1523 None
+               OpBranchConditional %1522 %1524 %1525
+       %1524 = OpLabel
+               OpStore %tint_return_flag_1 %true
+       %1526 = OpCompositeConstruct %v2float %tint_symbol_96 %float_n1
+               OpStore %tint_return_value_1 %1526
+               OpBranch %1523
+       %1525 = OpLabel
+       %1527 = OpFOrdLessThan %bool %tint_symbol_96 %905
+               OpSelectionMerge %1528 None
+               OpBranchConditional %1527 %1529 %1530
+       %1529 = OpLabel
+               OpStore %tint_return_flag_1 %true
+       %1531 = OpLoad %float %tint_symbol_97
+       %1532 = OpCompositeConstruct %v2float %1531 %float_1
+               OpStore %tint_return_value_1 %1532
+               OpBranch %1528
+       %1530 = OpLabel
+       %1533 = OpLoad %float %tint_symbol_97
+       %1534 = OpFOrdLessThan %bool %1533 %tint_symbol_96
+               OpSelectionMerge %1535 None
+               OpBranchConditional %1534 %1536 %1537
+       %1536 = OpLabel
+               OpStore %tint_return_flag_1 %true
+       %1538 = OpLoad %float %tint_symbol_97
+       %1539 = OpCompositeConstruct %v2float %1538 %float_1
+               OpStore %tint_return_value_1 %1539
+               OpBranch %1535
+       %1537 = OpLabel
+               OpStore %tint_return_flag_1 %true
+       %1540 = OpCompositeConstruct %v2float %tint_symbol_96 %float_n1
+               OpStore %tint_return_value_1 %1540
+               OpBranch %1535
+       %1535 = OpLabel
+               OpBranch %1528
+       %1528 = OpLabel
+               OpBranch %1523
+       %1523 = OpLabel
+               OpBranch %1489
+       %1489 = OpLabel
+               OpBranch %1366
+       %1366 = OpLabel
+       %1542 = OpLoad %bool %tint_return_flag_1
+       %1541 = OpLogicalNot %bool %1542
+               OpSelectionMerge %1543 None
+               OpBranchConditional %1541 %1544 %1543
+       %1544 = OpLabel
+               OpStore %tint_return_flag_1 %true
+       %1545 = OpCompositeConstruct %v2float %tint_symbol_96 %float_n1
+               OpStore %tint_return_value_1 %1545
+               OpBranch %1543
+       %1543 = OpLabel
+       %1546 = OpLoad %v2float %tint_return_value_1
+               OpReturnValue %1546
+               OpFunctionEnd
+%tint_symbol_98 = OpFunction %v3float None %1547
+%tint_symbol_28_6 = OpFunctionParameter %v3float
+%tint_symbol_99 = OpFunctionParameter %tint_symbol_72
+       %1551 = OpLabel
+%tint_symbol_100 = OpVariable %_ptr_Function_v3float Function %1557
+       %1554 = OpAccessChain %_ptr_Uniform_tint_symbol %tint_symbol_82 %uint_0 %uint_0
+       %1555 = OpLoad %tint_symbol %1554
+       %1552 = OpFunctionCall %v3float %tint_symbol_61 %tint_symbol_28_6 %1555
+               OpStore %tint_symbol_100 %1552
+       %1558 = OpLoad %v3float %tint_symbol_100
+       %1560 = OpCompositeExtract %tint_symbol %tint_symbol_99 0
+       %1559 = OpFunctionCall %tint_symbol %tint_symbol_21 %1560
+       %1561 = OpFunctionCall %v3float %tint_symbol_61 %1558 %1559
+               OpStore %tint_symbol_100 %1561
+       %1562 = OpLoad %v3float %tint_symbol_100
+       %1563 = OpCompositeExtract %v4float %tint_symbol_99 1
+       %1564 = OpVectorShuffle %v3float %1563 %1563 0 1 2
+       %1565 = OpFDiv %v3float %1562 %1564
+               OpStore %tint_symbol_100 %1565
+       %1566 = OpLoad %v3float %tint_symbol_100
+               OpReturnValue %1566
+               OpFunctionEnd
+%tint_symbol_101 = OpFunction %v3float None %1547
+%tint_symbol_102 = OpFunctionParameter %v3float
+%tint_symbol_99_0 = OpFunctionParameter %tint_symbol_72
+       %1570 = OpLabel
+%tint_symbol_100_0 = OpVariable %_ptr_Function_v3float Function %1557
+       %1572 = OpAccessChain %_ptr_Uniform_tint_symbol %tint_symbol_82 %uint_0 %uint_0
+       %1573 = OpLoad %tint_symbol %1572
+       %1571 = OpFunctionCall %v3float %tint_symbol_60 %tint_symbol_102 %1573
+               OpStore %tint_symbol_100_0 %1571
+       %1575 = OpLoad %v3float %tint_symbol_100_0
+       %1577 = OpCompositeExtract %tint_symbol %tint_symbol_99_0 0
+       %1576 = OpFunctionCall %tint_symbol %tint_symbol_21 %1577
+       %1578 = OpFunctionCall %v3float %tint_symbol_60 %1575 %1576
+               OpStore %tint_symbol_100_0 %1578
+       %1579 = OpLoad %v3float %tint_symbol_100_0
+       %1580 = OpCompositeExtract %v4float %tint_symbol_99_0 1
+       %1581 = OpVectorShuffle %v3float %1580 %1580 0 1 2
+       %1582 = OpFDiv %v3float %1579 %1581
+               OpStore %tint_symbol_100_0 %1582
+       %1583 = OpLoad %v3float %tint_symbol_100_0
+               OpReturnValue %1583
+               OpFunctionEnd
+%tint_symbol_103 = OpFunction %v3float None %1547
+%tint_symbol_32_0 = OpFunctionParameter %v3float
+%tint_symbol_99_1 = OpFunctionParameter %tint_symbol_72
+       %1587 = OpLabel
+%tint_symbol_100_1 = OpVariable %_ptr_Function_v3float Function %1557
+       %1588 = OpCompositeExtract %v4float %tint_symbol_99_1 1
+       %1589 = OpVectorShuffle %v3float %1588 %1588 0 1 2
+       %1590 = OpFMul %v3float %tint_symbol_32_0 %1589
+               OpStore %tint_symbol_100_1 %1590
+       %1593 = OpLoad %v3float %tint_symbol_100_1
+       %1594 = OpCompositeExtract %tint_symbol %tint_symbol_99_1 0
+       %1592 = OpFunctionCall %v3float %tint_symbol_61 %1593 %1594
+               OpStore %tint_symbol_100_1 %1592
+       %1596 = OpLoad %v3float %tint_symbol_100_1
+       %1595 = OpExtInst %v3float %988 Normalize %1596
+               OpReturnValue %1595
+               OpFunctionEnd
+%tint_symbol_104 = OpFunction %v3float None %1547
+%tint_symbol_102_0 = OpFunctionParameter %v3float
+%tint_symbol_99_2 = OpFunctionParameter %tint_symbol_72
+       %1600 = OpLabel
+%tint_symbol_100_2 = OpVariable %_ptr_Function_v3float Function %1557
+       %1601 = OpCompositeExtract %v4float %tint_symbol_99_2 1
+       %1602 = OpVectorShuffle %v3float %1601 %1601 0 1 2
+       %1603 = OpFMul %v3float %tint_symbol_102_0 %1602
+               OpStore %tint_symbol_100_2 %1603
+       %1606 = OpLoad %v3float %tint_symbol_100_2
+       %1607 = OpCompositeExtract %tint_symbol %tint_symbol_99_2 0
+       %1605 = OpFunctionCall %v3float %tint_symbol_60 %1606 %1607
+               OpStore %tint_symbol_100_2 %1605
+       %1608 = OpLoad %v3float %tint_symbol_100_2
+               OpReturnValue %1608
+               OpFunctionEnd
+%tint_symbol_105 = OpFunction %v2float None %1609
+%tint_symbol_1_1 = OpFunctionParameter %v3float
+%tint_symbol_28_7 = OpFunctionParameter %v3float
+%tint_symbol_99_3 = OpFunctionParameter %tint_symbol_72
+       %1614 = OpLabel
+%tint_symbol_106 = OpVariable %_ptr_Function_float Function %905
+%tint_symbol_107 = OpVariable %_ptr_Function_float Function %905
+%tint_symbol_108 = OpVariable %_ptr_Function_int Function %1207
+%var_for_index = OpVariable %_ptr_Function__arr_tint_symbol_67_uint_6 Function %1632
+               OpStore %tint_symbol_106 %float_n1
+               OpStore %tint_symbol_107 %float_n1
+               OpStore %tint_symbol_108 %1207
+               OpBranch %1619
+       %1619 = OpLabel
+               OpLoopMerge %1620 %1621 None
+               OpBranch %1622
+       %1622 = OpLabel
+       %1624 = OpLoad %int %tint_symbol_108
+       %1626 = OpSLessThan %bool %1624 %int_6
+       %1623 = OpLogicalNot %bool %1626
+               OpSelectionMerge %1627 None
+               OpBranchConditional %1623 %1628 %1627
+       %1628 = OpLabel
+               OpBranch %1620
+       %1627 = OpLabel
+       %1629 = OpCompositeExtract %_arr_tint_symbol_67_uint_6 %tint_symbol_99_3 2
+               OpStore %var_for_index %1629
+       %1634 = OpLoad %int %tint_symbol_108
+       %1636 = OpAccessChain %_ptr_Function_tint_symbol_67 %var_for_index %1634
+       %1637 = OpLoad %tint_symbol_67 %1636
+       %1638 = OpLoad %float %tint_symbol_106
+       %1633 = OpFunctionCall %v2float %tint_symbol_94 %tint_symbol_1_1 %tint_symbol_28_7 %1637 %1638
+       %1639 = OpCompositeExtract %float %1633 1
+       %1640 = OpFOrdGreaterThan %bool %1639 %905
+               OpSelectionMerge %1641 None
+               OpBranchConditional %1640 %1642 %1641
+       %1642 = OpLabel
+       %1643 = OpCompositeExtract %float %1633 0
+               OpStore %tint_symbol_106 %1643
+       %1645 = OpLoad %int %tint_symbol_108
+       %1644 = OpConvertSToF %float %1645
+               OpStore %tint_symbol_107 %1644
+               OpBranch %1641
+       %1641 = OpLabel
+               OpBranch %1621
+       %1621 = OpLabel
+       %1646 = OpLoad %int %tint_symbol_108
+       %1647 = OpIAdd %int %1646 %int_1
+               OpStore %tint_symbol_108 %1647
+               OpBranch %1619
+       %1620 = OpLabel
+       %1648 = OpLoad %float %tint_symbol_106
+       %1649 = OpLoad %float %tint_symbol_107
+       %1650 = OpCompositeConstruct %v2float %1648 %1649
+               OpReturnValue %1650
+               OpFunctionEnd
+%tint_symbol_110 = OpFunction %v4float None %1651
+       %1653 = OpLabel
+               OpReturnValue %1654
+               OpFunctionEnd
+%tint_symbol_111 = OpFunction %v4float None %1655
+%tint_symbol_107_0 = OpFunctionParameter %int
+%tint_symbol_112 = OpFunctionParameter %v3float
+%tint_symbol_113 = OpFunctionParameter %int
+       %1660 = OpLabel
+%tint_return_flag_2 = OpVariable %_ptr_Function_bool Function %1027
+%tint_return_value_2 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_114 = OpVariable %_ptr_Function_v4float Function %1664
+       %1666 = OpIEqual %bool %tint_symbol_113 %1207
+               OpSelectionMerge %1667 None
+               OpBranchConditional %1666 %1668 %1669
+       %1668 = OpLabel
+               OpSelectionMerge %1670 None
+               OpSwitch %tint_symbol_107_0 %1671 0 %1672 1 %1673 2 %1674 3 %1675 4 %1676 5 %1677
+       %1672 = OpLabel
+       %1681 = OpLoad %33 %tint_symbol_86
+       %1679 = OpImageQuerySizeLod %v2uint %1681 %1207
+       %1678 = OpConvertUToF %v2float %1679
+       %1683 = OpLoad %33 %tint_symbol_86
+       %1685 = OpVectorShuffle %v2float %tint_symbol_112 %tint_symbol_112 0 1
+       %1689 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1690 = OpLoad %v4float %1689
+       %1691 = OpVectorShuffle %v2float %1690 %1690 0 1
+       %1692 = OpVectorTimesScalar %v2float %1691 %float_n0_5
+       %1693 = OpFSub %v2float %1685 %1692
+       %1694 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1695 = OpLoad %v4float %1694
+       %1696 = OpVectorShuffle %v2float %1695 %1695 0 1
+       %1697 = OpFDiv %v2float %1693 %1696
+       %1698 = OpFMul %v2float %1697 %1678
+       %1684 = OpFunctionCall %v2int %tint_ftoi %1698
+       %1682 = OpImageFetch %v4float %1683 %1684 Lod %1207
+               OpStore %tint_symbol_114 %1682
+               OpBranch %1670
+       %1673 = OpLabel
+       %1701 = OpLoad %33 %tint_symbol_86
+       %1700 = OpImageQuerySizeLod %v2uint %1701 %1207
+       %1699 = OpConvertUToF %v2float %1700
+       %1703 = OpLoad %33 %tint_symbol_86
+       %1705 = OpVectorShuffle %v2float %tint_symbol_112 %tint_symbol_112 0 1
+       %1707 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1708 = OpLoad %v4float %1707
+       %1709 = OpVectorShuffle %v2float %1708 %1708 0 1
+       %1710 = OpVectorTimesScalar %v2float %1709 %float_n0_5
+       %1711 = OpFSub %v2float %1705 %1710
+       %1712 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1713 = OpLoad %v4float %1712
+       %1714 = OpVectorShuffle %v2float %1713 %1713 0 1
+       %1715 = OpFDiv %v2float %1711 %1714
+       %1716 = OpFMul %v2float %1715 %1699
+       %1704 = OpFunctionCall %v2int %tint_ftoi %1716
+       %1702 = OpImageFetch %v4float %1703 %1704 Lod %1207
+               OpStore %tint_symbol_114 %1702
+               OpBranch %1670
+       %1674 = OpLabel
+               OpStore %tint_symbol_114 %1719
+               OpBranch %1670
+       %1675 = OpLabel
+               OpStore %tint_symbol_114 %1723
+               OpBranch %1670
+       %1676 = OpLabel
+               OpStore %tint_symbol_114 %1726
+               OpBranch %1670
+       %1677 = OpLabel
+               OpStore %tint_symbol_114 %1730
+               OpBranch %1670
+       %1671 = OpLabel
+               OpStore %tint_symbol_114 %1654
+               OpBranch %1670
+       %1670 = OpLabel
+               OpStore %tint_return_flag_2 %true
+       %1731 = OpLoad %v4float %tint_symbol_114
+               OpStore %tint_return_value_2 %1731
+               OpBranch %1667
+       %1669 = OpLabel
+               OpSelectionMerge %1732 None
+               OpSwitch %tint_symbol_107_0 %1733 0 %1734 1 %1735 2 %1736 3 %1737 4 %1738 5 %1739
+       %1734 = OpLabel
+       %1742 = OpLoad %33 %tint_symbol_90
+       %1741 = OpImageQuerySizeLod %v2uint %1742 %1207
+       %1740 = OpConvertUToF %v2float %1741
+       %1744 = OpLoad %33 %tint_symbol_90
+       %1746 = OpVectorShuffle %v2float %tint_symbol_112 %tint_symbol_112 0 1
+       %1748 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1749 = OpLoad %v4float %1748
+       %1750 = OpVectorShuffle %v2float %1749 %1749 0 1
+       %1751 = OpVectorTimesScalar %v2float %1750 %float_n0_5
+       %1752 = OpFSub %v2float %1746 %1751
+       %1753 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1754 = OpLoad %v4float %1753
+       %1755 = OpVectorShuffle %v2float %1754 %1754 0 1
+       %1756 = OpFDiv %v2float %1752 %1755
+       %1757 = OpFMul %v2float %1756 %1740
+       %1745 = OpFunctionCall %v2int %tint_ftoi %1757
+       %1743 = OpImageFetch %v4float %1744 %1745 Lod %1207
+               OpStore %tint_symbol_114 %1743
+               OpBranch %1732
+       %1735 = OpLabel
+       %1760 = OpLoad %33 %tint_symbol_93
+       %1759 = OpImageQuerySizeLod %v2uint %1760 %1207
+       %1758 = OpConvertUToF %v2float %1759
+       %1762 = OpLoad %33 %tint_symbol_93
+       %1764 = OpVectorShuffle %v2float %tint_symbol_112 %tint_symbol_112 0 1
+       %1766 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1767 = OpLoad %v4float %1766
+       %1768 = OpVectorShuffle %v2float %1767 %1767 0 1
+       %1769 = OpVectorTimesScalar %v2float %1768 %float_n0_5
+       %1770 = OpFSub %v2float %1764 %1769
+       %1771 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1772 = OpLoad %v4float %1771
+       %1773 = OpVectorShuffle %v2float %1772 %1772 0 1
+       %1774 = OpFDiv %v2float %1770 %1773
+       %1775 = OpFMul %v2float %1774 %1758
+       %1763 = OpFunctionCall %v2int %tint_ftoi %1775
+       %1761 = OpImageFetch %v4float %1762 %1763 Lod %1207
+               OpStore %tint_symbol_114 %1761
+               OpBranch %1732
+       %1736 = OpLabel
+       %1778 = OpLoad %33 %tint_symbol_88
+       %1777 = OpImageQuerySizeLod %v2uint %1778 %1207
+       %1776 = OpConvertUToF %v2float %1777
+       %1780 = OpLoad %33 %tint_symbol_88
+       %1782 = OpVectorShuffle %v2float %tint_symbol_112 %tint_symbol_112 1 2
+       %1784 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1785 = OpLoad %v4float %1784
+       %1786 = OpVectorShuffle %v2float %1785 %1785 1 2
+       %1787 = OpVectorTimesScalar %v2float %1786 %float_n0_5
+       %1788 = OpFSub %v2float %1782 %1787
+       %1789 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1790 = OpLoad %v4float %1789
+       %1791 = OpVectorShuffle %v2float %1790 %1790 1 2
+       %1792 = OpFDiv %v2float %1788 %1791
+       %1793 = OpFMul %v2float %1792 %1776
+       %1781 = OpFunctionCall %v2int %tint_ftoi %1793
+       %1779 = OpImageFetch %v4float %1780 %1781 Lod %1207
+               OpStore %tint_symbol_114 %1779
+               OpBranch %1732
+       %1737 = OpLabel
+       %1796 = OpLoad %33 %tint_symbol_91
+       %1795 = OpImageQuerySizeLod %v2uint %1796 %1207
+       %1794 = OpConvertUToF %v2float %1795
+       %1798 = OpLoad %33 %tint_symbol_91
+       %1800 = OpVectorShuffle %v2float %tint_symbol_112 %tint_symbol_112 1 2
+       %1802 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1803 = OpLoad %v4float %1802
+       %1804 = OpVectorShuffle %v2float %1803 %1803 1 2
+       %1805 = OpVectorTimesScalar %v2float %1804 %float_n0_5
+       %1806 = OpFSub %v2float %1800 %1805
+       %1807 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1808 = OpLoad %v4float %1807
+       %1809 = OpVectorShuffle %v2float %1808 %1808 1 2
+       %1810 = OpFDiv %v2float %1806 %1809
+       %1811 = OpFMul %v2float %1810 %1794
+       %1799 = OpFunctionCall %v2int %tint_ftoi %1811
+       %1797 = OpImageFetch %v4float %1798 %1799 Lod %1207
+               OpStore %tint_symbol_114 %1797
+               OpBranch %1732
+       %1738 = OpLabel
+       %1814 = OpLoad %33 %tint_symbol_89
+       %1813 = OpImageQuerySizeLod %v2uint %1814 %1207
+       %1812 = OpConvertUToF %v2float %1813
+       %1816 = OpLoad %33 %tint_symbol_89
+       %1818 = OpVectorShuffle %v2float %tint_symbol_112 %tint_symbol_112 0 2
+       %1820 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1821 = OpLoad %v4float %1820
+       %1822 = OpVectorShuffle %v2float %1821 %1821 0 2
+       %1823 = OpVectorTimesScalar %v2float %1822 %float_n0_5
+       %1824 = OpFSub %v2float %1818 %1823
+       %1825 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1826 = OpLoad %v4float %1825
+       %1827 = OpVectorShuffle %v2float %1826 %1826 0 2
+       %1828 = OpFDiv %v2float %1824 %1827
+       %1829 = OpFMul %v2float %1828 %1812
+       %1817 = OpFunctionCall %v2int %tint_ftoi %1829
+       %1815 = OpImageFetch %v4float %1816 %1817 Lod %1207
+               OpStore %tint_symbol_114 %1815
+               OpBranch %1732
+       %1739 = OpLabel
+       %1832 = OpLoad %33 %tint_symbol_92
+       %1831 = OpImageQuerySizeLod %v2uint %1832 %1207
+       %1830 = OpConvertUToF %v2float %1831
+       %1834 = OpLoad %33 %tint_symbol_92
+       %1836 = OpVectorShuffle %v2float %tint_symbol_112 %tint_symbol_112 0 2
+       %1838 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1839 = OpLoad %v4float %1838
+       %1840 = OpVectorShuffle %v2float %1839 %1839 0 2
+       %1841 = OpVectorTimesScalar %v2float %1840 %float_n0_5
+       %1842 = OpFSub %v2float %1836 %1841
+       %1843 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113 %uint_1
+       %1844 = OpLoad %v4float %1843
+       %1845 = OpVectorShuffle %v2float %1844 %1844 0 2
+       %1846 = OpFDiv %v2float %1842 %1845
+       %1847 = OpFMul %v2float %1846 %1830
+       %1835 = OpFunctionCall %v2int %tint_ftoi %1847
+       %1833 = OpImageFetch %v4float %1834 %1835 Lod %1207
+               OpStore %tint_symbol_114 %1833
+               OpBranch %1732
+       %1733 = OpLabel
+               OpStore %tint_symbol_114 %1654
+               OpBranch %1732
+       %1732 = OpLabel
+               OpStore %tint_return_flag_2 %true
+       %1848 = OpLoad %v4float %tint_symbol_114
+               OpStore %tint_return_value_2 %1848
+               OpBranch %1667
+       %1667 = OpLabel
+       %1849 = OpLoad %v4float %tint_return_value_2
+               OpReturnValue %1849
+               OpFunctionEnd
+%tint_symbol_116 = OpFunction %v3float None %1850
+%tint_symbol_107_1 = OpFunctionParameter %int
+%tint_symbol_112_0 = OpFunctionParameter %v3float
+%tint_symbol_113_0 = OpFunctionParameter %int
+       %1855 = OpLabel
+%tint_return_flag_3 = OpVariable %_ptr_Function_bool Function %1027
+%tint_return_value_3 = OpVariable %_ptr_Function_v3float Function %1557
+       %1891 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_114_0 = OpVariable %_ptr_Function_v3float Function %1557
+       %1921 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_114_1 = OpVariable %_ptr_Function_v3float Function %1557
+       %1858 = OpIEqual %bool %tint_symbol_113_0 %1207
+               OpSelectionMerge %1859 None
+               OpBranchConditional %1858 %1860 %1861
+       %1860 = OpLabel
+               OpSelectionMerge %1862 None
+               OpSwitch %tint_symbol_107_1 %1863 0 %1864 1 %1865 2 %1866 3 %1867 4 %1868 5 %1869
+       %1864 = OpLabel
+       %1872 = OpLoad %33 %tint_symbol_87
+       %1871 = OpImageQuerySizeLod %v2uint %1872 %1207
+       %1870 = OpConvertUToF %v2float %1871
+       %1874 = OpLoad %33 %tint_symbol_87
+       %1876 = OpVectorShuffle %v2float %tint_symbol_112_0 %tint_symbol_112_0 0 1
+       %1878 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113_0 %uint_1
+       %1879 = OpLoad %v4float %1878
+       %1880 = OpVectorShuffle %v2float %1879 %1879 0 1
+       %1881 = OpVectorTimesScalar %v2float %1880 %float_n0_5
+       %1882 = OpFSub %v2float %1876 %1881
+       %1883 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113_0 %uint_1
+       %1884 = OpLoad %v4float %1883
+       %1885 = OpVectorShuffle %v2float %1884 %1884 0 1
+       %1886 = OpFDiv %v2float %1882 %1885
+       %1887 = OpFMul %v2float %1886 %1870
+       %1875 = OpFunctionCall %v2int %tint_ftoi %1887
+       %1873 = OpImageFetch %v4float %1874 %1875 Lod %1207
+       %1888 = OpVectorShuffle %v3float %1873 %1873 0 1 2
+       %1892 = OpCompositeConstruct %v3float %float_0_5 %float_0_5 %float_0_5
+       %1890 = OpFSub %v3float %1888 %1892
+               OpStore %tint_symbol_114_0 %1890
+       %1895 = OpLoad %v3float %tint_symbol_114_0
+       %1894 = OpExtInst %v3float %988 Normalize %1895
+               OpStore %tint_symbol_114_0 %1894
+       %1896 = OpAccessChain %_ptr_Function_float %tint_symbol_114_0 %uint_2
+       %1897 = OpAccessChain %_ptr_Function_float %tint_symbol_114_0 %uint_2
+       %1898 = OpLoad %float %1897
+       %1899 = OpFMul %float %1898 %float_n1
+               OpStore %1896 %1899
+               OpStore %tint_return_flag_3 %true
+       %1900 = OpLoad %v3float %tint_symbol_114_0
+               OpStore %tint_return_value_3 %1900
+               OpBranch %1862
+       %1865 = OpLabel
+       %1903 = OpLoad %33 %tint_symbol_87
+       %1902 = OpImageQuerySizeLod %v2uint %1903 %1207
+       %1901 = OpConvertUToF %v2float %1902
+       %1905 = OpLoad %33 %tint_symbol_87
+       %1907 = OpVectorShuffle %v2float %tint_symbol_112_0 %tint_symbol_112_0 0 1
+       %1909 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113_0 %uint_1
+       %1910 = OpLoad %v4float %1909
+       %1911 = OpVectorShuffle %v2float %1910 %1910 0 1
+       %1912 = OpVectorTimesScalar %v2float %1911 %float_n0_5
+       %1913 = OpFSub %v2float %1907 %1912
+       %1914 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_83 %uint_0 %tint_symbol_113_0 %uint_1
+       %1915 = OpLoad %v4float %1914
+       %1916 = OpVectorShuffle %v2float %1915 %1915 0 1
+       %1917 = OpFDiv %v2float %1913 %1916
+       %1918 = OpFMul %v2float %1917 %1901
+       %1906 = OpFunctionCall %v2int %tint_ftoi %1918
+       %1904 = OpImageFetch %v4float %1905 %1906 Lod %1207
+       %1919 = OpVectorShuffle %v3float %1904 %1904 0 1 2
+       %1922 = OpCompositeConstruct %v3float %float_0_5 %float_0_5 %float_0_5
+       %1920 = OpFSub %v3float %1919 %1922
+               OpStore %tint_symbol_114_1 %1920
+       %1925 = OpLoad %v3float %tint_symbol_114_1
+       %1924 = OpExtInst %v3float %988 Normalize %1925
+               OpStore %tint_symbol_114_1 %1924
+               OpStore %tint_return_flag_3 %true
+       %1926 = OpLoad %v3float %tint_symbol_114_1
+               OpStore %tint_return_value_3 %1926
+               OpBranch %1862
+       %1866 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1927
+               OpBranch %1862
+       %1867 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1928
+               OpBranch %1862
+       %1868 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1929
+               OpBranch %1862
+       %1869 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1930
+               OpBranch %1862
+       %1863 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1557
+               OpBranch %1862
+       %1862 = OpLabel
+               OpBranch %1859
+       %1861 = OpLabel
+               OpSelectionMerge %1931 None
+               OpSwitch %tint_symbol_107_1 %1932 0 %1933 1 %1934 2 %1935 3 %1936 4 %1937 5 %1938
+       %1933 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1939
+               OpBranch %1931
+       %1934 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1940
+               OpBranch %1931
+       %1935 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1927
+               OpBranch %1931
+       %1936 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1928
+               OpBranch %1931
+       %1937 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1929
+               OpBranch %1931
+       %1938 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1930
+               OpBranch %1931
+       %1932 = OpLabel
+               OpStore %tint_return_flag_3 %true
+               OpStore %tint_return_value_3 %1557
+               OpBranch %1931
+       %1931 = OpLabel
+               OpBranch %1859
+       %1859 = OpLabel
+       %1941 = OpLoad %v3float %tint_return_value_3
+               OpReturnValue %1941
+               OpFunctionEnd
+%tint_symbol_120 = OpFunction %tint_symbol_117 None %1942
+%tint_symbol_121 = OpFunctionParameter %v3float
+%tint_symbol_122 = OpFunctionParameter %v3float
+%tint_symbol_112_1 = OpFunctionParameter %v3float
+%tint_symbol_123 = OpFunctionParameter %v3float
+       %1949 = OpLabel
+%tint_return_flag_4 = OpVariable %_ptr_Function_bool Function %1027
+%tint_return_value_4 = OpVariable %_ptr_Function_tint_symbol_117 Function %1953
+%tint_symbol_76 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_119 = OpVariable %_ptr_Function_float Function %905
+       %1985 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_125 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_100_3 = OpVariable %_ptr_Function_tint_symbol_117 Function %1953
+%tint_symbol_76_0 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_125_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_100_4 = OpVariable %_ptr_Function_tint_symbol_117 Function %1953
+%tint_symbol_76_1 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_119_0 = OpVariable %_ptr_Function_float Function %905
+       %2053 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_125_1 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_100_5 = OpVariable %_ptr_Function_tint_symbol_117 Function %1953
+       %1955 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %int_1
+       %1956 = OpLoad %uint %1955
+       %1958 = OpIEqual %bool %1956 %1957
+               OpSelectionMerge %1959 None
+               OpBranchConditional %1958 %1960 %1961
+       %1960 = OpLabel
+       %1962 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_85 %uint_0 %uint_0
+       %1963 = OpLoad %v4float %1962
+               OpStore %tint_symbol_76 %1963
+       %1966 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %1965 = OpExtInst %float %988 Length %1966
+               OpStore %tint_symbol_119 %1965
+       %1969 = OpAccessChain %_ptr_Uniform_float %tint_symbol_85 %uint_0 %uint_3 %1207
+       %1970 = OpLoad %float %1969
+       %1971 = OpLoad %float %tint_symbol_119
+       %1972 = OpAccessChain %_ptr_Uniform_float %tint_symbol_85 %uint_0 %uint_3 %int_1
+       %1973 = OpLoad %float %1972
+       %1974 = OpFMul %float %1971 %1973
+       %1975 = OpFAdd %float %1970 %1974
+       %1976 = OpLoad %float %tint_symbol_119
+       %1977 = OpLoad %float %tint_symbol_119
+       %1978 = OpFMul %float %1976 %1977
+       %1979 = OpAccessChain %_ptr_Uniform_float %tint_symbol_85 %uint_0 %uint_3 %int_2
+       %1980 = OpLoad %float %1979
+       %1981 = OpFMul %float %1978 %1980
+       %1982 = OpFAdd %float %1975 %1981
+       %1983 = OpLoad %v4float %tint_symbol_76
+       %1986 = OpCompositeConstruct %v4float %1982 %1982 %1982 %1982
+       %1984 = OpFDiv %v4float %1983 %1986
+               OpStore %tint_symbol_76 %1984
+       %1988 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %1987 = OpExtInst %v3float %988 Normalize %1988
+               OpStore %tint_symbol_125 %1987
+       %1991 = OpAccessChain %_ptr_Function_v4float %tint_symbol_100_3 %uint_0
+       %1992 = OpLoad %v4float %tint_symbol_76
+       %1995 = OpLoad %v3float %tint_symbol_125
+       %1996 = OpFNegate %v3float %tint_symbol_123
+       %1994 = OpDot %float %1995 %1996
+       %1993 = OpExtInst %float %988 NMax %1994 %905
+       %1997 = OpVectorTimesScalar %v4float %1992 %1993
+               OpStore %1991 %1997
+       %1998 = OpAccessChain %_ptr_Function_v3float %tint_symbol_100_3 %uint_1
+       %1999 = OpLoad %v3float %tint_symbol_125
+               OpStore %1998 %1999
+       %2000 = OpAccessChain %_ptr_Function_float %tint_symbol_100_3 %uint_2
+       %2002 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %2003 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %2001 = OpDot %float %2002 %2003
+               OpStore %2000 %2001
+               OpStore %tint_return_flag_4 %true
+       %2004 = OpLoad %tint_symbol_117 %tint_symbol_100_3
+               OpStore %tint_return_value_4 %2004
+               OpBranch %1959
+       %1961 = OpLabel
+       %2005 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %int_1
+       %2006 = OpLoad %uint %2005
+       %2007 = OpIEqual %bool %2006 %uint_1
+               OpSelectionMerge %2008 None
+               OpBranchConditional %2007 %2009 %2010
+       %2009 = OpLabel
+       %2011 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_85 %uint_0 %uint_0
+       %2012 = OpLoad %v4float %2011
+               OpStore %tint_symbol_76_0 %2012
+       %2014 = OpExtInst %v3float %988 Normalize %tint_symbol_122
+               OpStore %tint_symbol_125_0 %2014
+       %2017 = OpAccessChain %_ptr_Function_v4float %tint_symbol_100_4 %uint_0
+       %2018 = OpLoad %v4float %tint_symbol_76_0
+       %2021 = OpLoad %v3float %tint_symbol_125_0
+       %2022 = OpFNegate %v3float %tint_symbol_123
+       %2020 = OpDot %float %2021 %2022
+       %2019 = OpExtInst %float %988 NMax %2020 %905
+       %2023 = OpVectorTimesScalar %v4float %2018 %2019
+               OpStore %2017 %2023
+       %2024 = OpAccessChain %_ptr_Function_v3float %tint_symbol_100_4 %uint_1
+       %2025 = OpLoad %v3float %tint_symbol_125_0
+               OpStore %2024 %2025
+       %2026 = OpAccessChain %_ptr_Function_float %tint_symbol_100_4 %uint_2
+       %2028 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %2029 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %2027 = OpDot %float %2028 %2029
+               OpStore %2026 %2027
+               OpStore %tint_return_flag_4 %true
+       %2030 = OpLoad %tint_symbol_117 %tint_symbol_100_4
+               OpStore %tint_return_value_4 %2030
+               OpBranch %2008
+       %2010 = OpLabel
+       %2031 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_85 %uint_0 %uint_0
+       %2032 = OpLoad %v4float %2031
+               OpStore %tint_symbol_76_1 %2032
+       %2035 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %2034 = OpExtInst %float %988 Length %2035
+               OpStore %tint_symbol_119_0 %2034
+       %2037 = OpAccessChain %_ptr_Uniform_float %tint_symbol_85 %uint_0 %uint_3 %1207
+       %2038 = OpLoad %float %2037
+       %2039 = OpLoad %float %tint_symbol_119_0
+       %2040 = OpAccessChain %_ptr_Uniform_float %tint_symbol_85 %uint_0 %uint_3 %int_1
+       %2041 = OpLoad %float %2040
+       %2042 = OpFMul %float %2039 %2041
+       %2043 = OpFAdd %float %2038 %2042
+       %2044 = OpLoad %float %tint_symbol_119_0
+       %2045 = OpLoad %float %tint_symbol_119_0
+       %2046 = OpFMul %float %2044 %2045
+       %2047 = OpAccessChain %_ptr_Uniform_float %tint_symbol_85 %uint_0 %uint_3 %int_2
+       %2048 = OpLoad %float %2047
+       %2049 = OpFMul %float %2046 %2048
+       %2050 = OpFAdd %float %2043 %2049
+       %2051 = OpLoad %v4float %tint_symbol_76_1
+       %2054 = OpCompositeConstruct %v4float %2050 %2050 %2050 %2050
+       %2052 = OpFDiv %v4float %2051 %2054
+               OpStore %tint_symbol_76_1 %2052
+       %2056 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %2055 = OpExtInst %v3float %988 Normalize %2056
+               OpStore %tint_symbol_125_1 %2055
+       %2060 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_85 %uint_0 %uint_2
+       %2061 = OpLoad %v4float %2060
+       %2062 = OpVectorShuffle %v3float %2061 %2061 0 1 2
+       %2063 = OpLoad %v3float %tint_symbol_125_1
+       %2059 = OpDot %float %2062 %2063
+       %2065 = OpAccessChain %_ptr_Uniform_float %tint_symbol_85 %uint_0 %uint_4 %1207
+       %2066 = OpLoad %float %2065
+       %2064 = OpExtInst %float %988 Cos %2066
+       %2067 = OpFOrdGreaterThan %bool %2059 %2064
+               OpSelectionMerge %2068 None
+               OpBranchConditional %2067 %2069 %2068
+       %2069 = OpLabel
+       %2070 = OpAccessChain %_ptr_Function_v4float %tint_symbol_100_5 %uint_0
+       %2071 = OpLoad %v4float %tint_symbol_76_1
+       %2075 = OpLoad %v3float %tint_symbol_125_1
+       %2076 = OpFNegate %v3float %tint_symbol_123
+       %2074 = OpDot %float %2075 %2076
+       %2077 = OpAccessChain %_ptr_Uniform_float %tint_symbol_85 %uint_0 %uint_4 %int_1
+       %2078 = OpLoad %float %2077
+       %2073 = OpExtInst %float %988 Pow %2074 %2078
+       %2072 = OpExtInst %float %988 NMax %2073 %905
+       %2079 = OpVectorTimesScalar %v4float %2071 %2072
+               OpStore %2070 %2079
+       %2080 = OpAccessChain %_ptr_Function_v3float %tint_symbol_100_5 %uint_1
+       %2081 = OpLoad %v3float %tint_symbol_125_1
+               OpStore %2080 %2081
+               OpBranch %2068
+       %2068 = OpLabel
+       %2082 = OpAccessChain %_ptr_Function_float %tint_symbol_100_5 %uint_2
+       %2084 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %2085 = OpFSub %v3float %tint_symbol_112_1 %tint_symbol_121
+       %2083 = OpDot %float %2084 %2085
+               OpStore %2082 %2083
+               OpStore %tint_return_flag_4 %true
+       %2086 = OpLoad %tint_symbol_117 %tint_symbol_100_5
+               OpStore %tint_return_value_4 %2086
+               OpBranch %2008
+       %2008 = OpLabel
+               OpBranch %1959
+       %1959 = OpLabel
+       %2087 = OpLoad %tint_symbol_117 %tint_return_value_4
+               OpReturnValue %2087
+               OpFunctionEnd
+%tint_symbol_126 = OpFunction %v4float None %2088
+%tint_symbol_114_2 = OpFunctionParameter %v4float
+%tint_symbol_127 = OpFunctionParameter %float
+       %2092 = OpLabel
+       %2096 = OpVariable %_ptr_Function_v4float Function %1664
+       %2093 = OpFDiv %float %float_1 %tint_symbol_127
+       %2097 = OpCompositeConstruct %v4float %2093 %2093 %2093 %2093
+       %2095 = OpFDiv %v4float %tint_symbol_114_2 %2097
+       %2094 = OpExtInst %v4float %988 RoundEven %2095
+       %2098 = OpVectorTimesScalar %v4float %2094 %2093
+               OpReturnValue %2098
+               OpFunctionEnd
+%tint_symbol_130_inner = OpFunction %void None %2099
+%tint_symbol_131 = OpFunctionParameter %v3uint
+       %2103 = OpLabel
+%tint_symbol_135 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_136 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_37_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_137 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_58_1 = OpVariable %_ptr_Function_v2float Function %1353
+%tint_symbol_138 = OpVariable %_ptr_Function_int Function %1207
+%tint_symbol_108_0 = OpVariable %_ptr_Function_int Function %1207
+%tint_symbol_139 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_140 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_141 = OpVariable %_ptr_Function_v2float Function %1353
+%tint_symbol_114_3 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_143 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_144 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_145 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_146 = OpVariable %_ptr_Function_tint_symbol_117 Function %1953
+%tint_symbol_148 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_148_0 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_119_1 = OpVariable %_ptr_Function_float Function %905
+%tint_symbol_148_1 = OpVariable %_ptr_Function_v4float Function %1664
+       %2105 = OpVectorShuffle %v2uint %tint_symbol_131 %tint_symbol_131 0 1
+       %2104 = OpBitcast %v2int %2105
+       %2108 = OpLoad %25 %tint_symbol_84
+       %2107 = OpImageQuerySize %v2uint %2108
+       %2106 = OpBitcast %v2int %2107
+       %2109 = OpCompositeExtract %int %2104 0
+       %2110 = OpCompositeExtract %int %2106 0
+       %2111 = OpSLessThan %bool %2109 %2110
+               OpSelectionMerge %2112 None
+               OpBranchConditional %2111 %2113 %2112
+       %2113 = OpLabel
+       %2114 = OpCompositeExtract %int %2104 1
+       %2115 = OpCompositeExtract %int %2106 1
+       %2116 = OpSLessThan %bool %2114 %2115
+               OpBranch %2112
+       %2112 = OpLabel
+       %2117 = OpPhi %bool %2111 %2103 %2116 %2113
+               OpSelectionMerge %2118 None
+               OpBranchConditional %2117 %2119 %2118
+       %2119 = OpLabel
+       %2122 = OpAccessChain %_ptr_Uniform_v2float %tint_symbol_82 %uint_0 %uint_2
+       %2123 = OpLoad %v2float %2122
+       %2124 = OpVectorShuffle %v2float %2123 %2123 0 1
+       %2125 = OpFDiv %v2float %2120 %2124
+       %2127 = OpCompositeExtract %int %2104 0
+       %2126 = OpConvertSToF %float %2127
+       %2128 = OpFAdd %float %2126 %float_0_5
+       %2129 = OpCompositeExtract %float %2125 0
+       %2130 = OpFMul %float %2128 %2129
+       %2131 = OpFSub %float %2130 %float_1
+       %2133 = OpCompositeExtract %int %2104 1
+       %2132 = OpConvertSToF %float %2133
+       %2134 = OpFAdd %float %2132 %float_0_5
+       %2135 = OpCompositeExtract %float %2125 1
+       %2136 = OpFMul %float %2134 %2135
+       %2137 = OpFSub %float %2136 %float_1
+       %2138 = OpCompositeConstruct %v3float %2131 %2137 %905
+               OpStore %tint_symbol_135 %2138
+               OpStore %tint_symbol_136 %1940
+               OpStore %tint_symbol_37_0 %1557
+               OpStore %tint_symbol_137 %1557
+               OpStore %tint_symbol_58_1 %2144
+               OpStore %tint_symbol_138 %1207
+               OpStore %tint_symbol_108_0 %1207
+               OpBranch %2148
+       %2148 = OpLabel
+               OpLoopMerge %2149 %2150 None
+               OpBranch %2151
+       %2151 = OpLabel
+       %2153 = OpLoad %int %tint_symbol_108_0
+       %2154 = OpSLessThan %bool %2153 %int_2
+       %2152 = OpLogicalNot %bool %2154
+               OpSelectionMerge %2155 None
+               OpBranchConditional %2152 %2156 %2155
+       %2156 = OpLabel
+               OpBranch %2149
+       %2155 = OpLabel
+       %2158 = OpLoad %v3float %tint_symbol_135
+       %2159 = OpLoad %int %tint_symbol_108_0
+       %2161 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2159
+       %2162 = OpLoad %tint_symbol_72 %2161
+       %2157 = OpFunctionCall %v3float %tint_symbol_101 %2158 %2162
+               OpStore %tint_symbol_139 %2157
+       %2165 = OpLoad %v3float %tint_symbol_136
+       %2166 = OpLoad %int %tint_symbol_108_0
+       %2167 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2166
+       %2168 = OpLoad %tint_symbol_72 %2167
+       %2164 = OpFunctionCall %v3float %tint_symbol_98 %2165 %2168
+               OpStore %tint_symbol_140 %2164
+       %2171 = OpLoad %v3float %tint_symbol_139
+       %2172 = OpLoad %v3float %tint_symbol_140
+       %2173 = OpLoad %int %tint_symbol_108_0
+       %2174 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2173
+       %2175 = OpLoad %tint_symbol_72 %2174
+       %2170 = OpFunctionCall %v2float %tint_symbol_105 %2171 %2172 %2175
+               OpStore %tint_symbol_141 %2170
+       %2177 = OpAccessChain %_ptr_Function_float %tint_symbol_58_1 %uint_0
+       %2178 = OpLoad %float %2177
+       %2179 = OpFOrdEqual %bool %2178 %905
+               OpSelectionMerge %2180 None
+               OpBranchConditional %2179 %2181 %2182
+       %2181 = OpLabel
+       %2183 = OpLoad %v3float %tint_symbol_139
+               OpStore %tint_symbol_37_0 %2183
+       %2184 = OpLoad %v3float %tint_symbol_140
+               OpStore %tint_symbol_137 %2184
+       %2185 = OpLoad %v2float %tint_symbol_141
+               OpStore %tint_symbol_58_1 %2185
+       %2186 = OpLoad %int %tint_symbol_108_0
+               OpStore %tint_symbol_138 %2186
+               OpBranch %2180
+       %2182 = OpLabel
+       %2187 = OpAccessChain %_ptr_Function_float %tint_symbol_141 %uint_0
+       %2188 = OpLoad %float %2187
+       %2189 = OpAccessChain %_ptr_Function_float %tint_symbol_58_1 %uint_0
+       %2190 = OpLoad %float %2189
+       %2191 = OpFOrdLessThan %bool %2188 %2190
+               OpSelectionMerge %2192 None
+               OpBranchConditional %2191 %2193 %2192
+       %2193 = OpLabel
+       %2194 = OpAccessChain %_ptr_Function_float %tint_symbol_141 %uint_0
+       %2195 = OpLoad %float %2194
+       %2196 = OpFOrdNotEqual %bool %2195 %float_n1
+               OpBranch %2192
+       %2192 = OpLabel
+       %2197 = OpPhi %bool %2191 %2182 %2196 %2193
+               OpSelectionMerge %2198 None
+               OpBranchConditional %2197 %2199 %2198
+       %2199 = OpLabel
+       %2200 = OpLoad %v3float %tint_symbol_139
+               OpStore %tint_symbol_37_0 %2200
+       %2201 = OpLoad %v3float %tint_symbol_140
+               OpStore %tint_symbol_137 %2201
+       %2202 = OpLoad %v2float %tint_symbol_141
+               OpStore %tint_symbol_58_1 %2202
+       %2203 = OpLoad %int %tint_symbol_108_0
+               OpStore %tint_symbol_138 %2203
+               OpBranch %2198
+       %2198 = OpLabel
+               OpBranch %2180
+       %2180 = OpLabel
+               OpBranch %2150
+       %2150 = OpLabel
+       %2204 = OpLoad %int %tint_symbol_108_0
+       %2205 = OpIAdd %int %2204 %int_1
+               OpStore %tint_symbol_108_0 %2205
+               OpBranch %2148
+       %2149 = OpLabel
+               OpStore %tint_symbol_114_3 %2208
+       %2210 = OpAccessChain %_ptr_Function_float %tint_symbol_58_1 %uint_0
+       %2211 = OpLoad %float %2210
+       %2212 = OpFOrdGreaterThan %bool %2211 %905
+               OpSelectionMerge %2213 None
+               OpBranchConditional %2212 %2214 %2213
+       %2214 = OpLabel
+       %2215 = OpFunctionCall %v4float %tint_symbol_110
+       %2216 = OpLoad %v3float %tint_symbol_37_0
+       %2217 = OpLoad %v3float %tint_symbol_137
+       %2218 = OpAccessChain %_ptr_Function_float %tint_symbol_58_1 %uint_0
+       %2219 = OpLoad %float %2218
+       %2220 = OpVectorTimesScalar %v3float %2217 %2219
+       %2221 = OpFAdd %v3float %2216 %2220
+               OpStore %tint_symbol_143 %2221
+       %2224 = OpLoad %v3float %tint_symbol_143
+       %2225 = OpLoad %int %tint_symbol_138
+       %2226 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2225
+       %2227 = OpLoad %tint_symbol_72 %2226
+       %2223 = OpFunctionCall %v3float %tint_symbol_104 %2224 %2227
+               OpStore %tint_symbol_143 %2223
+       %2230 = OpAccessChain %_ptr_Function_float %tint_symbol_58_1 %uint_1
+       %2231 = OpLoad %float %2230
+       %2229 = OpFunctionCall %int %tint_ftoi_1 %2231
+       %2232 = OpLoad %v3float %tint_symbol_143
+       %2233 = OpLoad %int %tint_symbol_138
+       %2228 = OpFunctionCall %v4float %tint_symbol_111 %2229 %2232 %2233
+               OpStore %tint_symbol_144 %2228
+       %2237 = OpAccessChain %_ptr_Function_float %tint_symbol_58_1 %uint_1
+       %2238 = OpLoad %float %2237
+       %2236 = OpFunctionCall %int %tint_ftoi_1 %2238
+       %2239 = OpLoad %v3float %tint_symbol_143
+       %2240 = OpLoad %int %tint_symbol_138
+       %2235 = OpFunctionCall %v3float %tint_symbol_116 %2236 %2239 %2240
+               OpStore %tint_symbol_145 %2235
+       %2243 = OpLoad %v3float %tint_symbol_145
+       %2244 = OpLoad %int %tint_symbol_138
+       %2245 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2244
+       %2246 = OpLoad %tint_symbol_72 %2245
+       %2242 = OpFunctionCall %v3float %tint_symbol_103 %2243 %2246
+               OpStore %tint_symbol_145 %2242
+       %2247 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_85 %uint_0 %uint_1
+       %2248 = OpLoad %v4float %2247
+       %2249 = OpVectorShuffle %v3float %2248 %2248 0 1 2
+       %2250 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_85 %uint_0 %uint_2
+       %2251 = OpLoad %v4float %2250
+       %2252 = OpVectorShuffle %v3float %2251 %2251 0 1 2
+       %2254 = OpLoad %v3float %tint_symbol_143
+       %2255 = OpLoad %v3float %tint_symbol_145
+       %2253 = OpFunctionCall %tint_symbol_117 %tint_symbol_120 %2249 %2252 %2254 %2255
+               OpStore %tint_symbol_146 %2253
+       %2257 = OpLoad %int %tint_symbol_138
+       %2258 = OpIEqual %bool %2257 %int_1
+               OpSelectionMerge %2259 None
+               OpBranchConditional %2258 %2260 %2259
+       %2260 = OpLabel
+       %2261 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146 %uint_0
+               OpStore %2261 %2262
+               OpBranch %2259
+       %2259 = OpLabel
+       %2263 = OpLoad %v4float %tint_symbol_144
+       %2264 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146 %uint_0
+       %2265 = OpLoad %v4float %2264
+       %2266 = OpFMul %v4float %2263 %2265
+               OpStore %tint_symbol_144 %2266
+       %2267 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %1207
+       %2268 = OpLoad %uint %2267
+       %2269 = OpIEqual %bool %2268 %1957
+               OpSelectionMerge %2270 None
+               OpBranchConditional %2269 %2271 %2272
+       %2271 = OpLabel
+       %2273 = OpLoad %v4float %tint_symbol_144
+       %2274 = OpFAdd %v4float %2215 %2273
+               OpStore %tint_symbol_114_3 %2274
+               OpBranch %2270
+       %2272 = OpLabel
+       %2275 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %1207
+       %2276 = OpLoad %uint %2275
+       %2277 = OpIEqual %bool %2276 %uint_1
+               OpSelectionMerge %2278 None
+               OpBranchConditional %2277 %2279 %2280
+       %2279 = OpLabel
+       %2282 = OpAccessChain %_ptr_Function_v3float %tint_symbol_146 %uint_1
+       %2283 = OpLoad %v3float %2282
+       %2284 = OpLoad %v3float %tint_symbol_145
+       %2281 = OpExtInst %v3float %988 Reflect %2283 %2284
+       %2285 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146 %uint_0
+       %2286 = OpLoad %v4float %2285
+       %2287 = OpFMul %v4float %2262 %2286
+       %2290 = OpLoad %v3float %tint_symbol_137
+       %2291 = OpFNegate %v3float %2281
+       %2289 = OpDot %float %2290 %2291
+       %2288 = OpExtInst %float %988 Pow %2289 %float_100
+       %2293 = OpVectorTimesScalar %v4float %2287 %2288
+               OpStore %tint_symbol_148 %2293
+       %2296 = OpLoad %v4float %tint_symbol_148
+       %2295 = OpExtInst %v4float %988 NClamp %2296 %1664 %2262
+               OpStore %tint_symbol_148 %2295
+       %2299 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146 %uint_0
+       %2300 = OpLoad %v4float %2299
+       %2301 = OpFMul %v4float %2298 %2300
+       %2302 = OpLoad %v4float %tint_symbol_144
+       %2303 = OpFAdd %v4float %2215 %2302
+       %2304 = OpLoad %v4float %tint_symbol_148
+       %2305 = OpFAdd %v4float %2303 %2304
+       %2306 = OpFAdd %v4float %2305 %2301
+               OpStore %tint_symbol_114_3 %2306
+               OpBranch %2278
+       %2280 = OpLabel
+       %2307 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %1207
+       %2308 = OpLoad %uint %2307
+       %2309 = OpIEqual %bool %2308 %uint_2
+               OpSelectionMerge %2310 None
+               OpBranchConditional %2309 %2311 %2312
+       %2311 = OpLabel
+       %2314 = OpAccessChain %_ptr_Function_v3float %tint_symbol_146 %uint_1
+       %2315 = OpLoad %v3float %2314
+       %2316 = OpLoad %v3float %tint_symbol_145
+       %2313 = OpExtInst %v3float %988 Reflect %2315 %2316
+       %2317 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146 %uint_0
+       %2318 = OpLoad %v4float %2317
+       %2319 = OpFMul %v4float %2262 %2318
+       %2322 = OpLoad %v3float %tint_symbol_137
+       %2323 = OpFNegate %v3float %2313
+       %2321 = OpDot %float %2322 %2323
+       %2320 = OpExtInst %float %988 Pow %2321 %float_100
+       %2324 = OpVectorTimesScalar %v4float %2319 %2320
+               OpStore %tint_symbol_148_0 %2324
+       %2327 = OpLoad %v4float %tint_symbol_148_0
+       %2326 = OpExtInst %v4float %988 NClamp %2327 %1664 %2262
+               OpStore %tint_symbol_148_0 %2326
+       %2328 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146 %uint_0
+       %2329 = OpLoad %v4float %2328
+       %2330 = OpFMul %v4float %2298 %2329
+       %2331 = OpLoad %v4float %tint_symbol_144
+       %2332 = OpFAdd %v4float %2215 %2331
+       %2333 = OpLoad %v4float %tint_symbol_148_0
+       %2334 = OpFAdd %v4float %2332 %2333
+       %2335 = OpFAdd %v4float %2334 %2330
+               OpStore %tint_symbol_114_3 %2335
+       %2337 = OpLoad %v4float %tint_symbol_114_3
+       %2336 = OpFunctionCall %v4float %tint_symbol_126 %2337 %float_5
+               OpStore %tint_symbol_114_3 %2336
+               OpBranch %2310
+       %2312 = OpLabel
+       %2339 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %1207
+       %2340 = OpLoad %uint %2339
+       %2341 = OpIEqual %bool %2340 %uint_3
+               OpSelectionMerge %2342 None
+               OpBranchConditional %2341 %2343 %2342
+       %2343 = OpLabel
+       %2346 = OpLoad %v3float %tint_symbol_143
+       %2345 = OpFNegate %v3float %2346
+       %2344 = OpExtInst %v3float %988 Normalize %2345
+       %2347 = OpAccessChain %_ptr_Function_float %tint_symbol_146 %uint_2
+       %2348 = OpLoad %float %2347
+               OpStore %tint_symbol_119_1 %2348
+       %2351 = OpAccessChain %_ptr_Function_v3float %tint_symbol_146 %uint_1
+       %2352 = OpLoad %v3float %2351
+       %2353 = OpFAdd %v3float %2352 %2344
+       %2350 = OpExtInst %v3float %988 Normalize %2353
+       %2354 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146 %uint_0
+       %2355 = OpLoad %v4float %2354
+       %2356 = OpFMul %v4float %2262 %2355
+       %2359 = OpLoad %v3float %tint_symbol_145
+       %2358 = OpDot %float %2350 %2359
+       %2357 = OpExtInst %float %988 Pow %2358 %float_100
+       %2360 = OpVectorTimesScalar %v4float %2356 %2357
+               OpStore %tint_symbol_148_1 %2360
+       %2363 = OpLoad %v4float %tint_symbol_148_1
+       %2362 = OpExtInst %v4float %988 NClamp %2363 %1664 %2262
+               OpStore %tint_symbol_148_1 %2362
+       %2364 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146 %uint_0
+       %2365 = OpLoad %v4float %2364
+       %2366 = OpFMul %v4float %2298 %2365
+       %2367 = OpLoad %v4float %tint_symbol_144
+       %2368 = OpFAdd %v4float %2215 %2367
+       %2369 = OpLoad %v4float %tint_symbol_148_1
+       %2370 = OpFAdd %v4float %2368 %2369
+               OpStore %tint_symbol_114_3 %2370
+               OpBranch %2342
+       %2342 = OpLabel
+               OpBranch %2310
+       %2310 = OpLabel
+               OpBranch %2278
+       %2278 = OpLabel
+               OpBranch %2270
+       %2270 = OpLabel
+               OpBranch %2213
+       %2213 = OpLabel
+       %2372 = OpLoad %25 %tint_symbol_84
+       %2373 = OpLoad %v4float %tint_symbol_114_3
+               OpImageWrite %2372 %2104 %2373
+               OpBranch %2118
+       %2118 = OpLabel
+               OpReturn
+               OpFunctionEnd
+%tint_symbol_130 = OpFunction %void None %2374
+       %2376 = OpLabel
+       %2378 = OpLoad %v3uint %tint_symbol_131_1
+       %2377 = OpFunctionCall %void %tint_symbol_130_inner %2378
+               OpReturn
+               OpFunctionEnd
+%tint_symbol_152_inner = OpFunction %void None %2099
+%tint_symbol_131_0 = OpFunctionParameter %v3uint
+       %2381 = OpLabel
+%tint_symbol_135_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_136_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_37_1 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_137_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_58_2 = OpVariable %_ptr_Function_v2float Function %1353
+%tint_symbol_138_0 = OpVariable %_ptr_Function_int Function %1207
+%tint_symbol_108_1 = OpVariable %_ptr_Function_int Function %1207
+%tint_symbol_139_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_140_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_141_0 = OpVariable %_ptr_Function_v2float Function %1353
+%tint_symbol_114_4 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_143_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_144_0 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_145_0 = OpVariable %_ptr_Function_v3float Function %1557
+%tint_symbol_146_0 = OpVariable %_ptr_Function_tint_symbol_117 Function %1953
+%tint_symbol_148_2 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_148_3 = OpVariable %_ptr_Function_v4float Function %1664
+%tint_symbol_119_2 = OpVariable %_ptr_Function_float Function %905
+%tint_symbol_148_4 = OpVariable %_ptr_Function_v4float Function %1664
+       %2383 = OpVectorShuffle %v2uint %tint_symbol_131_0 %tint_symbol_131_0 0 1
+       %2382 = OpBitcast %v2int %2383
+       %2386 = OpLoad %25 %tint_symbol_84
+       %2385 = OpImageQuerySize %v2uint %2386
+       %2384 = OpBitcast %v2int %2385
+       %2387 = OpCompositeExtract %int %2382 0
+       %2388 = OpCompositeExtract %int %2384 0
+       %2389 = OpSLessThan %bool %2387 %2388
+               OpSelectionMerge %2390 None
+               OpBranchConditional %2389 %2391 %2390
+       %2391 = OpLabel
+       %2392 = OpCompositeExtract %int %2382 1
+       %2393 = OpCompositeExtract %int %2384 1
+       %2394 = OpSLessThan %bool %2392 %2393
+               OpBranch %2390
+       %2390 = OpLabel
+       %2395 = OpPhi %bool %2389 %2381 %2394 %2391
+               OpSelectionMerge %2396 None
+               OpBranchConditional %2395 %2397 %2396
+       %2397 = OpLabel
+       %2398 = OpAccessChain %_ptr_Uniform_v2float %tint_symbol_82 %uint_0 %uint_2
+       %2399 = OpLoad %v2float %2398
+       %2400 = OpVectorShuffle %v2float %2399 %2399 0 1
+       %2401 = OpFDiv %v2float %2120 %2400
+       %2402 = OpAccessChain %_ptr_Uniform_v2float %tint_symbol_82 %uint_0 %uint_1
+       %2403 = OpLoad %v2float %2402
+       %2404 = OpVectorShuffle %v2float %2403 %2403 0 1
+       %2405 = OpFMul %v2float %2401 %2404
+               OpStore %tint_symbol_135_0 %1557
+       %2409 = OpCompositeExtract %int %2382 0
+       %2408 = OpConvertSToF %float %2409
+       %2410 = OpFAdd %float %2408 %float_0_5
+       %2411 = OpCompositeExtract %float %2405 0
+       %2412 = OpFMul %float %2410 %2411
+       %2413 = OpAccessChain %_ptr_Uniform_float %tint_symbol_82 %uint_0 %uint_1 %uint_0
+       %2414 = OpLoad %float %2413
+       %2415 = OpFSub %float %2412 %2414
+       %2417 = OpCompositeExtract %int %2382 1
+       %2416 = OpConvertSToF %float %2417
+       %2418 = OpFAdd %float %2416 %float_0_5
+       %2419 = OpCompositeExtract %float %2405 1
+       %2420 = OpFMul %float %2418 %2419
+       %2421 = OpAccessChain %_ptr_Uniform_float %tint_symbol_82 %uint_0 %uint_1 %uint_1
+       %2422 = OpLoad %float %2421
+       %2423 = OpFSub %float %2420 %2422
+       %2424 = OpCompositeConstruct %v3float %2415 %2423 %float_1
+       %2407 = OpExtInst %v3float %988 Normalize %2424
+               OpStore %tint_symbol_136_0 %2407
+               OpStore %tint_symbol_37_1 %1557
+               OpStore %tint_symbol_137_0 %1557
+               OpStore %tint_symbol_58_2 %2144
+               OpStore %tint_symbol_138_0 %1207
+               OpStore %tint_symbol_108_1 %1207
+               OpBranch %2431
+       %2431 = OpLabel
+               OpLoopMerge %2432 %2433 None
+               OpBranch %2434
+       %2434 = OpLabel
+       %2436 = OpLoad %int %tint_symbol_108_1
+       %2437 = OpSLessThan %bool %2436 %int_2
+       %2435 = OpLogicalNot %bool %2437
+               OpSelectionMerge %2438 None
+               OpBranchConditional %2435 %2439 %2438
+       %2439 = OpLabel
+               OpBranch %2432
+       %2438 = OpLabel
+       %2441 = OpLoad %v3float %tint_symbol_135_0
+       %2442 = OpLoad %int %tint_symbol_108_1
+       %2443 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2442
+       %2444 = OpLoad %tint_symbol_72 %2443
+       %2440 = OpFunctionCall %v3float %tint_symbol_101 %2441 %2444
+               OpStore %tint_symbol_139_0 %2440
+       %2447 = OpLoad %v3float %tint_symbol_136_0
+       %2448 = OpLoad %int %tint_symbol_108_1
+       %2449 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2448
+       %2450 = OpLoad %tint_symbol_72 %2449
+       %2446 = OpFunctionCall %v3float %tint_symbol_98 %2447 %2450
+               OpStore %tint_symbol_140_0 %2446
+       %2453 = OpLoad %v3float %tint_symbol_139_0
+       %2454 = OpLoad %v3float %tint_symbol_140_0
+       %2455 = OpLoad %int %tint_symbol_108_1
+       %2456 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2455
+       %2457 = OpLoad %tint_symbol_72 %2456
+       %2452 = OpFunctionCall %v2float %tint_symbol_105 %2453 %2454 %2457
+               OpStore %tint_symbol_141_0 %2452
+       %2459 = OpAccessChain %_ptr_Function_float %tint_symbol_58_2 %uint_0
+       %2460 = OpLoad %float %2459
+       %2461 = OpFOrdEqual %bool %2460 %905
+               OpSelectionMerge %2462 None
+               OpBranchConditional %2461 %2463 %2464
+       %2463 = OpLabel
+       %2465 = OpLoad %v3float %tint_symbol_139_0
+               OpStore %tint_symbol_37_1 %2465
+       %2466 = OpLoad %v3float %tint_symbol_140_0
+               OpStore %tint_symbol_137_0 %2466
+       %2467 = OpLoad %v2float %tint_symbol_141_0
+               OpStore %tint_symbol_58_2 %2467
+       %2468 = OpLoad %int %tint_symbol_108_1
+               OpStore %tint_symbol_138_0 %2468
+               OpBranch %2462
+       %2464 = OpLabel
+       %2469 = OpAccessChain %_ptr_Function_float %tint_symbol_141_0 %uint_0
+       %2470 = OpLoad %float %2469
+       %2471 = OpAccessChain %_ptr_Function_float %tint_symbol_58_2 %uint_0
+       %2472 = OpLoad %float %2471
+       %2473 = OpFOrdLessThan %bool %2470 %2472
+               OpSelectionMerge %2474 None
+               OpBranchConditional %2473 %2475 %2474
+       %2475 = OpLabel
+       %2476 = OpAccessChain %_ptr_Function_float %tint_symbol_141_0 %uint_0
+       %2477 = OpLoad %float %2476
+       %2478 = OpFOrdNotEqual %bool %2477 %float_n1
+               OpBranch %2474
+       %2474 = OpLabel
+       %2479 = OpPhi %bool %2473 %2464 %2478 %2475
+               OpSelectionMerge %2480 None
+               OpBranchConditional %2479 %2481 %2480
+       %2481 = OpLabel
+       %2482 = OpLoad %v3float %tint_symbol_139_0
+               OpStore %tint_symbol_37_1 %2482
+       %2483 = OpLoad %v3float %tint_symbol_140_0
+               OpStore %tint_symbol_137_0 %2483
+       %2484 = OpLoad %v2float %tint_symbol_141_0
+               OpStore %tint_symbol_58_2 %2484
+       %2485 = OpLoad %int %tint_symbol_108_1
+               OpStore %tint_symbol_138_0 %2485
+               OpBranch %2480
+       %2480 = OpLabel
+               OpBranch %2462
+       %2462 = OpLabel
+               OpBranch %2433
+       %2433 = OpLabel
+       %2486 = OpLoad %int %tint_symbol_108_1
+       %2487 = OpIAdd %int %2486 %int_1
+               OpStore %tint_symbol_108_1 %2487
+               OpBranch %2431
+       %2432 = OpLabel
+               OpStore %tint_symbol_114_4 %2208
+       %2489 = OpAccessChain %_ptr_Function_float %tint_symbol_58_2 %uint_0
+       %2490 = OpLoad %float %2489
+       %2491 = OpFOrdGreaterThan %bool %2490 %905
+               OpSelectionMerge %2492 None
+               OpBranchConditional %2491 %2493 %2492
+       %2493 = OpLabel
+       %2494 = OpFunctionCall %v4float %tint_symbol_110
+       %2495 = OpLoad %v3float %tint_symbol_37_1
+       %2496 = OpLoad %v3float %tint_symbol_137_0
+       %2497 = OpAccessChain %_ptr_Function_float %tint_symbol_58_2 %uint_0
+       %2498 = OpLoad %float %2497
+       %2499 = OpVectorTimesScalar %v3float %2496 %2498
+       %2500 = OpFAdd %v3float %2495 %2499
+               OpStore %tint_symbol_143_0 %2500
+       %2503 = OpLoad %v3float %tint_symbol_143_0
+       %2504 = OpLoad %int %tint_symbol_138_0
+       %2505 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2504
+       %2506 = OpLoad %tint_symbol_72 %2505
+       %2502 = OpFunctionCall %v3float %tint_symbol_104 %2503 %2506
+               OpStore %tint_symbol_143_0 %2502
+       %2509 = OpAccessChain %_ptr_Function_float %tint_symbol_58_2 %uint_1
+       %2510 = OpLoad %float %2509
+       %2508 = OpFunctionCall %int %tint_ftoi_1 %2510
+       %2511 = OpLoad %v3float %tint_symbol_143_0
+       %2512 = OpLoad %int %tint_symbol_138_0
+       %2507 = OpFunctionCall %v4float %tint_symbol_111 %2508 %2511 %2512
+               OpStore %tint_symbol_144_0 %2507
+       %2516 = OpAccessChain %_ptr_Function_float %tint_symbol_58_2 %uint_1
+       %2517 = OpLoad %float %2516
+       %2515 = OpFunctionCall %int %tint_ftoi_1 %2517
+       %2518 = OpLoad %v3float %tint_symbol_143_0
+       %2519 = OpLoad %int %tint_symbol_138_0
+       %2514 = OpFunctionCall %v3float %tint_symbol_116 %2515 %2518 %2519
+               OpStore %tint_symbol_145_0 %2514
+       %2522 = OpLoad %v3float %tint_symbol_145_0
+       %2523 = OpLoad %int %tint_symbol_138_0
+       %2524 = OpAccessChain %_ptr_Uniform_tint_symbol_72 %tint_symbol_83 %uint_0 %2523
+       %2525 = OpLoad %tint_symbol_72 %2524
+       %2521 = OpFunctionCall %v3float %tint_symbol_103 %2522 %2525
+               OpStore %tint_symbol_145_0 %2521
+       %2526 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_85 %uint_0 %uint_1
+       %2527 = OpLoad %v4float %2526
+       %2528 = OpVectorShuffle %v3float %2527 %2527 0 1 2
+       %2529 = OpAccessChain %_ptr_Uniform_v4float %tint_symbol_85 %uint_0 %uint_2
+       %2530 = OpLoad %v4float %2529
+       %2531 = OpVectorShuffle %v3float %2530 %2530 0 1 2
+       %2533 = OpLoad %v3float %tint_symbol_143_0
+       %2534 = OpLoad %v3float %tint_symbol_145_0
+       %2532 = OpFunctionCall %tint_symbol_117 %tint_symbol_120 %2528 %2531 %2533 %2534
+               OpStore %tint_symbol_146_0 %2532
+       %2536 = OpLoad %int %tint_symbol_138_0
+       %2537 = OpIEqual %bool %2536 %int_1
+               OpSelectionMerge %2538 None
+               OpBranchConditional %2537 %2539 %2538
+       %2539 = OpLabel
+       %2540 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146_0 %uint_0
+               OpStore %2540 %2262
+               OpBranch %2538
+       %2538 = OpLabel
+       %2541 = OpLoad %v4float %tint_symbol_144_0
+       %2542 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146_0 %uint_0
+       %2543 = OpLoad %v4float %2542
+       %2544 = OpFMul %v4float %2541 %2543
+               OpStore %tint_symbol_144_0 %2544
+       %2545 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %1207
+       %2546 = OpLoad %uint %2545
+       %2547 = OpIEqual %bool %2546 %1957
+               OpSelectionMerge %2548 None
+               OpBranchConditional %2547 %2549 %2550
+       %2549 = OpLabel
+       %2551 = OpLoad %v4float %tint_symbol_144_0
+       %2552 = OpFAdd %v4float %2494 %2551
+               OpStore %tint_symbol_114_4 %2552
+               OpBranch %2548
+       %2550 = OpLabel
+       %2553 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %1207
+       %2554 = OpLoad %uint %2553
+       %2555 = OpIEqual %bool %2554 %uint_1
+               OpSelectionMerge %2556 None
+               OpBranchConditional %2555 %2557 %2558
+       %2557 = OpLabel
+       %2560 = OpAccessChain %_ptr_Function_v3float %tint_symbol_146_0 %uint_1
+       %2561 = OpLoad %v3float %2560
+       %2562 = OpLoad %v3float %tint_symbol_145_0
+       %2559 = OpExtInst %v3float %988 Reflect %2561 %2562
+       %2563 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146_0 %uint_0
+       %2564 = OpLoad %v4float %2563
+       %2565 = OpFMul %v4float %2262 %2564
+       %2568 = OpLoad %v3float %tint_symbol_137_0
+       %2569 = OpFNegate %v3float %2559
+       %2567 = OpDot %float %2568 %2569
+       %2566 = OpExtInst %float %988 Pow %2567 %float_100
+       %2570 = OpVectorTimesScalar %v4float %2565 %2566
+               OpStore %tint_symbol_148_2 %2570
+       %2573 = OpLoad %v4float %tint_symbol_148_2
+       %2572 = OpExtInst %v4float %988 NClamp %2573 %1664 %2262
+               OpStore %tint_symbol_148_2 %2572
+       %2574 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146_0 %uint_0
+       %2575 = OpLoad %v4float %2574
+       %2576 = OpFMul %v4float %2298 %2575
+       %2577 = OpLoad %v4float %tint_symbol_144_0
+       %2578 = OpFAdd %v4float %2494 %2577
+       %2579 = OpLoad %v4float %tint_symbol_148_2
+       %2580 = OpFAdd %v4float %2578 %2579
+       %2581 = OpFAdd %v4float %2580 %2576
+               OpStore %tint_symbol_114_4 %2581
+               OpBranch %2556
+       %2558 = OpLabel
+       %2582 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %1207
+       %2583 = OpLoad %uint %2582
+       %2584 = OpIEqual %bool %2583 %uint_2
+               OpSelectionMerge %2585 None
+               OpBranchConditional %2584 %2586 %2587
+       %2586 = OpLabel
+       %2589 = OpAccessChain %_ptr_Function_v3float %tint_symbol_146_0 %uint_1
+       %2590 = OpLoad %v3float %2589
+       %2591 = OpLoad %v3float %tint_symbol_145_0
+       %2588 = OpExtInst %v3float %988 Reflect %2590 %2591
+       %2592 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146_0 %uint_0
+       %2593 = OpLoad %v4float %2592
+       %2594 = OpFMul %v4float %2262 %2593
+       %2597 = OpLoad %v3float %tint_symbol_137_0
+       %2598 = OpFNegate %v3float %2588
+       %2596 = OpDot %float %2597 %2598
+       %2595 = OpExtInst %float %988 Pow %2596 %float_100
+       %2599 = OpVectorTimesScalar %v4float %2594 %2595
+               OpStore %tint_symbol_148_3 %2599
+       %2602 = OpLoad %v4float %tint_symbol_148_3
+       %2601 = OpExtInst %v4float %988 NClamp %2602 %1664 %2262
+               OpStore %tint_symbol_148_3 %2601
+       %2603 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146_0 %uint_0
+       %2604 = OpLoad %v4float %2603
+       %2605 = OpFMul %v4float %2298 %2604
+       %2606 = OpLoad %v4float %tint_symbol_144_0
+       %2607 = OpFAdd %v4float %2494 %2606
+       %2608 = OpLoad %v4float %tint_symbol_148_3
+       %2609 = OpFAdd %v4float %2607 %2608
+       %2610 = OpFAdd %v4float %2609 %2605
+               OpStore %tint_symbol_114_4 %2610
+       %2612 = OpLoad %v4float %tint_symbol_114_4
+       %2611 = OpFunctionCall %v4float %tint_symbol_126 %2612 %float_5
+               OpStore %tint_symbol_114_4 %2611
+               OpBranch %2585
+       %2587 = OpLabel
+       %2613 = OpAccessChain %_ptr_Uniform_uint %tint_symbol_85 %uint_0 %uint_5 %1207
+       %2614 = OpLoad %uint %2613
+       %2615 = OpIEqual %bool %2614 %uint_3
+               OpSelectionMerge %2616 None
+               OpBranchConditional %2615 %2617 %2616
+       %2617 = OpLabel
+       %2619 = OpLoad %v3float %tint_symbol_143_0
+       %2618 = OpExtInst %v3float %988 Normalize %2619
+       %2620 = OpAccessChain %_ptr_Function_float %tint_symbol_146_0 %uint_2
+       %2621 = OpLoad %float %2620
+               OpStore %tint_symbol_119_2 %2621
+       %2624 = OpAccessChain %_ptr_Function_v3float %tint_symbol_146_0 %uint_1
+       %2625 = OpLoad %v3float %2624
+       %2626 = OpFAdd %v3float %2625 %2618
+       %2623 = OpExtInst %v3float %988 Normalize %2626
+       %2627 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146_0 %uint_0
+       %2628 = OpLoad %v4float %2627
+       %2629 = OpFMul %v4float %2262 %2628
+       %2633 = OpLoad %v3float %tint_symbol_145_0
+       %2632 = OpFNegate %v3float %2633
+       %2631 = OpDot %float %2623 %2632
+       %2630 = OpExtInst %float %988 Pow %2631 %float_100
+       %2634 = OpVectorTimesScalar %v4float %2629 %2630
+               OpStore %tint_symbol_148_4 %2634
+       %2637 = OpLoad %v4float %tint_symbol_148_4
+       %2636 = OpExtInst %v4float %988 NClamp %2637 %1664 %2262
+               OpStore %tint_symbol_148_4 %2636
+       %2638 = OpAccessChain %_ptr_Function_v4float %tint_symbol_146_0 %uint_0
+       %2639 = OpLoad %v4float %2638
+       %2640 = OpFMul %v4float %2298 %2639
+       %2641 = OpLoad %v4float %tint_symbol_144_0
+       %2642 = OpFAdd %v4float %2494 %2641
+       %2643 = OpLoad %v4float %tint_symbol_148_4
+       %2644 = OpFAdd %v4float %2642 %2643
+               OpStore %tint_symbol_114_4 %2644
+               OpBranch %2616
+       %2616 = OpLabel
+               OpBranch %2585
+       %2585 = OpLabel
+               OpBranch %2556
+       %2556 = OpLabel
+               OpBranch %2548
+       %2548 = OpLabel
+               OpBranch %2492
+       %2492 = OpLabel
+       %2646 = OpLoad %25 %tint_symbol_84
+       %2647 = OpLoad %v4float %tint_symbol_114_4
+               OpImageWrite %2646 %2382 %2647
+               OpBranch %2396
+       %2396 = OpLabel
+               OpReturn
+               OpFunctionEnd
+%tint_symbol_152 = OpFunction %void None %2374
+       %2649 = OpLabel
+       %2651 = OpLoad %v3uint %tint_symbol_131_2
+       %2650 = OpFunctionCall %void %tint_symbol_152_inner %2651
+               OpReturn
+               OpFunctionEnd
