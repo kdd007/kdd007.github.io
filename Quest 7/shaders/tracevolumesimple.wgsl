@@ -372,7 +372,9 @@ fn rayVolumeIntersection(p: vec3f, d: vec3f) -> vec2f {
   hitValues = getVolumeHitValues(-halfsize.y, halfsize.xz, p.y, d.y, p.xz, d.xz, hitValues); // y = -halfsize.y
   return hitValues;
 }
-
+fn interpolate(src: vec4f, dst: vec4f, t: f32)-> vec4f{
+  return src * t + dst * (1 - t);
+}
 
 // a helper function to get the next hit value
 fn getNextHitValue(startT: f32, curT: f32, checkval: f32, minCorner: vec2f, maxCorner: vec2f, pval: f32, dval: f32, p: vec2f, d: vec2f) -> f32 {
@@ -408,7 +410,7 @@ fn traceScene(uv: vec2i, p: vec3f, d: vec3f) {
   if (hits.x >= 0) {
     const maxIntensity: f32 = 4095.;
 
-    if (toggleModel==0){
+    // if (toggleModel==0){
       var curHit: f32 = hits.x + EPSILON;
       // let halfSize = volInfo.dims.xyz * volInfo.sizes.xyz * 0.5
       //                / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z);
@@ -444,16 +446,141 @@ fn traceScene(uv: vec2i, p: vec3f, d: vec3f) {
       }
       curIntensity /= maxIntensity;
       color = vec4f(curIntensity, curIntensity, curIntensity, 1.);
-    }
-    else if (toggleModel==1){
-      let diff = hits.y-hits.x;
-      color=vec4f(diff, 1-diff, 0, 1);
-    }  
+    // }
+    // else if (toggleModel==1){
+    //   let diff = hits.y-hits.x;
+    //   color=vec4f(diff, 1-diff, 0, 1);
+    // }  
   }
   else {
     color = vec4f(0.f/255, 56.f/255, 101.f/255, 1.); // Bucknell Blue
   }
   textureStore(outTexture, uv, color);  
+}
+fn traceTerrain(uv: vec2i, p: vec3f, d: vec3f) {
+  // find the start and end point
+  var hits = rayVolumeIntersection(p, d);
+
+
+  var curHit = hits.x + 0.02;
+
+
+  let halfSize: vec3f = volInfo.dims.xyz * volInfo.sizes.xyz * 0.5 / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z);
+  let voxelSize: vec3f = vec3f(1,1,1) * volInfo.sizes.xyz / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z); // normalized voxel size
+
+
+  var color = vec4f(0.f/255, 56.f/255, 101.f/255, 1.); // Bucknell Blue
+  while (curHit < hits.y) {
+    let curPt: vec3f = p + d * curHit + halfSize;
+
+
+    let vPos = curPt / voxelSize;
+    var minCorner = floor(vPos);
+    var maxCorner = ceil(vPos);
+    curHit = getNextHitValue(hits.x, curHit, minCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy); // xy
+    curHit = getNextHitValue(hits.x, curHit, maxCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy);
+    curHit = getNextHitValue(hits.x, curHit, minCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz); // yz
+    curHit = getNextHitValue(hits.x, curHit, maxCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz);
+    curHit = getNextHitValue(hits.x, curHit, minCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz); // xz
+    curHit = getNextHitValue(hits.x, curHit, maxCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz);
+   
+    if (all(vPos >= vec3f(0)) && all(vPos < volInfo.dims.xyz)) {
+      let vIdx: i32 = i32(vPos.z) * i32(volInfo.dims.x * volInfo.dims.y)
+                      + i32(vPos.y) * i32(volInfo.dims.x)
+                      + i32(vPos.x);
+      if (i32(volData[vIdx]) != 0) {
+        if (volData[vIdx] < volInfo.dims.y * 0.1) {
+          color = vec4f(255.f/255, 250.f/255, 250.f/255, 1.); // Snow
+        }
+        else if (volData[vIdx] < volInfo.dims.y * 0.35) {
+          color = vec4f(129.f/255, 139.f/255, 153.f/255, 1.); // Mountain
+        }
+        else if (volData[vIdx] < volInfo.dims.y * 0.6) {
+          color = vec4f(0.f/255, 170.f/255, 0.f/255, 1.); // Grass
+        }
+        else {
+          color = vec4f(96.f/255, 177.f/255, 199.f/255, 1.); // Water
+        }
+        break;
+      }
+    }
+
+
+    curHit += 0.002;
+  }
+
+
+  textureStore(outTexture, uv, color);
+
+}
+
+fn traceFog(uv: vec2i, p: vec3f, d: vec3f) {
+    // find the start and end point
+  var hits = rayVolumeIntersection(p, d);
+  var color = vec4f(0, 0, 0, 1);
+  var fogColor = vec4f(0.7, 0.7, 0.8, 1.0);
+  var intensity = 1.;
+
+
+  var curHit = hits.x + 0.002;
+
+
+  let voxelSize: vec3f = volInfo.sizes.xyz / max(max(volInfo.dims.x, volInfo.dims.y), volInfo.dims.z); // normalized voxel size
+  while (curHit < hits.y) {
+    let curPt: vec3f = p + d * curHit + voxelSize / 2 * volInfo.dims.xyz;
+
+
+    let vPos = curPt / voxelSize;
+    let vIdx: i32 = i32(vPos.z) * i32(volInfo.dims.x * volInfo.dims.y)
+                    + i32(vPos.y) * i32(volInfo.dims.x)
+                    + i32(vPos.x);
+
+
+    var minCorner = floor(vPos);
+    var maxCorner = ceil(vPos);
+    var nextHit = curHit;
+    nextHit = getNextHitValue(hits.x, nextHit, minCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy); // xy
+    nextHit = getNextHitValue(hits.x, nextHit, maxCorner.z, minCorner.xy, maxCorner.xy, p.z, d.z, p.xy, d.xy);
+    nextHit = getNextHitValue(hits.x, nextHit, minCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz); // yz
+    nextHit = getNextHitValue(hits.x, nextHit, maxCorner.x, minCorner.yz, maxCorner.yz, p.x, d.x, p.yz, d.yz);
+    nextHit = getNextHitValue(hits.x, nextHit, minCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz); // xz
+    nextHit = getNextHitValue(hits.x, nextHit, maxCorner.y, minCorner.xz, maxCorner.xz, p.y, d.y, p.xz, d.xz);
+
+
+    if (all(vPos >= vec3f(0)) && all(vPos < volInfo.dims.xyz)) {
+      let vIdx: i32 = i32(vPos.z) * i32(volInfo.dims.x * volInfo.dims.y)
+                      + i32(vPos.y) * i32(volInfo.dims.x)
+                      + i32(vPos.x);
+      var density = volData[vIdx];
+      var alpha = clamp(density * 0.02, 0.0, 0.1);
+      var opacity = alpha * intensity;
+      intensity -= opacity;
+      color += opacity * fogColor;
+
+
+      if (intensity < 0.1) {
+        break;
+      }
+    }
+
+
+    curHit = nextHit + 0.002;
+  }
+
+
+  color = saturate(color);
+
+
+  if (intensity > 0.1) {
+    color = vec4f(0.f/255, 56.f/255, 101.f/255, 1.);
+  }
+  else {
+    color = interpolate(vec4f(0.f/255, 56.f/255, 101.f/255, 1.), color, (curHit - hits.y));
+  }
+
+
+  textureStore(outTexture, uv, color);
+
 }
 
 
@@ -473,7 +600,15 @@ fn computeOrthogonalMain(@builtin(global_invocation_id) global_id: vec3u) {
     spt = transformPt(spt);
     rdir = transformDir(rdir);
     // trace scene
-    traceScene(uv, spt, rdir);
+    if (toggleModel==0){
+      traceScene(uv, spt, rdir);
+    }
+    else if (toggleModel==1){
+      traceFog(uv, spt, rdir);
+    }
+    else{
+      traceTerrain(uv, spt, rdir);
+    }
   }
 }
 
@@ -494,7 +629,15 @@ fn computeProjectiveMain(@builtin(global_invocation_id) global_id: vec3u) {
     spt = transformPt(spt);
     rdir = transformDir(rdir);
     // trace scene
-    traceScene(uv, spt, rdir);
+    if (toggleModel==0){
+      traceScene(uv, spt, rdir);
+    }
+    else if (toggleModel==1){
+      traceFog(uv, spt, rdir);
+    }
+    else{
+      traceTerrain(uv, spt, rdir);
+    }
   }
 }
 

@@ -23,13 +23,20 @@
 
 import RayTracingObject from "./RayTracingObject.js"
 import VolumeData from "../DS/VolumeData.js"
+import TerrainData from "../DS/TerrainData.js";
+import FogData from "../DS/FogData.js";
 
 export default class VolumeRenderingSimpleObject extends RayTracingObject {
-  constructor(device, canvasFormat, camera) {
+  constructor(device, canvasFormat, camera, modelNum) {
     super(device, canvasFormat);
-    this._volume = new VolumeData('./assets/brainweb-t1-1mm-pn0-rf0.raws');
+    this._volumeBrain = new VolumeData('./assets/brainweb-t1-1mm-pn0-rf0.raws');
+    this._volumeFog = new FogData();
+    this._volumeTerrain= new TerrainData();
+    this._volumeList=[this._volumeBrain, this._volumeFog, this._volumeTerrain];
     this._camera = camera;
     this.currModel=new Float32Array(1).fill(0);
+    this.modelNum=new Float32Array(1).fill(modelNum);
+    this._volume= this._volumeList[modelNum];
   }
   
   async createGeometry() {
@@ -67,7 +74,7 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
     // Copy from CPU to GPU
     // Note, here we make use of the offset to copy them over one by one
     this._device.queue.writeBuffer(this._dataBuffer, 0, new Float32Array(this._volume._data));
-    this._device.queue.writeBuffer(this._toggleBuffer, 0, this.currModel);
+    this._device.queue.writeBuffer(this._toggleBuffer, 0, this.modelNum);
   }
   
   updateGeometry() {
@@ -174,18 +181,19 @@ export default class VolumeRenderingSimpleObject extends RayTracingObject {
     this._wgWidth = Math.ceil(outTexture.width);
     this._wgHeight = Math.ceil(outTexture.height);
   }
-  toggleModel(){
-    this.currModel[0]=(this.currModel[0]+1)%(2);
-    this._device.queue.writeBuffer(this._toggleBuffer, 0, this.currModel);
-  }
+  // toggleModel(){
+  //   this.currModel[0]=(this.currModel[0]+1)%(3);
+  //   this._device.queue.writeBuffer(this._volumeBuffer, 0, new Float32Array([... this._volume._dims, 0, ...this._volume._sizes, 0]));
+  //   this._device.queue.writeBuffer(this._toggleBuffer, 0, this.currModel);
+  // }
   compute(pass) {
     // add to compute pass
     if (this._camera?._isProjective) {
-      console.log("Proj")
+      // console.log("Proj")
       pass.setPipeline(this._computeProjectivePipeline);        // set the compute projective pipeline
     }
     else {
-      console.log("Orth")
+      // console.log("Orth")
       pass.setPipeline(this._computePipeline);                 // set the compute orthogonal pipeline
     }
     pass.setBindGroup(0, this._bindGroup);                  // bind the buffer

@@ -34,7 +34,6 @@ import VolumeRenderingSimpleObject from './lib/DSViz/VolumeRenderingSimpleObject
 import Camera from './lib/Viz/3DCamera.js'
 // import PopupTextObject from './lib/DSViz/PopupTextObject.js'
 
-
 async function init() {
   // Create a canvas tag
   const canvasTag = document.createElement('canvas');
@@ -47,7 +46,12 @@ async function init() {
   var camera = new Camera();
   camera.moveZ(-1);
   // Create an object to trace
-  var tracerObj = new VolumeRenderingSimpleObject(tracer._device, tracer._canvasFormat, camera);
+  var tracerObjBrain = new VolumeRenderingSimpleObject(tracer._device, tracer._canvasFormat, camera, 0);
+  var tracerObjFog = new VolumeRenderingSimpleObject(tracer._device, tracer._canvasFormat, camera, 1);
+  var tracerObjTerrain = new VolumeRenderingSimpleObject(tracer._device, tracer._canvasFormat, camera, 2);
+  var tracerObjList=[tracerObjBrain,tracerObjFog, tracerObjTerrain];
+  var currObj=0;
+  var tracerObj=tracerObjList[currObj];
   await tracer.setTracerObject(tracerObj);
  
   let toggleMovement=true;
@@ -64,12 +68,13 @@ async function init() {
                                           'T: Change Camera Mode\n' +
                                           '-=: Change Camera Focal X\n' +
                                           '[]: Change Camera Focal Y\n'+
-                                          'U: Toggle Camera/Object');
+                                          'U: Toggle Camera/Object\n'+
+                                          'B: Toggle Models');
   var movespeed = 0.05;
   var rotatespeed = 2;
   var focalXSpeed = 0.1;
   var focalYSpeed = 0.1;
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', async (e) => {
     switch (e.key) {
       case 'w': case 'W':
         camera.moveZ(movespeed);
@@ -142,12 +147,14 @@ async function init() {
       case "u": case "U":
        toggleMovement= !toggleMovement;
       case "b": case "B":
-        console.log("Toggle Brain");
-        tracerObj.toggleModel();
-    }
+        toggleModel();
+        tracerObj=tracerObjList[currObj];
+        await tracer.setTracerObject(tracerObj);
+  }
   });
-
-
+  function toggleModel() {
+    currObj= (currObj+1)%3;
+  }
   // run animation at 60 fps
   var frameCnt = 0;
   var tgtFPS = 60;
@@ -171,7 +178,6 @@ async function init() {
   }, 1000); // call every 1000 ms
   return tracer;
 }
-
 init().then( ret => {
   console.log(ret);
 }).catch( error => {
